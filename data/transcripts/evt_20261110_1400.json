@@ -1,0 +1,27 @@
+{
+  "eventId": "evt_20261110_1400",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Alex Kim"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 166000,
+      "text": "Can we cut step three entirely and ask for it later?"
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 365000,
+      "text": "Alex wants a launch date before the end of the month."
+    }
+  ]
+}

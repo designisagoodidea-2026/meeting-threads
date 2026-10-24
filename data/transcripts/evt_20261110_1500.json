@@ -1,0 +1,53 @@
+{
+  "eventId": "evt_20261110_1500",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Aisha Mohammed"
+    },
+    {
+      "label": "S2",
+      "name": "Chris Walsh"
+    },
+    {
+      "label": "S3",
+      "name": "Ben Foster"
+    },
+    {
+      "label": "S4",
+      "name": "Sam Rivera"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 237000,
+      "text": "If platform owns tokens, design systems can focus on components."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 311000,
+      "text": "Every new feature adds another one-off modal."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 367000,
+      "text": "Design needs a say before the H1 roadmap locks, not after."
+    },
+    {
+      "id": 3,
+      "speaker": "S1",
+      "startMs": 589000,
+      "text": "Platform work keeps losing to feature work in planning."
+    },
+    {
+      "id": 4,
+      "speaker": "S4",
+      "startMs": 655000,
+      "text": "I'll take that: send one list of design asks for H1."
+    }
+  ]
+}

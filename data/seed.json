@@ -1,0 +1,1438 @@
+{
+  "timeZone": "America/Los_Angeles",
+  "utcOffset": "-08:00",
+  "window": {
+    "start": "2026-11-02",
+    "end": "2026-11-13"
+  },
+  "lead": "sam@northwind.example",
+  "people": [
+    {
+      "id": "sam@northwind.example",
+      "name": "Sam Rivera",
+      "role": "Design Operations Lead",
+      "discipline": "design-leadership"
+    },
+    {
+      "id": "priya@northwind.example",
+      "name": "Priya Nair",
+      "role": "Senior Product Designer, Onboarding",
+      "discipline": "design"
+    },
+    {
+      "id": "marcus@northwind.example",
+      "name": "Marcus Chen",
+      "role": "Product Designer, Growth",
+      "discipline": "design"
+    },
+    {
+      "id": "lena@northwind.example",
+      "name": "Lena Okafor",
+      "role": "Staff Designer, Design Systems",
+      "discipline": "design"
+    },
+    {
+      "id": "tomas@northwind.example",
+      "name": "Tomás Ruiz",
+      "role": "Product Designer, Mobile",
+      "discipline": "design"
+    },
+    {
+      "id": "hannah@northwind.example",
+      "name": "Hannah Berg",
+      "role": "UX Researcher",
+      "discipline": "research"
+    },
+    {
+      "id": "dev@northwind.example",
+      "name": "Dev Patel",
+      "role": "Senior UX Researcher",
+      "discipline": "research"
+    },
+    {
+      "id": "alex@northwind.example",
+      "name": "Alex Kim",
+      "role": "Product Manager, Onboarding",
+      "discipline": "product"
+    },
+    {
+      "id": "rachel@northwind.example",
+      "name": "Rachel Stone",
+      "role": "Group Product Manager",
+      "discipline": "product"
+    },
+    {
+      "id": "jordan@northwind.example",
+      "name": "Jordan Lee",
+      "role": "Product Manager, Platform",
+      "discipline": "product"
+    },
+    {
+      "id": "chris@northwind.example",
+      "name": "Chris Walsh",
+      "role": "Engineering Manager, Web",
+      "discipline": "eng-management"
+    },
+    {
+      "id": "aisha@northwind.example",
+      "name": "Aisha Mohammed",
+      "role": "Engineering Manager, Platform",
+      "discipline": "eng-management"
+    },
+    {
+      "id": "ben@northwind.example",
+      "name": "Ben Foster",
+      "role": "Engineering Manager, Mobile",
+      "discipline": "eng-management"
+    },
+    {
+      "id": "maya@northwind.example",
+      "name": "Maya Johnson",
+      "role": "Director of Design",
+      "discipline": "design-leadership"
+    },
+    {
+      "id": "victor@northwind.example",
+      "name": "Victor Alvarez",
+      "role": "VP of Design",
+      "discipline": "design-leadership"
+    },
+    {
+      "id": "nina@northwind.example",
+      "name": "Nina Brooks",
+      "role": "Design Recruiter",
+      "discipline": "recruiting"
+    },
+    {
+      "id": "jamie.cole@mail.example",
+      "name": "Jamie Cole",
+      "role": "Candidate, Senior Product Designer",
+      "discipline": "external"
+    },
+    {
+      "id": "owen@studionorth.example",
+      "name": "Owen Price",
+      "role": "Partner, Studio North",
+      "discipline": "external"
+    }
+  ],
+  "themes": [
+    {
+      "id": "onboarding",
+      "name": "Activation",
+      "color": "teal",
+      "phrases": [
+        "First-run completion is still flat since the last release.",
+        "The empty states read better, but people still skip the checklist.",
+        "Can we cut step three entirely and ask for it later?",
+        "Alex wants a launch date before the end of the month.",
+        "The welcome email and the in-app tour say different things."
+      ],
+      "actions": [
+        {
+          "key": "onboarding-copy-pass",
+          "text": "Do one copy pass across the welcome email and the in-app tour"
+        },
+        {
+          "key": "onboarding-launch-criteria",
+          "text": "Write down launch criteria for Onboarding v3"
+        },
+        {
+          "key": "onboarding-step-three",
+          "text": "Mock a version without step three"
+        }
+      ]
+    },
+    {
+      "id": "ds-debt",
+      "name": "Component consistency",
+      "color": "violet",
+      "phrases": [
+        "We have three steppers in production and none of them match.",
+        "Half the color tokens in mobile are hard-coded hex values.",
+        "If platform owns tokens, design systems can focus on components.",
+        "Every new feature adds another one-off modal.",
+        "The component audit is about sixty percent done."
+      ],
+      "actions": [
+        {
+          "key": "stepper-audit",
+          "text": "Audit stepper variants across web and mobile"
+        },
+        {
+          "key": "token-migration-estimate",
+          "text": "Estimate the token migration for mobile"
+        },
+        {
+          "key": "modal-guidelines",
+          "text": "Draft modal usage guidelines"
+        }
+      ]
+    },
+    {
+      "id": "research-ops",
+      "name": "Evidence base",
+      "color": "amber",
+      "phrases": [
+        "Nobody can find last quarter's interview notes.",
+        "We tag studies three different ways depending on who ran them.",
+        "PMs keep asking for the same insights we already have.",
+        "Participant recruiting takes two weeks every time.",
+        "A shared taxonomy would let us search across studies."
+      ],
+      "actions": [
+        {
+          "key": "repo-taxonomy",
+          "text": "Draft a tagging taxonomy for the research repository"
+        },
+        {
+          "key": "recruiting-panel",
+          "text": "Price out a standing participant panel"
+        },
+        {
+          "key": "insight-digest",
+          "text": "Start a monthly insight digest for PMs"
+        }
+      ]
+    },
+    {
+      "id": "hiring",
+      "name": "Staffing",
+      "color": "rose",
+      "phrases": [
+        "We have approval for two senior roles, maybe a third in Q2.",
+        "The portfolio review is taking too long for candidates.",
+        "Our loop has no one from research on it right now.",
+        "Two strong candidates dropped out after the take-home.",
+        "We should calibrate on what senior means before the next loop."
+      ],
+      "actions": [
+        {
+          "key": "open-reqs",
+          "text": "Open the two senior design reqs with recruiting"
+        },
+        {
+          "key": "loop-calibration",
+          "text": "Write a one-page leveling guide for interviewers"
+        },
+        {
+          "key": "drop-take-home",
+          "text": "Propose replacing the take-home with a live review"
+        }
+      ]
+    },
+    {
+      "id": "crit-ritual",
+      "name": "Ways of working",
+      "color": "sky",
+      "phrases": [
+        "Crits keep running over and the last presenter gets five minutes.",
+        "People show finished work instead of open questions.",
+        "Could presenters post the question they want answered ahead of time?",
+        "Engineers stopped coming to crit after the summer.",
+        "A rotating facilitator might keep it on time."
+      ],
+      "actions": [
+        {
+          "key": "crit-format",
+          "text": "Propose a new crit format with time boxes"
+        },
+        {
+          "key": "crit-facilitator",
+          "text": "Set up a rotating crit facilitator schedule"
+        },
+        {
+          "key": "crit-eng-invite",
+          "text": "Invite engineering leads back to Thursday crit"
+        }
+      ]
+    },
+    {
+      "id": "roadmap",
+      "name": "Prioritization",
+      "color": "lime",
+      "phrases": [
+        "Design needs a say before the H1 roadmap locks, not after.",
+        "Platform work keeps losing to feature work in planning.",
+        "We should size design effort the same way engineering does.",
+        "Rachel wants one list of design asks by next week.",
+        "The tokens work only makes sense if it is on the roadmap."
+      ],
+      "actions": [
+        {
+          "key": "h1-design-asks",
+          "text": "Send one list of design asks for H1"
+        },
+        {
+          "key": "design-sizing",
+          "text": "Try t-shirt sizing for design work in planning"
+        }
+      ]
+    },
+    {
+      "id": "a11y",
+      "name": "Accessibility",
+      "color": "slate",
+      "phrases": [
+        "The audit should start with checkout and onboarding.",
+        "We have never tested with a screen reader end to end."
+      ],
+      "actions": [
+        {
+          "key": "a11y-scope",
+          "text": "Confirm the audit scope with Studio North"
+        }
+      ]
+    }
+  ],
+  "series": [
+    {
+      "title": "Design team sync",
+      "type": "team-sync",
+      "day": "Mon",
+      "time": "09:30",
+      "minutes": 60,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "priya",
+        "marcus",
+        "lena",
+        "tomas",
+        "hannah",
+        "dev",
+        "maya"
+      ],
+      "themes": [
+        "crit-ritual",
+        "research-ops"
+      ],
+      "agenda": [
+        "Wins from last week",
+        "Crit format pilot"
+      ]
+    },
+    {
+      "title": "Design crit",
+      "type": "design-crit",
+      "day": "Mon",
+      "time": "11:00",
+      "minutes": 60,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "priya",
+        "marcus",
+        "lena",
+        "tomas",
+        "alex"
+      ],
+      "themes": [
+        "ds-debt",
+        "crit-ritual"
+      ]
+    },
+    {
+      "title": "Design crit",
+      "type": "design-crit",
+      "day": "Thu",
+      "time": "14:00",
+      "minutes": 60,
+      "weeks": [
+        1
+      ],
+      "recorded": true,
+      "attendees": [
+        "priya",
+        "marcus",
+        "lena",
+        "tomas",
+        "jordan"
+      ],
+      "themes": [
+        "ds-debt"
+      ]
+    },
+    {
+      "title": "Design × Eng sync",
+      "type": "team-sync",
+      "day": "Tue",
+      "time": "15:00",
+      "minutes": 45,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "chris",
+        "aisha",
+        "ben",
+        "lena"
+      ],
+      "themes": [
+        "ds-debt",
+        "roadmap"
+      ]
+    },
+    {
+      "title": "Product review",
+      "type": "stakeholder-review",
+      "day": "Wed",
+      "time": "10:00",
+      "minutes": 60,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "rachel",
+        "alex",
+        "jordan",
+        "maya",
+        "victor",
+        "priya",
+        "hannah"
+      ],
+      "themes": [
+        "onboarding",
+        "roadmap"
+      ]
+    },
+    {
+      "title": "Design leadership staff",
+      "type": "team-sync",
+      "day": "Fri",
+      "time": "14:00",
+      "minutes": 45,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "victor",
+        "maya"
+      ],
+      "themes": [
+        "hiring",
+        "roadmap"
+      ]
+    },
+    {
+      "title": "Sam / Maya 1:1",
+      "type": "one-on-one",
+      "day": "Tue",
+      "time": "10:00",
+      "minutes": 30,
+      "weeks": [
+        1,
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "maya"
+      ],
+      "themes": [
+        "hiring",
+        "roadmap"
+      ]
+    },
+    {
+      "title": "Sam / Lena 1:1",
+      "type": "one-on-one",
+      "day": "Wed",
+      "time": "13:00",
+      "minutes": 30,
+      "weeks": [
+        1,
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "lena"
+      ],
+      "themes": [
+        "ds-debt"
+      ]
+    },
+    {
+      "title": "Sam / Priya 1:1",
+      "type": "one-on-one",
+      "day": "Thu",
+      "time": "10:00",
+      "minutes": 30,
+      "weeks": [
+        1,
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "priya"
+      ],
+      "themes": [
+        "onboarding"
+      ]
+    },
+    {
+      "title": "Sam / Hannah 1:1",
+      "type": "one-on-one",
+      "day": "Fri",
+      "time": "11:00",
+      "minutes": 30,
+      "weeks": [
+        1,
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "hannah"
+      ],
+      "themes": [
+        "research-ops"
+      ]
+    },
+    {
+      "title": "Sam / Marcus 1:1",
+      "type": "one-on-one",
+      "day": "Tue",
+      "time": "11:30",
+      "minutes": 30,
+      "weeks": [
+        1
+      ],
+      "recorded": false,
+      "attendees": [
+        "marcus"
+      ],
+      "themes": [
+        "crit-ritual"
+      ]
+    },
+    {
+      "title": "Sam / Tomás 1:1",
+      "type": "one-on-one",
+      "day": "Tue",
+      "time": "11:30",
+      "minutes": 30,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "tomas"
+      ],
+      "themes": [
+        "crit-ritual",
+        "ds-debt"
+      ]
+    },
+    {
+      "title": "Sam / Dev 1:1",
+      "type": "one-on-one",
+      "day": "Thu",
+      "time": "11:00",
+      "minutes": 30,
+      "weeks": [
+        1,
+        2
+      ],
+      "recorded": false,
+      "attendees": [
+        "dev"
+      ],
+      "themes": [
+        "research-ops"
+      ]
+    },
+    {
+      "title": "Sam / Chris 1:1",
+      "type": "one-on-one",
+      "day": "Wed",
+      "time": "15:00",
+      "minutes": 30,
+      "weeks": [
+        1
+      ],
+      "recorded": true,
+      "attendees": [
+        "chris"
+      ],
+      "themes": [
+        "ds-debt"
+      ]
+    },
+    {
+      "title": "Sam / Ben 1:1",
+      "type": "one-on-one",
+      "day": "Wed",
+      "time": "15:00",
+      "minutes": 30,
+      "weeks": [
+        2
+      ],
+      "recorded": false,
+      "attendees": [
+        "ben"
+      ],
+      "themes": [
+        "ds-debt"
+      ]
+    },
+    {
+      "title": "Sam / Rachel 1:1",
+      "type": "one-on-one",
+      "day": "Mon",
+      "time": "15:00",
+      "minutes": 30,
+      "weeks": [
+        1,
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "rachel"
+      ],
+      "themes": [
+        "roadmap"
+      ]
+    },
+    {
+      "title": "Hiring check-in",
+      "type": "one-on-one",
+      "day": "Fri",
+      "time": "15:30",
+      "minutes": 30,
+      "weeks": [
+        1,
+        2
+      ],
+      "recorded": false,
+      "attendees": [
+        "nina"
+      ],
+      "themes": [
+        "hiring"
+      ]
+    },
+    {
+      "title": "Portfolio review: Jamie Cole",
+      "type": "interview",
+      "day": "Tue",
+      "time": "13:00",
+      "minutes": 60,
+      "weeks": [
+        1
+      ],
+      "recorded": false,
+      "attendees": [
+        "jamie.cole",
+        "nina",
+        "maya"
+      ],
+      "themes": [
+        "hiring"
+      ]
+    },
+    {
+      "title": "Onsite debrief: Jamie Cole",
+      "type": "interview",
+      "day": "Thu",
+      "time": "16:00",
+      "minutes": 45,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "nina",
+        "maya",
+        "victor"
+      ],
+      "themes": [
+        "hiring"
+      ]
+    },
+    {
+      "title": "Studio North: repository demo",
+      "type": "external",
+      "day": "Fri",
+      "time": "10:00",
+      "minutes": 45,
+      "weeks": [
+        1
+      ],
+      "recorded": true,
+      "attendees": [
+        "owen",
+        "hannah",
+        "dev"
+      ],
+      "themes": [
+        "research-ops"
+      ]
+    },
+    {
+      "title": "Studio North: accessibility audit kickoff",
+      "type": "external",
+      "day": "Wed",
+      "time": "14:00",
+      "minutes": 45,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "owen",
+        "lena"
+      ],
+      "themes": [
+        "a11y"
+      ]
+    },
+    {
+      "title": "Onboarding v3 working session",
+      "type": "team-sync",
+      "day": "Tue",
+      "time": "14:00",
+      "minutes": 30,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "alex",
+        "priya",
+        "hannah"
+      ],
+      "themes": [
+        "onboarding"
+      ]
+    },
+    {
+      "title": "Research readout: first-run study",
+      "type": "stakeholder-review",
+      "day": "Wed",
+      "time": "16:00",
+      "minutes": 60,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "hannah",
+        "dev",
+        "alex",
+        "rachel",
+        "priya",
+        "marcus",
+        "maya"
+      ],
+      "themes": [
+        "onboarding",
+        "research-ops"
+      ]
+    },
+    {
+      "title": "Crit format pilot retro",
+      "type": "team-sync",
+      "day": "Thu",
+      "time": "15:30",
+      "minutes": 30,
+      "weeks": [
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "marcus",
+        "tomas",
+        "priya"
+      ],
+      "themes": [
+        "crit-ritual"
+      ]
+    },
+    {
+      "title": "Ops office hours",
+      "type": "team-sync",
+      "day": "Fri",
+      "time": "09:30",
+      "minutes": 30,
+      "weeks": [
+        1,
+        2
+      ],
+      "recorded": false,
+      "attendees": [
+        "tomas",
+        "marcus"
+      ],
+      "themes": [
+        "crit-ritual"
+      ]
+    },
+    {
+      "title": "Research ops sync",
+      "type": "team-sync",
+      "day": "Wed",
+      "time": "11:30",
+      "minutes": 30,
+      "weeks": [
+        1,
+        2
+      ],
+      "recorded": true,
+      "attendees": [
+        "hannah",
+        "dev"
+      ],
+      "themes": [
+        "research-ops"
+      ]
+    },
+    {
+      "title": "Platform tokens check-in",
+      "type": "team-sync",
+      "day": "Mon",
+      "time": "14:00",
+      "minutes": 30,
+      "weeks": [
+        1
+      ],
+      "recorded": true,
+      "attendees": [
+        "aisha",
+        "jordan",
+        "lena"
+      ],
+      "themes": [
+        "ds-debt",
+        "roadmap"
+      ]
+    },
+    {
+      "title": "Interviewer calibration",
+      "type": "team-sync",
+      "day": "Thu",
+      "time": "13:00",
+      "minutes": 45,
+      "weeks": [
+        1
+      ],
+      "recorded": true,
+      "attendees": [
+        "nina",
+        "maya"
+      ],
+      "themes": [
+        "hiring"
+      ]
+    }
+  ],
+  "stories": [
+    {
+      "title": "Design team sync",
+      "type": "team-sync",
+      "date": "2026-11-02",
+      "time": "09:30",
+      "minutes": 60,
+      "attendees": [
+        "priya",
+        "marcus",
+        "lena",
+        "tomas",
+        "hannah",
+        "dev",
+        "maya"
+      ],
+      "themes": [
+        "research-ops",
+        "crit-ritual"
+      ],
+      "agenda": [
+        "Wins from last week",
+        "Research repository pain points"
+      ],
+      "turns": [
+        {
+          "s": "sam",
+          "t": "0:40",
+          "text": "Quick round of wins, then I want ten minutes on how we find past research."
+        },
+        {
+          "s": "hannah",
+          "t": "4:10",
+          "text": "Honestly the repository is a mess. I spent an hour looking for the onboarding interviews from August.",
+          "themes": [
+            "research-ops"
+          ]
+        },
+        {
+          "s": "dev",
+          "t": "5:02",
+          "text": "We tag studies three different ways depending on who ran them.",
+          "themes": [
+            "research-ops"
+          ]
+        },
+        {
+          "s": "hannah",
+          "t": "5:40",
+          "text": "I can draft a tagging taxonomy this week if people will actually use it.",
+          "themes": [
+            "research-ops"
+          ],
+          "action": {
+            "key": "repo-taxonomy",
+            "text": "Draft a tagging taxonomy for the research repository",
+            "owner": "hannah",
+            "theme": "research-ops"
+          }
+        },
+        {
+          "s": "marcus",
+          "t": "9:15",
+          "text": "Separate thing, but crits keep running over. Last week I got five minutes.",
+          "themes": [
+            "crit-ritual"
+          ]
+        },
+        {
+          "s": "sam",
+          "t": "10:02",
+          "text": "That's on me. I'll bring a time-boxed format to try next week.",
+          "themes": [
+            "crit-ritual"
+          ],
+          "action": {
+            "key": "crit-format",
+            "text": "Propose a new crit format with time boxes",
+            "owner": "sam",
+            "theme": "crit-ritual"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Design crit: onboarding v3",
+      "type": "design-crit",
+      "date": "2026-11-02",
+      "time": "11:00",
+      "minutes": 60,
+      "attendees": [
+        "priya",
+        "marcus",
+        "lena",
+        "tomas",
+        "alex"
+      ],
+      "themes": [
+        "onboarding",
+        "ds-debt"
+      ],
+      "agenda": [
+        "Walk the new empty states",
+        "Decide on the progress meter"
+      ],
+      "turns": [
+        {
+          "s": "priya",
+          "t": "1:05",
+          "text": "Two things today: the new empty states, and the progress meter, which tested badly.",
+          "themes": [
+            "onboarding"
+          ]
+        },
+        {
+          "s": "priya",
+          "t": "6:30",
+          "text": "Four of six first-time users read the meter as a loading bar.",
+          "themes": [
+            "onboarding"
+          ]
+        },
+        {
+          "s": "alex",
+          "t": "7:45",
+          "text": "I can't commit to a launch date until we know the meter works.",
+          "themes": [
+            "onboarding"
+          ]
+        },
+        {
+          "s": "priya",
+          "t": "8:20",
+          "text": "I'll rework it and retest with five new users before product review.",
+          "themes": [
+            "onboarding"
+          ],
+          "action": {
+            "key": "retest-progress-meter",
+            "text": "Retest the progress meter with five first-time users",
+            "owner": "priya",
+            "theme": "onboarding"
+          }
+        },
+        {
+          "s": "lena",
+          "t": "12:10",
+          "text": "Also, that stepper isn't in the system. We have three steppers in production now.",
+          "themes": [
+            "ds-debt"
+          ]
+        },
+        {
+          "s": "lena",
+          "t": "13:00",
+          "text": "Let me audit the variants before anyone builds a fourth.",
+          "themes": [
+            "ds-debt"
+          ],
+          "action": {
+            "key": "stepper-audit",
+            "text": "Audit stepper variants across web and mobile",
+            "owner": "lena",
+            "theme": "ds-debt"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Onboarding v3 working session",
+      "type": "team-sync",
+      "date": "2026-11-03",
+      "time": "14:00",
+      "minutes": 30,
+      "attendees": [
+        "alex",
+        "hannah"
+      ],
+      "themes": [
+        "onboarding",
+        "research-ops"
+      ],
+      "turns": [
+        {
+          "s": "alex",
+          "t": "0:30",
+          "text": "Priya is reworking the progress meter. Can research help with the retest?",
+          "themes": [
+            "onboarding"
+          ]
+        },
+        {
+          "s": "hannah",
+          "t": "1:15",
+          "text": "Recruiting usually takes two weeks, but I have a few people from the August panel.",
+          "themes": [
+            "research-ops"
+          ]
+        },
+        {
+          "s": "hannah",
+          "t": "2:05",
+          "text": "I'll line up five first-time users so Priya can retest by Wednesday.",
+          "themes": [
+            "onboarding"
+          ],
+          "action": {
+            "key": "retest-progress-meter",
+            "text": "Line up five first-time users for the progress meter retest",
+            "owner": "hannah",
+            "theme": "onboarding"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Design × Eng sync",
+      "type": "team-sync",
+      "date": "2026-11-03",
+      "time": "15:00",
+      "minutes": 45,
+      "attendees": [
+        "chris",
+        "aisha",
+        "ben",
+        "lena"
+      ],
+      "themes": [
+        "ds-debt",
+        "roadmap"
+      ],
+      "turns": [
+        {
+          "s": "chris",
+          "t": "2:00",
+          "text": "We built the stepper three times in code this year. That's real cost.",
+          "themes": [
+            "ds-debt"
+          ]
+        },
+        {
+          "s": "lena",
+          "t": "2:50",
+          "text": "I'm auditing the variants now. I'll have a list by Thursday.",
+          "themes": [
+            "ds-debt"
+          ]
+        },
+        {
+          "s": "aisha",
+          "t": "6:30",
+          "text": "If platform owns tokens, design systems can focus on components. I can size the migration.",
+          "themes": [
+            "ds-debt"
+          ],
+          "action": {
+            "key": "token-migration-estimate",
+            "text": "Estimate the token migration for mobile",
+            "owner": "aisha",
+            "theme": "ds-debt"
+          }
+        },
+        {
+          "s": "ben",
+          "t": "8:10",
+          "text": "Mobile will need it on the H1 roadmap or it won't happen.",
+          "themes": [
+            "roadmap"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Product review",
+      "type": "stakeholder-review",
+      "date": "2026-11-04",
+      "time": "10:00",
+      "minutes": 60,
+      "attendees": [
+        "rachel",
+        "alex",
+        "jordan",
+        "maya",
+        "victor",
+        "priya",
+        "hannah"
+      ],
+      "themes": [
+        "onboarding",
+        "roadmap"
+      ],
+      "agenda": [
+        "Onboarding v3 launch readiness",
+        "H1 planning timeline"
+      ],
+      "turns": [
+        {
+          "s": "rachel",
+          "t": "0:50",
+          "text": "Where are we on an onboarding launch date?",
+          "themes": [
+            "onboarding"
+          ]
+        },
+        {
+          "s": "maya",
+          "t": "1:40",
+          "text": "It depends on the progress meter retest. Priya and Hannah are running it this week.",
+          "themes": [
+            "onboarding"
+          ]
+        },
+        {
+          "s": "victor",
+          "t": "14:20",
+          "text": "For H1, design needs a say before the roadmap locks, not after.",
+          "themes": [
+            "roadmap"
+          ]
+        },
+        {
+          "s": "maya",
+          "t": "15:05",
+          "text": "I'll send one list of design asks for H1 by next Monday.",
+          "themes": [
+            "roadmap"
+          ],
+          "action": {
+            "key": "h1-design-asks",
+            "text": "Send one list of design asks for H1",
+            "owner": "maya",
+            "theme": "roadmap"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Design leadership staff",
+      "type": "team-sync",
+      "date": "2026-11-06",
+      "time": "14:00",
+      "minutes": 45,
+      "attendees": [
+        "victor",
+        "maya"
+      ],
+      "themes": [
+        "hiring",
+        "crit-ritual"
+      ],
+      "turns": [
+        {
+          "s": "victor",
+          "t": "1:00",
+          "text": "Good news: two senior design roles are approved.",
+          "themes": [
+            "hiring"
+          ]
+        },
+        {
+          "s": "sam",
+          "t": "2:10",
+          "text": "I'll open both reqs with Nina on Monday.",
+          "themes": [
+            "hiring"
+          ],
+          "action": {
+            "key": "open-reqs",
+            "text": "Open the two senior design reqs with recruiting",
+            "owner": "sam",
+            "theme": "hiring"
+          }
+        },
+        {
+          "s": "maya",
+          "t": "9:30",
+          "text": "How is the crit format pilot going? Marcus mentioned it ran long again.",
+          "themes": [
+            "crit-ritual"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "H1 roadmap planning",
+      "type": "stakeholder-review",
+      "date": "2026-11-09",
+      "time": "13:00",
+      "minutes": 90,
+      "attendees": [
+        "rachel",
+        "jordan",
+        "aisha",
+        "maya",
+        "victor",
+        "lena"
+      ],
+      "themes": [
+        "roadmap",
+        "ds-debt"
+      ],
+      "agenda": [
+        "Design asks for H1",
+        "Platform capacity"
+      ],
+      "turns": [
+        {
+          "s": "maya",
+          "t": "2:00",
+          "text": "Here's the list of design asks. The tokens work is at the top.",
+          "themes": [
+            "roadmap",
+            "ds-debt"
+          ]
+        },
+        {
+          "s": "aisha",
+          "t": "5:20",
+          "text": "My estimate for the mobile token migration is six weeks with two engineers.",
+          "themes": [
+            "ds-debt"
+          ]
+        },
+        {
+          "s": "jordan",
+          "t": "9:45",
+          "text": "I'll draft the platform roadmap with tokens as a named line item.",
+          "themes": [
+            "roadmap"
+          ],
+          "action": {
+            "key": "platform-roadmap-draft",
+            "text": "Draft the platform roadmap with tokens as a line item",
+            "owner": "jordan",
+            "theme": "roadmap"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Design org all-hands",
+      "type": "team-sync",
+      "date": "2026-11-09",
+      "time": "16:00",
+      "minutes": 60,
+      "attendees": [
+        "priya",
+        "marcus",
+        "lena",
+        "tomas",
+        "hannah",
+        "dev",
+        "alex",
+        "rachel",
+        "jordan",
+        "maya",
+        "victor",
+        "nina"
+      ],
+      "themes": [
+        "hiring",
+        "crit-ritual"
+      ],
+      "agenda": [
+        "Hiring update",
+        "Crit format pilot"
+      ],
+      "turns": [
+        {
+          "s": "victor",
+          "t": "1:30",
+          "text": "We're hiring two senior designers. Please send referrals to Nina.",
+          "themes": [
+            "hiring"
+          ]
+        },
+        {
+          "s": "sam",
+          "t": "8:00",
+          "text": "Starting this week, crit has time boxes and a rotating facilitator.",
+          "themes": [
+            "crit-ritual"
+          ]
+        },
+        {
+          "s": "?",
+          "t": "14:40",
+          "text": "Sorry, joining by phone. Will the new crit format apply to research readouts too?",
+          "themes": [
+            "crit-ritual"
+          ]
+        },
+        {
+          "s": "hannah",
+          "t": "15:10",
+          "text": "We'd like to try it at the next readout.",
+          "themes": [
+            "crit-ritual"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Design crit: progress meter retest",
+      "type": "design-crit",
+      "date": "2026-11-12",
+      "time": "14:00",
+      "minutes": 60,
+      "attendees": [
+        "priya",
+        "marcus",
+        "lena",
+        "tomas",
+        "alex",
+        "hannah"
+      ],
+      "themes": [
+        "onboarding",
+        "crit-ritual"
+      ],
+      "agenda": [
+        "Retest results",
+        "First crit with time boxes"
+      ],
+      "turns": [
+        {
+          "s": "priya",
+          "t": "0:45",
+          "text": "Retest results: five of five first-time users read the new meter correctly.",
+          "themes": [
+            "onboarding"
+          ]
+        },
+        {
+          "s": "alex",
+          "t": "2:30",
+          "text": "Then I'm comfortable proposing a launch date at product review.",
+          "themes": [
+            "onboarding"
+          ],
+          "action": {
+            "key": "onboarding-launch-date",
+            "text": "Propose an Onboarding v3 launch date",
+            "owner": "alex",
+            "theme": "onboarding"
+          }
+        },
+        {
+          "s": "marcus",
+          "t": "40:00",
+          "text": "Also, first crit under the new format and we finished on time.",
+          "themes": [
+            "crit-ritual"
+          ]
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "onboarding-launch",
+      "name": "Onboarding v3 launch",
+      "themes": [
+        "onboarding",
+        "ds-debt",
+        "research-ops",
+        "a11y"
+      ]
+    },
+    {
+      "id": "design-system",
+      "name": "Design system 2.0",
+      "themes": [
+        "ds-debt",
+        "a11y",
+        "roadmap"
+      ]
+    },
+    {
+      "id": "h1-planning",
+      "name": "H1 planning",
+      "themes": [
+        "roadmap",
+        "hiring",
+        "onboarding"
+      ]
+    },
+    {
+      "id": "research-operations",
+      "name": "Research operations",
+      "themes": [
+        "research-ops",
+        "crit-ritual"
+      ]
+    },
+    {
+      "id": "team-growth",
+      "name": "Design team growth",
+      "themes": [
+        "hiring",
+        "crit-ritual"
+      ]
+    }
+  ]
+}

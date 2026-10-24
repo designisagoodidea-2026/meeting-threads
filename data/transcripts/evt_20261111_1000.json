@@ -1,0 +1,53 @@
+{
+  "eventId": "evt_20261111_1000",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Maya Johnson"
+    },
+    {
+      "label": "S2",
+      "name": "Jordan Lee"
+    },
+    {
+      "label": "S3",
+      "name": "Alex Kim"
+    },
+    {
+      "label": "S4",
+      "name": "Sam Rivera"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 235000,
+      "text": "The welcome email and the in-app tour say different things."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 469000,
+      "text": "First-run completion is still flat since the last release."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 598000,
+      "text": "We should size design effort the same way engineering does."
+    },
+    {
+      "id": 3,
+      "speaker": "S1",
+      "startMs": 725000,
+      "text": "Rachel wants one list of design asks by next week."
+    },
+    {
+      "id": 4,
+      "speaker": "S4",
+      "startMs": 757000,
+      "text": "I'll take that: send one list of design asks for H1."
+    }
+  ]
+}

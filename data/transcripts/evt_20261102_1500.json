@@ -1,0 +1,27 @@
+{
+  "eventId": "evt_20261102_1500",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Rachel Stone"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 246000,
+      "text": "We should size design effort the same way engineering does."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 373000,
+      "text": "Rachel wants one list of design asks by next week."
+    }
+  ]
+}

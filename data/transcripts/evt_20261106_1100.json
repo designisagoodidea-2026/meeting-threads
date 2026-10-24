@@ -1,0 +1,23 @@
+{
+  "eventId": "evt_20261106_1100",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 127000,
+      "text": "A shared taxonomy would let us search across studies."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 204000,
+      "text": "Nobody can find last quarter's interview notes."
+    }
+  ]
+}

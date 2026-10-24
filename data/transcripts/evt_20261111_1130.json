@@ -1,0 +1,37 @@
+{
+  "eventId": "evt_20261111_1130",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Hannah Berg"
+    },
+    {
+      "label": "S3",
+      "name": "Dev Patel"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 216000,
+      "text": "Participant recruiting takes two weeks every time."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 300000,
+      "text": "A shared taxonomy would let us search across studies."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 398000,
+      "text": "I'll take that: price out a standing participant panel."
+    }
+  ]
+}

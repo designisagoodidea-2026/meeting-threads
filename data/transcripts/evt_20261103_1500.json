@@ -1,0 +1,47 @@
+{
+  "eventId": "evt_20261103_1500",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Chris Walsh"
+    },
+    {
+      "label": "S2",
+      "name": "Lena Okafor"
+    },
+    {
+      "label": "S3",
+      "name": "Aisha Mohammed"
+    },
+    {
+      "label": "S4",
+      "name": "Ben Foster"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 120000,
+      "text": "We built the stepper three times in code this year. That's real cost."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 170000,
+      "text": "I'm auditing the variants now. I'll have a list by Thursday."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 390000,
+      "text": "If platform owns tokens, design systems can focus on components. I can size the migration."
+    },
+    {
+      "id": 3,
+      "speaker": "S4",
+      "startMs": 490000,
+      "text": "Mobile will need it on the H1 roadmap or it won't happen."
+    }
+  ]
+}

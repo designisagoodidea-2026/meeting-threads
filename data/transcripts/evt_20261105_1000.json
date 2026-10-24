@@ -1,0 +1,33 @@
+{
+  "eventId": "evt_20261105_1000",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Priya Nair"
+    },
+    {
+      "label": "S2",
+      "name": "Sam Rivera"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 235000,
+      "text": "First-run completion is still flat since the last release."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 355000,
+      "text": "The empty states read better, but people still skip the checklist."
+    },
+    {
+      "id": 2,
+      "speaker": "S1",
+      "startMs": 402000,
+      "text": "I'll take that: do one copy pass across the welcome email and the in-app tour."
+    }
+  ]
+}

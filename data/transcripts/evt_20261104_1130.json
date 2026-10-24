@@ -1,0 +1,37 @@
+{
+  "eventId": "evt_20261104_1130",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Hannah Berg"
+    },
+    {
+      "label": "S2",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S3",
+      "name": "Dev Patel"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 197000,
+      "text": "Nobody can find last quarter's interview notes."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 345000,
+      "text": "We tag studies three different ways depending on who ran them."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 446000,
+      "text": "I'll take that: price out a standing participant panel."
+    }
+  ]
+}

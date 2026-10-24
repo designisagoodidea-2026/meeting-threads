@@ -1,0 +1,37 @@
+{
+  "eventId": "evt_20261106_1400",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Victor Alvarez"
+    },
+    {
+      "label": "S2",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S3",
+      "name": "Maya Johnson"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 60000,
+      "text": "Good news: two senior design roles are approved."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 130000,
+      "text": "I'll open both reqs with Nina on Monday."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 570000,
+      "text": "How is the crit format pilot going? Marcus mentioned it ran long again."
+    }
+  ]
+}

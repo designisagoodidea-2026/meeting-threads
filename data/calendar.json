@@ -1,0 +1,1338 @@
+{
+  "timeZone": "America/Los_Angeles",
+  "items": [
+    {
+      "id": "evt_20261102_0930",
+      "summary": "Design team sync",
+      "description": "Agenda:\n- Wins from last week\n- Research repository pain points",
+      "start": {
+        "dateTime": "2026-11-02T09:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-02T10:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        },
+        {
+          "email": "dev@northwind.example",
+          "displayName": "Dev Patel"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261102_1100",
+      "summary": "Design crit: onboarding v3",
+      "description": "Agenda:\n- Walk the new empty states\n- Decide on the progress meter",
+      "start": {
+        "dateTime": "2026-11-02T11:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-02T12:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "alex@northwind.example",
+          "displayName": "Alex Kim"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261102_1400",
+      "summary": "Platform tokens check-in",
+      "start": {
+        "dateTime": "2026-11-02T14:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-02T14:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "aisha@northwind.example",
+          "displayName": "Aisha Mohammed"
+        },
+        {
+          "email": "jordan@northwind.example",
+          "displayName": "Jordan Lee"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261102_1500",
+      "summary": "Sam / Rachel 1:1",
+      "start": {
+        "dateTime": "2026-11-02T15:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-02T15:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "rachel@northwind.example",
+          "displayName": "Rachel Stone"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261103_1000",
+      "summary": "Sam / Maya 1:1",
+      "start": {
+        "dateTime": "2026-11-03T10:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-03T10:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261103_1130",
+      "summary": "Sam / Marcus 1:1",
+      "start": {
+        "dateTime": "2026-11-03T11:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-03T12:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261103_1300",
+      "summary": "Portfolio review: Jamie Cole",
+      "start": {
+        "dateTime": "2026-11-03T13:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-03T14:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "jamie.cole@mail.example",
+          "displayName": "Jamie Cole"
+        },
+        {
+          "email": "nina@northwind.example",
+          "displayName": "Nina Brooks"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261103_1400",
+      "summary": "Onboarding v3 working session",
+      "start": {
+        "dateTime": "2026-11-03T14:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-03T14:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "alex@northwind.example",
+          "displayName": "Alex Kim"
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261103_1500",
+      "summary": "Design × Eng sync",
+      "start": {
+        "dateTime": "2026-11-03T15:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-03T15:45:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "chris@northwind.example",
+          "displayName": "Chris Walsh"
+        },
+        {
+          "email": "aisha@northwind.example",
+          "displayName": "Aisha Mohammed"
+        },
+        {
+          "email": "ben@northwind.example",
+          "displayName": "Ben Foster"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261104_1000",
+      "summary": "Product review",
+      "description": "Agenda:\n- Onboarding v3 launch readiness\n- H1 planning timeline",
+      "start": {
+        "dateTime": "2026-11-04T10:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-04T11:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "rachel@northwind.example",
+          "displayName": "Rachel Stone"
+        },
+        {
+          "email": "alex@northwind.example",
+          "displayName": "Alex Kim"
+        },
+        {
+          "email": "jordan@northwind.example",
+          "displayName": "Jordan Lee"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        },
+        {
+          "email": "victor@northwind.example",
+          "displayName": "Victor Alvarez"
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261104_1130",
+      "summary": "Research ops sync",
+      "start": {
+        "dateTime": "2026-11-04T11:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-04T12:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        },
+        {
+          "email": "dev@northwind.example",
+          "displayName": "Dev Patel"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261104_1300",
+      "summary": "Sam / Lena 1:1",
+      "start": {
+        "dateTime": "2026-11-04T13:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-04T13:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261104_1500",
+      "summary": "Sam / Chris 1:1",
+      "start": {
+        "dateTime": "2026-11-04T15:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-04T15:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "chris@northwind.example",
+          "displayName": "Chris Walsh"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261105_1000",
+      "summary": "Sam / Priya 1:1",
+      "start": {
+        "dateTime": "2026-11-05T10:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-05T10:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261105_1100",
+      "summary": "Sam / Dev 1:1",
+      "start": {
+        "dateTime": "2026-11-05T11:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-05T11:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "dev@northwind.example",
+          "displayName": "Dev Patel"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261105_1300",
+      "summary": "Interviewer calibration",
+      "start": {
+        "dateTime": "2026-11-05T13:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-05T13:45:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "nina@northwind.example",
+          "displayName": "Nina Brooks"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261105_1400",
+      "summary": "Design crit",
+      "start": {
+        "dateTime": "2026-11-05T14:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-05T15:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "jordan@northwind.example",
+          "displayName": "Jordan Lee"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261106_0930",
+      "summary": "Ops office hours",
+      "start": {
+        "dateTime": "2026-11-06T09:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-06T10:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261106_1000",
+      "summary": "Studio North: repository demo",
+      "start": {
+        "dateTime": "2026-11-06T10:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-06T10:45:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "owen@studionorth.example",
+          "displayName": "Owen Price"
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        },
+        {
+          "email": "dev@northwind.example",
+          "displayName": "Dev Patel"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261106_1100",
+      "summary": "Sam / Hannah 1:1",
+      "start": {
+        "dateTime": "2026-11-06T11:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-06T11:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261106_1400",
+      "summary": "Design leadership staff",
+      "start": {
+        "dateTime": "2026-11-06T14:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-06T14:45:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "victor@northwind.example",
+          "displayName": "Victor Alvarez"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261106_1530",
+      "summary": "Hiring check-in",
+      "start": {
+        "dateTime": "2026-11-06T15:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-06T16:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "nina@northwind.example",
+          "displayName": "Nina Brooks"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261109_0930",
+      "summary": "Design team sync",
+      "description": "Agenda:\n- Wins from last week\n- Crit format pilot",
+      "start": {
+        "dateTime": "2026-11-09T09:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-09T10:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        },
+        {
+          "email": "dev@northwind.example",
+          "displayName": "Dev Patel"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261109_1100",
+      "summary": "Design crit",
+      "start": {
+        "dateTime": "2026-11-09T11:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-09T12:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "alex@northwind.example",
+          "displayName": "Alex Kim"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261109_1300",
+      "summary": "H1 roadmap planning",
+      "description": "Agenda:\n- Design asks for H1\n- Platform capacity",
+      "start": {
+        "dateTime": "2026-11-09T13:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-09T14:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "rachel@northwind.example",
+          "displayName": "Rachel Stone"
+        },
+        {
+          "email": "jordan@northwind.example",
+          "displayName": "Jordan Lee"
+        },
+        {
+          "email": "aisha@northwind.example",
+          "displayName": "Aisha Mohammed"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        },
+        {
+          "email": "victor@northwind.example",
+          "displayName": "Victor Alvarez"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261109_1500",
+      "summary": "Sam / Rachel 1:1",
+      "start": {
+        "dateTime": "2026-11-09T15:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-09T15:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "rachel@northwind.example",
+          "displayName": "Rachel Stone"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261109_1600",
+      "summary": "Design org all-hands",
+      "description": "Agenda:\n- Hiring update\n- Crit format pilot",
+      "start": {
+        "dateTime": "2026-11-09T16:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-09T17:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        },
+        {
+          "email": "dev@northwind.example",
+          "displayName": "Dev Patel"
+        },
+        {
+          "email": "alex@northwind.example",
+          "displayName": "Alex Kim"
+        },
+        {
+          "email": "rachel@northwind.example",
+          "displayName": "Rachel Stone"
+        },
+        {
+          "email": "jordan@northwind.example",
+          "displayName": "Jordan Lee"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        },
+        {
+          "email": "victor@northwind.example",
+          "displayName": "Victor Alvarez"
+        },
+        {
+          "email": "nina@northwind.example",
+          "displayName": "Nina Brooks"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261110_1000",
+      "summary": "Sam / Maya 1:1",
+      "start": {
+        "dateTime": "2026-11-10T10:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-10T10:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261110_1130",
+      "summary": "Sam / Tomás 1:1",
+      "start": {
+        "dateTime": "2026-11-10T11:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-10T12:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261110_1400",
+      "summary": "Onboarding v3 working session",
+      "start": {
+        "dateTime": "2026-11-10T14:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-10T14:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "alex@northwind.example",
+          "displayName": "Alex Kim"
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261110_1500",
+      "summary": "Design × Eng sync",
+      "start": {
+        "dateTime": "2026-11-10T15:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-10T15:45:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "chris@northwind.example",
+          "displayName": "Chris Walsh"
+        },
+        {
+          "email": "aisha@northwind.example",
+          "displayName": "Aisha Mohammed"
+        },
+        {
+          "email": "ben@northwind.example",
+          "displayName": "Ben Foster"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261111_1000",
+      "summary": "Product review",
+      "start": {
+        "dateTime": "2026-11-11T10:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-11T11:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "rachel@northwind.example",
+          "displayName": "Rachel Stone"
+        },
+        {
+          "email": "alex@northwind.example",
+          "displayName": "Alex Kim"
+        },
+        {
+          "email": "jordan@northwind.example",
+          "displayName": "Jordan Lee"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        },
+        {
+          "email": "victor@northwind.example",
+          "displayName": "Victor Alvarez"
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261111_1130",
+      "summary": "Research ops sync",
+      "start": {
+        "dateTime": "2026-11-11T11:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-11T12:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        },
+        {
+          "email": "dev@northwind.example",
+          "displayName": "Dev Patel"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261111_1300",
+      "summary": "Sam / Lena 1:1",
+      "start": {
+        "dateTime": "2026-11-11T13:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-11T13:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261111_1400",
+      "summary": "Studio North: accessibility audit kickoff",
+      "start": {
+        "dateTime": "2026-11-11T14:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-11T14:45:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "owen@studionorth.example",
+          "displayName": "Owen Price"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261111_1500",
+      "summary": "Sam / Ben 1:1",
+      "start": {
+        "dateTime": "2026-11-11T15:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-11T15:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "ben@northwind.example",
+          "displayName": "Ben Foster"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261111_1600",
+      "summary": "Research readout: first-run study",
+      "start": {
+        "dateTime": "2026-11-11T16:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-11T17:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        },
+        {
+          "email": "dev@northwind.example",
+          "displayName": "Dev Patel"
+        },
+        {
+          "email": "alex@northwind.example",
+          "displayName": "Alex Kim"
+        },
+        {
+          "email": "rachel@northwind.example",
+          "displayName": "Rachel Stone"
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261112_1000",
+      "summary": "Sam / Priya 1:1",
+      "start": {
+        "dateTime": "2026-11-12T10:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-12T10:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261112_1100",
+      "summary": "Sam / Dev 1:1",
+      "start": {
+        "dateTime": "2026-11-12T11:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-12T11:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "dev@northwind.example",
+          "displayName": "Dev Patel"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261112_1400",
+      "summary": "Design crit: progress meter retest",
+      "description": "Agenda:\n- Retest results\n- First crit with time boxes",
+      "start": {
+        "dateTime": "2026-11-12T14:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-12T15:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        },
+        {
+          "email": "lena@northwind.example",
+          "displayName": "Lena Okafor"
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "alex@northwind.example",
+          "displayName": "Alex Kim"
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261112_1530",
+      "summary": "Crit format pilot retro",
+      "start": {
+        "dateTime": "2026-11-12T15:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-12T16:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "priya@northwind.example",
+          "displayName": "Priya Nair"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261112_1600",
+      "summary": "Onsite debrief: Jamie Cole",
+      "start": {
+        "dateTime": "2026-11-12T16:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-12T16:45:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "nina@northwind.example",
+          "displayName": "Nina Brooks"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        },
+        {
+          "email": "victor@northwind.example",
+          "displayName": "Victor Alvarez"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261113_0930",
+      "summary": "Ops office hours",
+      "start": {
+        "dateTime": "2026-11-13T09:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-13T10:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "tomas@northwind.example",
+          "displayName": "Tomás Ruiz"
+        },
+        {
+          "email": "marcus@northwind.example",
+          "displayName": "Marcus Chen"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261113_1100",
+      "summary": "Sam / Hannah 1:1",
+      "start": {
+        "dateTime": "2026-11-13T11:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-13T11:30:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "hannah@northwind.example",
+          "displayName": "Hannah Berg"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261113_1400",
+      "summary": "Design leadership staff",
+      "start": {
+        "dateTime": "2026-11-13T14:00:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-13T14:45:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "victor@northwind.example",
+          "displayName": "Victor Alvarez"
+        },
+        {
+          "email": "maya@northwind.example",
+          "displayName": "Maya Johnson"
+        }
+      ]
+    },
+    {
+      "id": "evt_20261113_1530",
+      "summary": "Hiring check-in",
+      "start": {
+        "dateTime": "2026-11-13T15:30:00-08:00"
+      },
+      "end": {
+        "dateTime": "2026-11-13T16:00:00-08:00"
+      },
+      "attendees": [
+        {
+          "email": "sam@northwind.example",
+          "displayName": "Sam Rivera",
+          "self": true
+        },
+        {
+          "email": "nina@northwind.example",
+          "displayName": "Nina Brooks"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "eventId": "evt_20261104_1500",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Chris Walsh"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 189000,
+      "text": "The component audit is about sixty percent done."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 303000,
+      "text": "We have three steppers in production and none of them match."
+    },
+    {
+      "id": 2,
+      "speaker": "S2",
+      "startMs": 334000,
+      "text": "I'll take that: draft modal usage guidelines."
+    }
+  ]
+}

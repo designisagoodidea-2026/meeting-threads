@@ -1,0 +1,47 @@
+{
+  "eventId": "evt_20261111_1600",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Alex Kim"
+    },
+    {
+      "label": "S2",
+      "name": "Marcus Chen"
+    },
+    {
+      "label": "S3",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S4",
+      "name": "Maya Johnson"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 246000,
+      "text": "The empty states read better, but people still skip the checklist."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 294000,
+      "text": "Can we cut step three entirely and ask for it later?"
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 431000,
+      "text": "Nobody can find last quarter's interview notes."
+    },
+    {
+      "id": 3,
+      "speaker": "S4",
+      "startMs": 522000,
+      "text": "We tag studies three different ways depending on who ran them."
+    }
+  ]
+}

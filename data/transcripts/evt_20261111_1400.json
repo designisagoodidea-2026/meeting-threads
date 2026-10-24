@@ -1,0 +1,27 @@
+{
+  "eventId": "evt_20261111_1400",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Owen Price"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 172000,
+      "text": "The audit should start with checkout and onboarding."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 397000,
+      "text": "We have never tested with a screen reader end to end."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "eventId": "evt_20261111_1300",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Lena Okafor"
+    },
+    {
+      "label": "S2",
+      "name": "Sam Rivera"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 184000,
+      "text": "The component audit is about sixty percent done."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 370000,
+      "text": "We have three steppers in production and none of them match."
+    }
+  ]
+}

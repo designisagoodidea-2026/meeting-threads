@@ -1,0 +1,33 @@
+{
+  "eventId": "evt_20261103_1400",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Alex Kim"
+    },
+    {
+      "label": "S2",
+      "name": "Hannah Berg"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 30000,
+      "text": "Priya is reworking the progress meter. Can research help with the retest?"
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 75000,
+      "text": "Recruiting usually takes two weeks, but I have a few people from the August panel."
+    },
+    {
+      "id": 2,
+      "speaker": "S2",
+      "startMs": 125000,
+      "text": "I'll line up five first-time users so Priya can retest by Wednesday."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "eventId": "evt_20261112_1530",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Tomás Ruiz"
+    },
+    {
+      "label": "S3",
+      "name": "Priya Nair"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 256000,
+      "text": "People show finished work instead of open questions."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 393000,
+      "text": "Could presenters post the question they want answered ahead of time?"
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 469000,
+      "text": "I'll take that: invite engineering leads back to Thursday crit."
+    }
+  ]
+}

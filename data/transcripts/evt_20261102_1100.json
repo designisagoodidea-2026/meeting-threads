@@ -1,0 +1,55 @@
+{
+  "eventId": "evt_20261102_1100",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Priya Nair"
+    },
+    {
+      "label": "S2",
+      "name": "Alex Kim"
+    },
+    {
+      "label": "S3",
+      "name": "Lena Okafor"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 65000,
+      "text": "Two things today: the new empty states, and the progress meter, which tested badly."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 390000,
+      "text": "Four of six first-time users read the meter as a loading bar."
+    },
+    {
+      "id": 2,
+      "speaker": "S2",
+      "startMs": 465000,
+      "text": "I can't commit to a launch date until we know the meter works."
+    },
+    {
+      "id": 3,
+      "speaker": "S1",
+      "startMs": 500000,
+      "text": "I'll rework it and retest with five new users before product review."
+    },
+    {
+      "id": 4,
+      "speaker": "S3",
+      "startMs": 730000,
+      "text": "Also, that stepper isn't in the system. We have three steppers in production now."
+    },
+    {
+      "id": 5,
+      "speaker": "S3",
+      "startMs": 780000,
+      "text": "Let me audit the variants before anyone builds a fourth."
+    }
+  ]
+}

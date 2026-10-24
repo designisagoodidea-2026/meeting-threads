@@ -1,0 +1,29 @@
+{
+  "eventId": "evt_20261105_1300",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Maya Johnson"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 140000,
+      "text": "Our loop has no one from research on it right now."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 304000,
+      "text": "Two strong candidates dropped out after the take-home."
+    },
+    {
+      "id": 2,
+      "speaker": "S1",
+      "startMs": 390000,
+      "text": "I'll take that: propose replacing the take-home with a live review."
+    }
+  ]
+}

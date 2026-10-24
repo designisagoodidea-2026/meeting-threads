@@ -1,0 +1,37 @@
+{
+  "eventId": "evt_20261109_1300",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Maya Johnson"
+    },
+    {
+      "label": "S2",
+      "name": "Aisha Mohammed"
+    },
+    {
+      "label": "S3",
+      "name": "Jordan Lee"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 120000,
+      "text": "Here's the list of design asks. The tokens work is at the top."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 320000,
+      "text": "My estimate for the mobile token migration is six weeks with two engineers."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 585000,
+      "text": "I'll draft the platform roadmap with tokens as a named line item."
+    }
+  ]
+}

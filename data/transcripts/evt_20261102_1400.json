@@ -1,0 +1,55 @@
+{
+  "eventId": "evt_20261102_1400",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Jordan Lee"
+    },
+    {
+      "label": "S3",
+      "name": "Aisha Mohammed"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 166000,
+      "text": "We have three steppers in production and none of them match."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 284000,
+      "text": "Half the color tokens in mobile are hard-coded hex values."
+    },
+    {
+      "id": 2,
+      "speaker": "S2",
+      "startMs": 335000,
+      "text": "I'll take that: estimate the token migration for mobile."
+    },
+    {
+      "id": 3,
+      "speaker": "S3",
+      "startMs": 398000,
+      "text": "Design needs a say before the H1 roadmap locks, not after."
+    },
+    {
+      "id": 4,
+      "speaker": "S3",
+      "startMs": 473000,
+      "text": "Platform work keeps losing to feature work in planning."
+    },
+    {
+      "id": 5,
+      "speaker": "S2",
+      "startMs": 505000,
+      "text": "I'll take that: send one list of design asks for H1."
+    }
+  ]
+}

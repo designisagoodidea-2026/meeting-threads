@@ -1,0 +1,23 @@
+{
+  "eventId": "evt_20261113_1100",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Hannah Berg"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 122000,
+      "text": "PMs keep asking for the same insights we already have."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 190000,
+      "text": "Participant recruiting takes two weeks every time."
+    }
+  ]
+}

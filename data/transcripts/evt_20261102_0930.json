@@ -1,0 +1,59 @@
+{
+  "eventId": "evt_20261102_0930",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Hannah Berg"
+    },
+    {
+      "label": "S3",
+      "name": "Dev Patel"
+    },
+    {
+      "label": "S4",
+      "name": "Marcus Chen"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 40000,
+      "text": "Quick round of wins, then I want ten minutes on how we find past research."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 250000,
+      "text": "Honestly the repository is a mess. I spent an hour looking for the onboarding interviews from August."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 302000,
+      "text": "We tag studies three different ways depending on who ran them."
+    },
+    {
+      "id": 3,
+      "speaker": "S2",
+      "startMs": 340000,
+      "text": "I can draft a tagging taxonomy this week if people will actually use it."
+    },
+    {
+      "id": 4,
+      "speaker": "S4",
+      "startMs": 555000,
+      "text": "Separate thing, but crits keep running over. Last week I got five minutes."
+    },
+    {
+      "id": 5,
+      "speaker": "S1",
+      "startMs": 602000,
+      "text": "That's on me. I'll bring a time-boxed format to try next week."
+    }
+  ]
+}

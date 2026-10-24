@@ -1,0 +1,39 @@
+{
+  "eventId": "evt_20261103_1000",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Maya Johnson"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 150000,
+      "text": "We have approval for two senior roles, maybe a third in Q2."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 210000,
+      "text": "The portfolio review is taking too long for candidates."
+    },
+    {
+      "id": 2,
+      "speaker": "S1",
+      "startMs": 328000,
+      "text": "The tokens work only makes sense if it is on the roadmap."
+    },
+    {
+      "id": 3,
+      "speaker": "S1",
+      "startMs": 514000,
+      "text": "Design needs a say before the H1 roadmap locks, not after."
+    }
+  ]
+}

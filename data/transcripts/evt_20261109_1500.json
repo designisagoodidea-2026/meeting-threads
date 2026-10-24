@@ -1,0 +1,23 @@
+{
+  "eventId": "evt_20261109_1500",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Rachel Stone"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 178000,
+      "text": "Platform work keeps losing to feature work in planning."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 297000,
+      "text": "We should size design effort the same way engineering does."
+    }
+  ]
+}

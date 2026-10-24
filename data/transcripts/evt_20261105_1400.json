@@ -1,0 +1,33 @@
+{
+  "eventId": "evt_20261105_1400",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Marcus Chen"
+    },
+    {
+      "label": "S2",
+      "name": "Tomás Ruiz"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 146000,
+      "text": "Half the color tokens in mobile are hard-coded hex values."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 247000,
+      "text": "If platform owns tokens, design systems can focus on components."
+    },
+    {
+      "id": 2,
+      "speaker": "S1",
+      "startMs": 302000,
+      "text": "I'll take that: draft modal usage guidelines."
+    }
+  ]
+}

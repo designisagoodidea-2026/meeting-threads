@@ -1,0 +1,39 @@
+{
+  "eventId": "evt_20261110_1000",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Maya Johnson"
+    },
+    {
+      "label": "S2",
+      "name": "Sam Rivera"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 230000,
+      "text": "We should calibrate on what senior means before the next loop."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 362000,
+      "text": "We have approval for two senior roles, maybe a third in Q2."
+    },
+    {
+      "id": 2,
+      "speaker": "S2",
+      "startMs": 577000,
+      "text": "Rachel wants one list of design asks by next week."
+    },
+    {
+      "id": 3,
+      "speaker": "S2",
+      "startMs": 632000,
+      "text": "The tokens work only makes sense if it is on the roadmap."
+    }
+  ]
+}

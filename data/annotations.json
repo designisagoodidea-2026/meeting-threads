@@ -1,0 +1,1115 @@
+{
+  "window": {
+    "start": "2026-11-02",
+    "end": "2026-11-13"
+  },
+  "people": [
+    {
+      "id": "sam@northwind.example",
+      "name": "Sam Rivera",
+      "role": "Design Operations Lead",
+      "discipline": "design-leadership"
+    },
+    {
+      "id": "priya@northwind.example",
+      "name": "Priya Nair",
+      "role": "Senior Product Designer, Onboarding",
+      "discipline": "design"
+    },
+    {
+      "id": "marcus@northwind.example",
+      "name": "Marcus Chen",
+      "role": "Product Designer, Growth",
+      "discipline": "design"
+    },
+    {
+      "id": "lena@northwind.example",
+      "name": "Lena Okafor",
+      "role": "Staff Designer, Design Systems",
+      "discipline": "design"
+    },
+    {
+      "id": "tomas@northwind.example",
+      "name": "Tomás Ruiz",
+      "role": "Product Designer, Mobile",
+      "discipline": "design"
+    },
+    {
+      "id": "hannah@northwind.example",
+      "name": "Hannah Berg",
+      "role": "UX Researcher",
+      "discipline": "research"
+    },
+    {
+      "id": "dev@northwind.example",
+      "name": "Dev Patel",
+      "role": "Senior UX Researcher",
+      "discipline": "research"
+    },
+    {
+      "id": "alex@northwind.example",
+      "name": "Alex Kim",
+      "role": "Product Manager, Onboarding",
+      "discipline": "product"
+    },
+    {
+      "id": "rachel@northwind.example",
+      "name": "Rachel Stone",
+      "role": "Group Product Manager",
+      "discipline": "product"
+    },
+    {
+      "id": "jordan@northwind.example",
+      "name": "Jordan Lee",
+      "role": "Product Manager, Platform",
+      "discipline": "product"
+    },
+    {
+      "id": "chris@northwind.example",
+      "name": "Chris Walsh",
+      "role": "Engineering Manager, Web",
+      "discipline": "eng-management"
+    },
+    {
+      "id": "aisha@northwind.example",
+      "name": "Aisha Mohammed",
+      "role": "Engineering Manager, Platform",
+      "discipline": "eng-management"
+    },
+    {
+      "id": "ben@northwind.example",
+      "name": "Ben Foster",
+      "role": "Engineering Manager, Mobile",
+      "discipline": "eng-management"
+    },
+    {
+      "id": "maya@northwind.example",
+      "name": "Maya Johnson",
+      "role": "Director of Design",
+      "discipline": "design-leadership"
+    },
+    {
+      "id": "victor@northwind.example",
+      "name": "Victor Alvarez",
+      "role": "VP of Design",
+      "discipline": "design-leadership"
+    },
+    {
+      "id": "nina@northwind.example",
+      "name": "Nina Brooks",
+      "role": "Design Recruiter",
+      "discipline": "recruiting"
+    },
+    {
+      "id": "jamie.cole@mail.example",
+      "name": "Jamie Cole",
+      "role": "Candidate, Senior Product Designer",
+      "discipline": "external"
+    },
+    {
+      "id": "owen@studionorth.example",
+      "name": "Owen Price",
+      "role": "Partner, Studio North",
+      "discipline": "external"
+    }
+  ],
+  "speakerMap": {
+    "evt_20261102_0930": {
+      "S1": "sam@northwind.example",
+      "S2": "hannah@northwind.example",
+      "S3": "dev@northwind.example",
+      "S4": "marcus@northwind.example"
+    },
+    "evt_20261102_1100": {
+      "S1": "priya@northwind.example",
+      "S2": "alex@northwind.example",
+      "S3": "lena@northwind.example"
+    },
+    "evt_20261102_1400": {
+      "S1": "sam@northwind.example",
+      "S2": "jordan@northwind.example",
+      "S3": "aisha@northwind.example"
+    },
+    "evt_20261102_1500": {
+      "S1": "sam@northwind.example",
+      "S2": "rachel@northwind.example"
+    },
+    "evt_20261103_1000": {
+      "S1": "sam@northwind.example",
+      "S2": "maya@northwind.example"
+    },
+    "evt_20261103_1400": {
+      "S1": "alex@northwind.example",
+      "S2": "hannah@northwind.example"
+    },
+    "evt_20261103_1500": {
+      "S1": "chris@northwind.example",
+      "S2": "lena@northwind.example",
+      "S3": "aisha@northwind.example",
+      "S4": "ben@northwind.example"
+    },
+    "evt_20261104_1000": {
+      "S1": "rachel@northwind.example",
+      "S2": "maya@northwind.example",
+      "S3": "victor@northwind.example"
+    },
+    "evt_20261104_1130": {
+      "S1": "hannah@northwind.example",
+      "S2": "sam@northwind.example",
+      "S3": "dev@northwind.example"
+    },
+    "evt_20261104_1300": {
+      "S1": "sam@northwind.example",
+      "S2": "lena@northwind.example"
+    },
+    "evt_20261104_1500": {
+      "S1": "sam@northwind.example",
+      "S2": "chris@northwind.example"
+    },
+    "evt_20261105_1000": {
+      "S1": "priya@northwind.example",
+      "S2": "sam@northwind.example"
+    },
+    "evt_20261105_1300": {
+      "S1": "maya@northwind.example"
+    },
+    "evt_20261105_1400": {
+      "S1": "marcus@northwind.example",
+      "S2": "tomas@northwind.example"
+    },
+    "evt_20261106_1000": {
+      "S1": "sam@northwind.example",
+      "S2": "owen@studionorth.example",
+      "S3": "dev@northwind.example"
+    },
+    "evt_20261106_1100": {
+      "S1": "sam@northwind.example"
+    },
+    "evt_20261106_1400": {
+      "S1": "victor@northwind.example",
+      "S2": "sam@northwind.example",
+      "S3": "maya@northwind.example"
+    },
+    "evt_20261109_0930": {
+      "S1": "marcus@northwind.example",
+      "S2": "hannah@northwind.example",
+      "S3": "lena@northwind.example",
+      "S4": "priya@northwind.example"
+    },
+    "evt_20261109_1100": {
+      "S1": "priya@northwind.example",
+      "S2": "alex@northwind.example",
+      "S3": "sam@northwind.example",
+      "S4": "marcus@northwind.example"
+    },
+    "evt_20261109_1300": {
+      "S1": "maya@northwind.example",
+      "S2": "aisha@northwind.example",
+      "S3": "jordan@northwind.example"
+    },
+    "evt_20261109_1500": {
+      "S1": "rachel@northwind.example"
+    },
+    "evt_20261109_1600": {
+      "S1": "victor@northwind.example",
+      "S2": "sam@northwind.example",
+      "S4": "hannah@northwind.example"
+    },
+    "evt_20261110_1000": {
+      "S1": "maya@northwind.example",
+      "S2": "sam@northwind.example"
+    },
+    "evt_20261110_1130": {
+      "S1": "sam@northwind.example",
+      "S2": "tomas@northwind.example"
+    },
+    "evt_20261110_1400": {
+      "S1": "sam@northwind.example",
+      "S2": "alex@northwind.example"
+    },
+    "evt_20261110_1500": {
+      "S1": "aisha@northwind.example",
+      "S2": "chris@northwind.example",
+      "S3": "ben@northwind.example",
+      "S4": "sam@northwind.example"
+    },
+    "evt_20261111_1000": {
+      "S1": "maya@northwind.example",
+      "S2": "jordan@northwind.example",
+      "S3": "alex@northwind.example",
+      "S4": "sam@northwind.example"
+    },
+    "evt_20261111_1130": {
+      "S1": "sam@northwind.example",
+      "S2": "hannah@northwind.example",
+      "S3": "dev@northwind.example"
+    },
+    "evt_20261111_1300": {
+      "S1": "lena@northwind.example",
+      "S2": "sam@northwind.example"
+    },
+    "evt_20261111_1400": {
+      "S1": "sam@northwind.example",
+      "S2": "owen@studionorth.example"
+    },
+    "evt_20261111_1600": {
+      "S1": "alex@northwind.example",
+      "S2": "marcus@northwind.example",
+      "S3": "sam@northwind.example",
+      "S4": "maya@northwind.example"
+    },
+    "evt_20261112_1000": {
+      "S1": "sam@northwind.example"
+    },
+    "evt_20261112_1400": {
+      "S1": "priya@northwind.example",
+      "S2": "alex@northwind.example",
+      "S3": "marcus@northwind.example"
+    },
+    "evt_20261112_1530": {
+      "S1": "sam@northwind.example",
+      "S2": "tomas@northwind.example",
+      "S3": "priya@northwind.example"
+    },
+    "evt_20261112_1600": {
+      "S1": "maya@northwind.example",
+      "S2": "sam@northwind.example"
+    },
+    "evt_20261113_1100": {
+      "S1": "hannah@northwind.example"
+    },
+    "evt_20261113_1400": {
+      "S1": "maya@northwind.example",
+      "S2": "sam@northwind.example",
+      "S3": "victor@northwind.example"
+    }
+  },
+  "meetings": {
+    "evt_20261102_0930": {
+      "type": "team-sync",
+      "themeIds": [
+        "research-ops",
+        "crit-ritual"
+      ]
+    },
+    "evt_20261102_1100": {
+      "type": "design-crit",
+      "themeIds": [
+        "onboarding",
+        "ds-debt"
+      ]
+    },
+    "evt_20261102_1400": {
+      "type": "team-sync",
+      "themeIds": [
+        "ds-debt",
+        "roadmap"
+      ]
+    },
+    "evt_20261102_1500": {
+      "type": "one-on-one",
+      "themeIds": [
+        "roadmap"
+      ]
+    },
+    "evt_20261103_1000": {
+      "type": "one-on-one",
+      "themeIds": [
+        "hiring",
+        "roadmap"
+      ]
+    },
+    "evt_20261103_1130": {
+      "type": "one-on-one",
+      "themeIds": [
+        "crit-ritual"
+      ]
+    },
+    "evt_20261103_1300": {
+      "type": "interview",
+      "themeIds": [
+        "hiring"
+      ]
+    },
+    "evt_20261103_1400": {
+      "type": "team-sync",
+      "themeIds": [
+        "onboarding",
+        "research-ops"
+      ]
+    },
+    "evt_20261103_1500": {
+      "type": "team-sync",
+      "themeIds": [
+        "ds-debt",
+        "roadmap"
+      ]
+    },
+    "evt_20261104_1000": {
+      "type": "stakeholder-review",
+      "themeIds": [
+        "onboarding",
+        "roadmap"
+      ]
+    },
+    "evt_20261104_1130": {
+      "type": "team-sync",
+      "themeIds": [
+        "research-ops"
+      ]
+    },
+    "evt_20261104_1300": {
+      "type": "one-on-one",
+      "themeIds": [
+        "ds-debt"
+      ]
+    },
+    "evt_20261104_1500": {
+      "type": "one-on-one",
+      "themeIds": [
+        "ds-debt"
+      ]
+    },
+    "evt_20261105_1000": {
+      "type": "one-on-one",
+      "themeIds": [
+        "onboarding"
+      ]
+    },
+    "evt_20261105_1100": {
+      "type": "one-on-one",
+      "themeIds": [
+        "research-ops"
+      ]
+    },
+    "evt_20261105_1300": {
+      "type": "team-sync",
+      "themeIds": [
+        "hiring"
+      ]
+    },
+    "evt_20261105_1400": {
+      "type": "design-crit",
+      "themeIds": [
+        "ds-debt"
+      ]
+    },
+    "evt_20261106_0930": {
+      "type": "team-sync",
+      "themeIds": [
+        "crit-ritual"
+      ]
+    },
+    "evt_20261106_1000": {
+      "type": "external",
+      "themeIds": [
+        "research-ops"
+      ]
+    },
+    "evt_20261106_1100": {
+      "type": "one-on-one",
+      "themeIds": [
+        "research-ops"
+      ]
+    },
+    "evt_20261106_1400": {
+      "type": "team-sync",
+      "themeIds": [
+        "hiring",
+        "crit-ritual"
+      ]
+    },
+    "evt_20261106_1530": {
+      "type": "one-on-one",
+      "themeIds": [
+        "hiring"
+      ]
+    },
+    "evt_20261109_0930": {
+      "type": "team-sync",
+      "themeIds": [
+        "crit-ritual",
+        "research-ops"
+      ]
+    },
+    "evt_20261109_1100": {
+      "type": "design-crit",
+      "themeIds": [
+        "ds-debt",
+        "crit-ritual"
+      ]
+    },
+    "evt_20261109_1300": {
+      "type": "stakeholder-review",
+      "themeIds": [
+        "roadmap",
+        "ds-debt"
+      ]
+    },
+    "evt_20261109_1500": {
+      "type": "one-on-one",
+      "themeIds": [
+        "roadmap"
+      ]
+    },
+    "evt_20261109_1600": {
+      "type": "team-sync",
+      "themeIds": [
+        "hiring",
+        "crit-ritual"
+      ]
+    },
+    "evt_20261110_1000": {
+      "type": "one-on-one",
+      "themeIds": [
+        "hiring",
+        "roadmap"
+      ]
+    },
+    "evt_20261110_1130": {
+      "type": "one-on-one",
+      "themeIds": [
+        "crit-ritual",
+        "ds-debt"
+      ]
+    },
+    "evt_20261110_1400": {
+      "type": "team-sync",
+      "themeIds": [
+        "onboarding"
+      ]
+    },
+    "evt_20261110_1500": {
+      "type": "team-sync",
+      "themeIds": [
+        "ds-debt",
+        "roadmap"
+      ]
+    },
+    "evt_20261111_1000": {
+      "type": "stakeholder-review",
+      "themeIds": [
+        "onboarding",
+        "roadmap"
+      ]
+    },
+    "evt_20261111_1130": {
+      "type": "team-sync",
+      "themeIds": [
+        "research-ops"
+      ]
+    },
+    "evt_20261111_1300": {
+      "type": "one-on-one",
+      "themeIds": [
+        "ds-debt"
+      ]
+    },
+    "evt_20261111_1400": {
+      "type": "external",
+      "themeIds": [
+        "a11y"
+      ]
+    },
+    "evt_20261111_1500": {
+      "type": "one-on-one",
+      "themeIds": [
+        "ds-debt"
+      ]
+    },
+    "evt_20261111_1600": {
+      "type": "stakeholder-review",
+      "themeIds": [
+        "onboarding",
+        "research-ops"
+      ]
+    },
+    "evt_20261112_1000": {
+      "type": "one-on-one",
+      "themeIds": [
+        "onboarding"
+      ]
+    },
+    "evt_20261112_1100": {
+      "type": "one-on-one",
+      "themeIds": [
+        "research-ops"
+      ]
+    },
+    "evt_20261112_1400": {
+      "type": "design-crit",
+      "themeIds": [
+        "onboarding",
+        "crit-ritual"
+      ]
+    },
+    "evt_20261112_1530": {
+      "type": "team-sync",
+      "themeIds": [
+        "crit-ritual"
+      ]
+    },
+    "evt_20261112_1600": {
+      "type": "interview",
+      "themeIds": [
+        "hiring"
+      ]
+    },
+    "evt_20261113_0930": {
+      "type": "team-sync",
+      "themeIds": [
+        "crit-ritual"
+      ]
+    },
+    "evt_20261113_1100": {
+      "type": "one-on-one",
+      "themeIds": [
+        "research-ops"
+      ]
+    },
+    "evt_20261113_1400": {
+      "type": "team-sync",
+      "themeIds": [
+        "hiring",
+        "roadmap"
+      ]
+    },
+    "evt_20261113_1530": {
+      "type": "one-on-one",
+      "themeIds": [
+        "hiring"
+      ]
+    }
+  },
+  "themes": [
+    {
+      "id": "onboarding",
+      "name": "Activation",
+      "color": "teal",
+      "mentions": [
+        "evt_20261102_1100#0",
+        "evt_20261102_1100#1",
+        "evt_20261102_1100#2",
+        "evt_20261102_1100#3",
+        "evt_20261103_1400#0",
+        "evt_20261103_1400#2",
+        "evt_20261104_1000#0",
+        "evt_20261104_1000#1",
+        "evt_20261105_1000#0",
+        "evt_20261105_1000#1",
+        "evt_20261105_1000#2",
+        "evt_20261110_1400#0",
+        "evt_20261110_1400#1",
+        "evt_20261111_1000#0",
+        "evt_20261111_1000#1",
+        "evt_20261111_1600#0",
+        "evt_20261111_1600#1",
+        "evt_20261112_1000#0",
+        "evt_20261112_1000#1",
+        "evt_20261112_1400#0",
+        "evt_20261112_1400#1"
+      ]
+    },
+    {
+      "id": "ds-debt",
+      "name": "Component consistency",
+      "color": "violet",
+      "mentions": [
+        "evt_20261102_1100#4",
+        "evt_20261102_1100#5",
+        "evt_20261102_1400#0",
+        "evt_20261102_1400#1",
+        "evt_20261102_1400#2",
+        "evt_20261103_1500#0",
+        "evt_20261103_1500#1",
+        "evt_20261103_1500#2",
+        "evt_20261104_1300#0",
+        "evt_20261104_1300#1",
+        "evt_20261104_1300#2",
+        "evt_20261104_1500#0",
+        "evt_20261104_1500#1",
+        "evt_20261104_1500#2",
+        "evt_20261105_1400#0",
+        "evt_20261105_1400#1",
+        "evt_20261105_1400#2",
+        "evt_20261109_1100#0",
+        "evt_20261109_1100#1",
+        "evt_20261109_1100#2",
+        "evt_20261109_1300#0",
+        "evt_20261109_1300#1",
+        "evt_20261110_1130#3",
+        "evt_20261110_1130#4",
+        "evt_20261110_1130#5",
+        "evt_20261110_1500#0",
+        "evt_20261110_1500#1",
+        "evt_20261111_1300#0",
+        "evt_20261111_1300#1"
+      ]
+    },
+    {
+      "id": "research-ops",
+      "name": "Evidence base",
+      "color": "amber",
+      "mentions": [
+        "evt_20261102_0930#1",
+        "evt_20261102_0930#2",
+        "evt_20261102_0930#3",
+        "evt_20261103_1400#1",
+        "evt_20261104_1130#0",
+        "evt_20261104_1130#1",
+        "evt_20261104_1130#2",
+        "evt_20261106_1000#0",
+        "evt_20261106_1000#1",
+        "evt_20261106_1000#2",
+        "evt_20261106_1100#0",
+        "evt_20261106_1100#1",
+        "evt_20261109_0930#3",
+        "evt_20261109_0930#4",
+        "evt_20261109_0930#5",
+        "evt_20261111_1130#0",
+        "evt_20261111_1130#1",
+        "evt_20261111_1130#2",
+        "evt_20261111_1600#2",
+        "evt_20261111_1600#3",
+        "evt_20261113_1100#0",
+        "evt_20261113_1100#1"
+      ]
+    },
+    {
+      "id": "hiring",
+      "name": "Staffing",
+      "color": "rose",
+      "mentions": [
+        "evt_20261103_1000#0",
+        "evt_20261103_1000#1",
+        "evt_20261105_1300#0",
+        "evt_20261105_1300#1",
+        "evt_20261105_1300#2",
+        "evt_20261106_1400#0",
+        "evt_20261106_1400#1",
+        "evt_20261109_1600#0",
+        "evt_20261110_1000#0",
+        "evt_20261110_1000#1",
+        "evt_20261112_1600#0",
+        "evt_20261112_1600#1",
+        "evt_20261112_1600#2",
+        "evt_20261113_1400#0",
+        "evt_20261113_1400#1"
+      ]
+    },
+    {
+      "id": "crit-ritual",
+      "name": "Ways of working",
+      "color": "sky",
+      "mentions": [
+        "evt_20261102_0930#4",
+        "evt_20261102_0930#5",
+        "evt_20261106_1400#2",
+        "evt_20261109_0930#0",
+        "evt_20261109_0930#1",
+        "evt_20261109_0930#2",
+        "evt_20261109_1100#3",
+        "evt_20261109_1100#4",
+        "evt_20261109_1100#5",
+        "evt_20261109_1600#1",
+        "evt_20261109_1600#2",
+        "evt_20261109_1600#3",
+        "evt_20261110_1130#0",
+        "evt_20261110_1130#1",
+        "evt_20261110_1130#2",
+        "evt_20261112_1400#2",
+        "evt_20261112_1530#0",
+        "evt_20261112_1530#1",
+        "evt_20261112_1530#2"
+      ]
+    },
+    {
+      "id": "roadmap",
+      "name": "Prioritization",
+      "color": "lime",
+      "mentions": [
+        "evt_20261102_1400#3",
+        "evt_20261102_1400#4",
+        "evt_20261102_1400#5",
+        "evt_20261102_1500#0",
+        "evt_20261102_1500#1",
+        "evt_20261103_1000#2",
+        "evt_20261103_1000#3",
+        "evt_20261103_1500#3",
+        "evt_20261104_1000#2",
+        "evt_20261104_1000#3",
+        "evt_20261109_1300#0",
+        "evt_20261109_1300#2",
+        "evt_20261109_1500#0",
+        "evt_20261109_1500#1",
+        "evt_20261110_1000#2",
+        "evt_20261110_1000#3",
+        "evt_20261110_1500#2",
+        "evt_20261110_1500#3",
+        "evt_20261110_1500#4",
+        "evt_20261111_1000#2",
+        "evt_20261111_1000#3",
+        "evt_20261111_1000#4",
+        "evt_20261113_1400#2",
+        "evt_20261113_1400#3"
+      ]
+    },
+    {
+      "id": "a11y",
+      "name": "Accessibility",
+      "color": "slate",
+      "mentions": [
+        "evt_20261111_1400#0",
+        "evt_20261111_1400#1"
+      ]
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai_01",
+      "text": "Draft a tagging taxonomy for the research repository",
+      "ownerId": "hannah@northwind.example",
+      "meetingId": "evt_20261102_0930",
+      "sourceTurnId": "evt_20261102_0930#3",
+      "themeId": "research-ops",
+      "topicKey": "repo-taxonomy",
+      "status": "open"
+    },
+    {
+      "id": "ai_02",
+      "text": "Propose a new crit format with time boxes",
+      "ownerId": "sam@northwind.example",
+      "meetingId": "evt_20261102_0930",
+      "sourceTurnId": "evt_20261102_0930#5",
+      "themeId": "crit-ritual",
+      "topicKey": "crit-format",
+      "status": "open"
+    },
+    {
+      "id": "ai_03",
+      "text": "Retest the progress meter with five first-time users",
+      "ownerId": "priya@northwind.example",
+      "meetingId": "evt_20261102_1100",
+      "sourceTurnId": "evt_20261102_1100#3",
+      "themeId": "onboarding",
+      "topicKey": "retest-progress-meter",
+      "status": "open"
+    },
+    {
+      "id": "ai_04",
+      "text": "Audit stepper variants across web and mobile",
+      "ownerId": "lena@northwind.example",
+      "meetingId": "evt_20261102_1100",
+      "sourceTurnId": "evt_20261102_1100#5",
+      "themeId": "ds-debt",
+      "topicKey": "stepper-audit",
+      "status": "open"
+    },
+    {
+      "id": "ai_05",
+      "text": "Estimate the token migration for mobile",
+      "ownerId": "jordan@northwind.example",
+      "meetingId": "evt_20261102_1400",
+      "sourceTurnId": "evt_20261102_1400#2",
+      "themeId": "ds-debt",
+      "topicKey": "token-migration-estimate",
+      "status": "open"
+    },
+    {
+      "id": "ai_06",
+      "text": "Send one list of design asks for H1",
+      "ownerId": "jordan@northwind.example",
+      "meetingId": "evt_20261102_1400",
+      "sourceTurnId": "evt_20261102_1400#5",
+      "themeId": "roadmap",
+      "topicKey": "h1-design-asks",
+      "status": "open"
+    },
+    {
+      "id": "ai_07",
+      "text": "Line up five first-time users for the progress meter retest",
+      "ownerId": "hannah@northwind.example",
+      "meetingId": "evt_20261103_1400",
+      "sourceTurnId": "evt_20261103_1400#2",
+      "themeId": "onboarding",
+      "topicKey": "retest-progress-meter",
+      "status": "open"
+    },
+    {
+      "id": "ai_08",
+      "text": "Estimate the token migration for mobile",
+      "ownerId": "aisha@northwind.example",
+      "meetingId": "evt_20261103_1500",
+      "sourceTurnId": "evt_20261103_1500#2",
+      "themeId": "ds-debt",
+      "topicKey": "token-migration-estimate",
+      "status": "open"
+    },
+    {
+      "id": "ai_09",
+      "text": "Send one list of design asks for H1",
+      "ownerId": "maya@northwind.example",
+      "meetingId": "evt_20261104_1000",
+      "sourceTurnId": "evt_20261104_1000#3",
+      "themeId": "roadmap",
+      "topicKey": "h1-design-asks",
+      "status": "open"
+    },
+    {
+      "id": "ai_10",
+      "text": "Price out a standing participant panel",
+      "ownerId": "dev@northwind.example",
+      "meetingId": "evt_20261104_1130",
+      "sourceTurnId": "evt_20261104_1130#2",
+      "themeId": "research-ops",
+      "topicKey": "recruiting-panel",
+      "status": "open"
+    },
+    {
+      "id": "ai_11",
+      "text": "Draft modal usage guidelines",
+      "ownerId": "lena@northwind.example",
+      "meetingId": "evt_20261104_1300",
+      "sourceTurnId": "evt_20261104_1300#2",
+      "themeId": "ds-debt",
+      "topicKey": "modal-guidelines",
+      "status": "open"
+    },
+    {
+      "id": "ai_12",
+      "text": "Draft modal usage guidelines",
+      "ownerId": "chris@northwind.example",
+      "meetingId": "evt_20261104_1500",
+      "sourceTurnId": "evt_20261104_1500#2",
+      "themeId": "ds-debt",
+      "topicKey": "modal-guidelines",
+      "status": "open"
+    },
+    {
+      "id": "ai_13",
+      "text": "Do one copy pass across the welcome email and the in-app tour",
+      "ownerId": "priya@northwind.example",
+      "meetingId": "evt_20261105_1000",
+      "sourceTurnId": "evt_20261105_1000#2",
+      "themeId": "onboarding",
+      "topicKey": "onboarding-copy-pass",
+      "status": "open"
+    },
+    {
+      "id": "ai_14",
+      "text": "Propose replacing the take-home with a live review",
+      "ownerId": "maya@northwind.example",
+      "meetingId": "evt_20261105_1300",
+      "sourceTurnId": "evt_20261105_1300#2",
+      "themeId": "hiring",
+      "topicKey": "drop-take-home",
+      "status": "open"
+    },
+    {
+      "id": "ai_15",
+      "text": "Draft modal usage guidelines",
+      "ownerId": "marcus@northwind.example",
+      "meetingId": "evt_20261105_1400",
+      "sourceTurnId": "evt_20261105_1400#2",
+      "themeId": "ds-debt",
+      "topicKey": "modal-guidelines",
+      "status": "open"
+    },
+    {
+      "id": "ai_16",
+      "text": "Start a monthly insight digest for PMs",
+      "ownerId": "dev@northwind.example",
+      "meetingId": "evt_20261106_1000",
+      "sourceTurnId": "evt_20261106_1000#2",
+      "themeId": "research-ops",
+      "topicKey": "insight-digest",
+      "status": "open"
+    },
+    {
+      "id": "ai_17",
+      "text": "Open the two senior design reqs with recruiting",
+      "ownerId": "sam@northwind.example",
+      "meetingId": "evt_20261106_1400",
+      "sourceTurnId": "evt_20261106_1400#1",
+      "themeId": "hiring",
+      "topicKey": "open-reqs",
+      "status": "open"
+    },
+    {
+      "id": "ai_18",
+      "text": "Set up a rotating crit facilitator schedule",
+      "ownerId": "lena@northwind.example",
+      "meetingId": "evt_20261109_0930",
+      "sourceTurnId": "evt_20261109_0930#2",
+      "themeId": "crit-ritual",
+      "topicKey": "crit-facilitator",
+      "status": "open"
+    },
+    {
+      "id": "ai_19",
+      "text": "Draft a tagging taxonomy for the research repository",
+      "ownerId": "hannah@northwind.example",
+      "meetingId": "evt_20261109_0930",
+      "sourceTurnId": "evt_20261109_0930#5",
+      "themeId": "research-ops",
+      "topicKey": "repo-taxonomy",
+      "status": "open"
+    },
+    {
+      "id": "ai_20",
+      "text": "Estimate the token migration for mobile",
+      "ownerId": "sam@northwind.example",
+      "meetingId": "evt_20261109_1100",
+      "sourceTurnId": "evt_20261109_1100#2",
+      "themeId": "ds-debt",
+      "topicKey": "token-migration-estimate",
+      "status": "open"
+    },
+    {
+      "id": "ai_21",
+      "text": "Set up a rotating crit facilitator schedule",
+      "ownerId": "marcus@northwind.example",
+      "meetingId": "evt_20261109_1100",
+      "sourceTurnId": "evt_20261109_1100#5",
+      "themeId": "crit-ritual",
+      "topicKey": "crit-facilitator",
+      "status": "open"
+    },
+    {
+      "id": "ai_22",
+      "text": "Draft the platform roadmap with tokens as a line item",
+      "ownerId": "jordan@northwind.example",
+      "meetingId": "evt_20261109_1300",
+      "sourceTurnId": "evt_20261109_1300#2",
+      "themeId": "roadmap",
+      "topicKey": "platform-roadmap-draft",
+      "status": "open"
+    },
+    {
+      "id": "ai_23",
+      "text": "Set up a rotating crit facilitator schedule",
+      "ownerId": "tomas@northwind.example",
+      "meetingId": "evt_20261110_1130",
+      "sourceTurnId": "evt_20261110_1130#2",
+      "themeId": "crit-ritual",
+      "topicKey": "crit-facilitator",
+      "status": "open"
+    },
+    {
+      "id": "ai_24",
+      "text": "Estimate the token migration for mobile",
+      "ownerId": "sam@northwind.example",
+      "meetingId": "evt_20261110_1130",
+      "sourceTurnId": "evt_20261110_1130#5",
+      "themeId": "ds-debt",
+      "topicKey": "token-migration-estimate",
+      "status": "open"
+    },
+    {
+      "id": "ai_25",
+      "text": "Send one list of design asks for H1",
+      "ownerId": "sam@northwind.example",
+      "meetingId": "evt_20261110_1500",
+      "sourceTurnId": "evt_20261110_1500#4",
+      "themeId": "roadmap",
+      "topicKey": "h1-design-asks",
+      "status": "open"
+    },
+    {
+      "id": "ai_26",
+      "text": "Send one list of design asks for H1",
+      "ownerId": "sam@northwind.example",
+      "meetingId": "evt_20261111_1000",
+      "sourceTurnId": "evt_20261111_1000#4",
+      "themeId": "roadmap",
+      "topicKey": "h1-design-asks",
+      "status": "open"
+    },
+    {
+      "id": "ai_27",
+      "text": "Price out a standing participant panel",
+      "ownerId": "dev@northwind.example",
+      "meetingId": "evt_20261111_1130",
+      "sourceTurnId": "evt_20261111_1130#2",
+      "themeId": "research-ops",
+      "topicKey": "recruiting-panel",
+      "status": "open"
+    },
+    {
+      "id": "ai_28",
+      "text": "Propose an Onboarding v3 launch date",
+      "ownerId": "alex@northwind.example",
+      "meetingId": "evt_20261112_1400",
+      "sourceTurnId": "evt_20261112_1400#1",
+      "themeId": "onboarding",
+      "topicKey": "onboarding-launch-date",
+      "status": "open"
+    },
+    {
+      "id": "ai_29",
+      "text": "Invite engineering leads back to Thursday crit",
+      "ownerId": "priya@northwind.example",
+      "meetingId": "evt_20261112_1530",
+      "sourceTurnId": "evt_20261112_1530#2",
+      "themeId": "crit-ritual",
+      "topicKey": "crit-eng-invite",
+      "status": "open"
+    },
+    {
+      "id": "ai_30",
+      "text": "Propose replacing the take-home with a live review",
+      "ownerId": "sam@northwind.example",
+      "meetingId": "evt_20261112_1600",
+      "sourceTurnId": "evt_20261112_1600#2",
+      "themeId": "hiring",
+      "topicKey": "drop-take-home",
+      "status": "open"
+    }
+  ],
+  "projects": [
+    {
+      "id": "onboarding-launch",
+      "name": "Onboarding v3 launch",
+      "themeIds": [
+        "onboarding",
+        "ds-debt",
+        "research-ops",
+        "a11y"
+      ]
+    },
+    {
+      "id": "design-system",
+      "name": "Design system 2.0",
+      "themeIds": [
+        "ds-debt",
+        "a11y",
+        "roadmap"
+      ]
+    },
+    {
+      "id": "h1-planning",
+      "name": "H1 planning",
+      "themeIds": [
+        "roadmap",
+        "hiring",
+        "onboarding"
+      ]
+    },
+    {
+      "id": "research-operations",
+      "name": "Research operations",
+      "themeIds": [
+        "research-ops",
+        "crit-ritual"
+      ]
+    },
+    {
+      "id": "team-growth",
+      "name": "Design team growth",
+      "themeIds": [
+        "hiring",
+        "crit-ritual"
+      ]
+    }
+  ]
+}

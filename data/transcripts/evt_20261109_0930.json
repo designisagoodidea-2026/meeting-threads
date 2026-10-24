@@ -1,0 +1,59 @@
+{
+  "eventId": "evt_20261109_0930",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Marcus Chen"
+    },
+    {
+      "label": "S2",
+      "name": "Hannah Berg"
+    },
+    {
+      "label": "S3",
+      "name": "Lena Okafor"
+    },
+    {
+      "label": "S4",
+      "name": "Priya Nair"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 73000,
+      "text": "Crits keep running over and the last presenter gets five minutes."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 249000,
+      "text": "People show finished work instead of open questions."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 340000,
+      "text": "I'll take that: set up a rotating crit facilitator schedule."
+    },
+    {
+      "id": 3,
+      "speaker": "S4",
+      "startMs": 479000,
+      "text": "We tag studies three different ways depending on who ran them."
+    },
+    {
+      "id": 4,
+      "speaker": "S1",
+      "startMs": 700000,
+      "text": "PMs keep asking for the same insights we already have."
+    },
+    {
+      "id": 5,
+      "speaker": "S2",
+      "startMs": 745000,
+      "text": "I'll take that: draft a tagging taxonomy for the research repository."
+    }
+  ]
+}

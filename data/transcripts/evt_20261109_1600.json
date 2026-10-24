@@ -1,0 +1,47 @@
+{
+  "eventId": "evt_20261109_1600",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Victor Alvarez"
+    },
+    {
+      "label": "S2",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S3",
+      "name": "Dial-in user"
+    },
+    {
+      "label": "S4",
+      "name": "Hannah Berg"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 90000,
+      "text": "We're hiring two senior designers. Please send referrals to Nina."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 480000,
+      "text": "Starting this week, crit has time boxes and a rotating facilitator."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 880000,
+      "text": "Sorry, joining by phone. Will the new crit format apply to research readouts too?"
+    },
+    {
+      "id": 3,
+      "speaker": "S4",
+      "startMs": 910000,
+      "text": "We'd like to try it at the next readout."
+    }
+  ]
+}

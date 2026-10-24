@@ -1,0 +1,37 @@
+{
+  "eventId": "evt_20261112_1400",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Priya Nair"
+    },
+    {
+      "label": "S2",
+      "name": "Alex Kim"
+    },
+    {
+      "label": "S3",
+      "name": "Marcus Chen"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 45000,
+      "text": "Retest results: five of five first-time users read the new meter correctly."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 150000,
+      "text": "Then I'm comfortable proposing a launch date at product review."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 2400000,
+      "text": "Also, first crit under the new format and we finished on time."
+    }
+  ]
+}

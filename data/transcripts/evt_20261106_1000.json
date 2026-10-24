@@ -1,0 +1,37 @@
+{
+  "eventId": "evt_20261106_1000",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Owen Price"
+    },
+    {
+      "label": "S3",
+      "name": "Dev Patel"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 254000,
+      "text": "PMs keep asking for the same insights we already have."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 302000,
+      "text": "Participant recruiting takes two weeks every time."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 393000,
+      "text": "I'll take that: start a monthly insight digest for PMs."
+    }
+  ]
+}

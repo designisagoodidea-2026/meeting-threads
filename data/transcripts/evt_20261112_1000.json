@@ -1,0 +1,23 @@
+{
+  "eventId": "evt_20261112_1000",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 78000,
+      "text": "Alex wants a launch date before the end of the month."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 164000,
+      "text": "The welcome email and the in-app tour say different things."
+    }
+  ]
+}

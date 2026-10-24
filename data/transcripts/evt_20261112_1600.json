@@ -1,0 +1,33 @@
+{
+  "eventId": "evt_20261112_1600",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Maya Johnson"
+    },
+    {
+      "label": "S2",
+      "name": "Sam Rivera"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 133000,
+      "text": "The portfolio review is taking too long for candidates."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 181000,
+      "text": "Our loop has no one from research on it right now."
+    },
+    {
+      "id": 2,
+      "speaker": "S2",
+      "startMs": 245000,
+      "text": "I'll take that: propose replacing the take-home with a live review."
+    }
+  ]
+}

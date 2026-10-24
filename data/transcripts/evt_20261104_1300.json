@@ -1,0 +1,33 @@
+{
+  "eventId": "evt_20261104_1300",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Lena Okafor"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 81000,
+      "text": "If platform owns tokens, design systems can focus on components."
+    },
+    {
+      "id": 1,
+      "speaker": "S1",
+      "startMs": 141000,
+      "text": "Every new feature adds another one-off modal."
+    },
+    {
+      "id": 2,
+      "speaker": "S2",
+      "startMs": 204000,
+      "text": "I'll take that: draft modal usage guidelines."
+    }
+  ]
+}

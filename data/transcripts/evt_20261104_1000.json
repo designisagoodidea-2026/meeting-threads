@@ -1,0 +1,43 @@
+{
+  "eventId": "evt_20261104_1000",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Rachel Stone"
+    },
+    {
+      "label": "S2",
+      "name": "Maya Johnson"
+    },
+    {
+      "label": "S3",
+      "name": "Victor Alvarez"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 50000,
+      "text": "Where are we on an onboarding launch date?"
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 100000,
+      "text": "It depends on the progress meter retest. Priya and Hannah are running it this week."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 860000,
+      "text": "For H1, design needs a say before the roadmap locks, not after."
+    },
+    {
+      "id": 3,
+      "speaker": "S2",
+      "startMs": 905000,
+      "text": "I'll send one list of design asks for H1 by next Monday."
+    }
+  ]
+}

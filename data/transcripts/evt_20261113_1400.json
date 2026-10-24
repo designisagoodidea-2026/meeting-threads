@@ -1,0 +1,43 @@
+{
+  "eventId": "evt_20261113_1400",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Maya Johnson"
+    },
+    {
+      "label": "S2",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S3",
+      "name": "Victor Alvarez"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 194000,
+      "text": "Two strong candidates dropped out after the take-home."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 397000,
+      "text": "We should calibrate on what senior means before the next loop."
+    },
+    {
+      "id": 2,
+      "speaker": "S3",
+      "startMs": 492000,
+      "text": "The tokens work only makes sense if it is on the roadmap."
+    },
+    {
+      "id": 3,
+      "speaker": "S3",
+      "startMs": 698000,
+      "text": "Design needs a say before the H1 roadmap locks, not after."
+    }
+  ]
+}

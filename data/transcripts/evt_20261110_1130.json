@@ -1,0 +1,51 @@
+{
+  "eventId": "evt_20261110_1130",
+  "speakers": [
+    {
+      "label": "S1",
+      "name": "Sam Rivera"
+    },
+    {
+      "label": "S2",
+      "name": "Tomás Ruiz"
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "S1",
+      "startMs": 107000,
+      "text": "A rotating facilitator might keep it on time."
+    },
+    {
+      "id": 1,
+      "speaker": "S2",
+      "startMs": 298000,
+      "text": "Crits keep running over and the last presenter gets five minutes."
+    },
+    {
+      "id": 2,
+      "speaker": "S2",
+      "startMs": 358000,
+      "text": "I'll take that: set up a rotating crit facilitator schedule."
+    },
+    {
+      "id": 3,
+      "speaker": "S1",
+      "startMs": 432000,
+      "text": "We have three steppers in production and none of them match."
+    },
+    {
+      "id": 4,
+      "speaker": "S1",
+      "startMs": 534000,
+      "text": "Half the color tokens in mobile are hard-coded hex values."
+    },
+    {
+      "id": 5,
+      "speaker": "S1",
+      "startMs": 637000,
+      "text": "I'll take that: estimate the token migration for mobile."
+    }
+  ]
+}
