@@ -22,6 +22,16 @@ export const MEETING_TYPES = [
 ] as const
 export type MeetingType = (typeof MEETING_TYPES)[number]
 
+// Default names; the lead can rename and reorder types in the demo panel (spec 006 FR-035).
+export const TYPE_LABELS: Record<MeetingType, string> = {
+  'one-on-one': '1:1',
+  'team-sync': 'Team sync',
+  'design-crit': 'Design crit',
+  'stakeholder-review': 'Stakeholder review',
+  interview: 'Interview',
+  external: 'External',
+}
+
 export type Person = {
   id: string // email
   name: string
@@ -98,6 +108,8 @@ export type Model = {
   themes: Theme[]
   projects: Project[]
   actionItems: ActionItem[]
+  typeLabels: Record<MeetingType, string>
+  typeOrder: MeetingType[]
   excludedPersonIds?: Set<string> // left out of suggestions (FR-037), set by applyPrivacy
 }
 

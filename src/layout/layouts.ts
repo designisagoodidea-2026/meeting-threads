@@ -1,5 +1,5 @@
 import { localDate, localMinutes } from '../data/load'
-import { MEETING_TYPES, type MeetingType, type Model } from '../data/types'
+import type { Model } from '../data/types'
 import { orderLanes } from './lanes'
 
 export type Pivot = 'project' | 'people' | 'type' | 'theme'
@@ -22,14 +22,6 @@ export type Frame = { items: Layout; rows: Row[]; width: number }
 export const DAY_START_MIN = 8 * 60 // the canvas shows 8:00 to 18:00 each day
 export const DAY_SPAN_MIN = 10 * 60
 
-export const TYPE_LABELS: Record<MeetingType, string> = {
-  'one-on-one': '1:1',
-  'team-sync': 'Team sync',
-  'design-crit': 'Design crit',
-  'stakeholder-review': 'Stakeholder review',
-  interview: 'Interview',
-  external: 'External',
-}
 
 export function computeLayout(model: Model, pivot: Pivot, vp: { dayWidth: number; height: number }): Frame {
   const { dayWidth, height } = vp
@@ -71,7 +63,7 @@ export function computeLayout(model: Model, pivot: Pivot, vp: { dayWidth: number
       }
     }
   } else if (pivot === 'type') {
-    rows = banded(MEETING_TYPES.map((t) => ({ key: t, label: TYPE_LABELS[t] })))
+    rows = banded(model.typeOrder.map((t) => ({ key: t, label: model.typeLabels[t] })))
     for (const m of model.meetings) {
       const box = inRow(rows.find((r) => r.key === m.type)!)
       items.set(m.id, { meetingId: m.id, ...xw(m.id), ...box, label: { row: m.type, y: 0, h: box.h } })

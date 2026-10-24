@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { applyCustom } from './data/custom'
 import { applyImport, buildWithImports, type Import } from './data/extract'
 import { DataError, buildModel, loadFiles } from './data/load'
 import { applyPrivacy } from './data/privacy'
@@ -18,6 +19,7 @@ import { Icon } from './ui/Icon'
 import { MeetingPage } from './ui/MeetingPage'
 import { PersonPage } from './ui/PersonPage'
 import { ThemePage } from './ui/ThemePage'
+import { DemoPanel } from './ui/DemoPanel'
 import { ImportPanel } from './ui/ImportPanel'
 import { PrivacyPanel } from './ui/PrivacyPanel'
 import { themeColor } from './ui/theme-colors'
@@ -30,6 +32,7 @@ export type ViewState = {
   queueOpen: boolean
   privacyOpen: boolean
   importOpen?: boolean
+  demoOpen?: boolean
   route: Route
 }
 
@@ -75,7 +78,7 @@ export default function App() {
   // The bundled files plus any pasted transcripts, rebuilt whenever an import changes in any way.
   // Keyed on the imports alone: rebuilding on every note or decision would redo every layout.
   const importsKey = JSON.stringify(store.state.imports ?? {})
-  const [loaded, importError] = useMemo((): [Model | null, string | null] => {
+  const [base, importError] = useMemo((): [Model | null, string | null] => {
     if (!files) return [null, null]
     try {
       const { model, skipped } = buildWithImports(files, store.state.imports ?? {})
@@ -85,6 +88,9 @@ export default function App() {
       return [null, null]
     }
   }, [files, importsKey]) // eslint-disable-line react-hooks/exhaustive-deps
+  // The lead's names and order on top (FR-035).
+  const customKey = JSON.stringify(store.state.custom ?? null)
+  const loaded = useMemo(() => (base ? applyCustom(base, store.state.custom) : null), [base, customKey]) // eslint-disable-line react-hooks/exhaustive-deps
   const decide = (fn: (d: Persisted['decisions']) => Persisted['decisions']) => save((s) => ({ ...s, decisions: fn({ ...s.decisions }) }))
 
   // Every view reads the model with privacy applied (contracts/ui-state.md).
@@ -128,6 +134,7 @@ export default function App() {
   }
   const endGuide = () => {
     setGuide(null)
+    setView((v) => ({ ...v, focus: null })) // don't leave the tour's example selected
     if (!store.state.guideDone) save((s) => ({ ...s, guideDone: true }))
   }
   // Validates before saving, so a bad import never lands. Returns why it was refused.
@@ -144,6 +151,14 @@ export default function App() {
     save((s) => ({ ...s, imports: { ...s.imports, [imp.transcript.eventId]: imp } }))
     return null
   }
+  const resetAll = () => {
+    store.reset()
+    bump()
+    decided.current = []
+    setChange(null)
+    setView({ pivot: 'project', focus: null, queueOpen: false, privacyOpen: false, route: { name: 'canvas' } })
+    setGuide(0)
+  }
   const removeImport = (id: string) => save((s) => { const imports = { ...s.imports }; delete imports[id]; return { ...s, imports } })
   const pendingCount = suggestions.filter((s) => s.status === 'pending' && s.targetMeetingId).length
 
@@ -157,6 +172,9 @@ export default function App() {
   const openPerson = useCallback((id: string) => open('person', id), [open])
   const openMeeting = useCallback((id: string) => open('meeting', id), [open])
   const openTheme = useCallback((id: string) => open('theme', id), [open])
+  // Closing the queue lets go of its item too, so the canvas isn't left dimmed for no visible reason.
+  const setQueueOpen = (open: boolean) =>
+    setView((v) => ({ ...v, queueOpen: open, focus: !open && v.focus?.kind === 'suggestion' ? null : v.focus }))
   const toCanvas = useCallback(() => setView((v) => ({ ...v, route: { name: 'canvas' } })), [])
   // From any card or page: back to the calendar with the suggestion in focus, and the queue open on it.
   const showInQueue = useCallback(
@@ -188,11 +206,12 @@ export default function App() {
           ))}
         </nav>
         <button className="tour-btn" onClick={() => guideStep(0)} aria-pressed={guide !== null}>Tour</button>
-        <button className="tour-btn import-btn" onClick={() => setView({ ...view, privacyOpen: false, importOpen: !view.importOpen })} aria-pressed={!!view.importOpen}>Import</button>
-        <button className="device-btn" aria-pressed={view.privacyOpen} onClick={() => setView({ ...view, importOpen: false, privacyOpen: !view.privacyOpen })}>
+        <button className="tour-btn import-btn" onClick={() => setView({ ...view, privacyOpen: false, importOpen: false, demoOpen: !view.demoOpen })} aria-pressed={!!view.demoOpen}>Demo</button>
+        <button className="tour-btn import-btn" onClick={() => setView({ ...view, privacyOpen: false, demoOpen: false, importOpen: !view.importOpen })} aria-pressed={!!view.importOpen}>Import</button>
+        <button className="device-btn" aria-pressed={view.privacyOpen} onClick={() => setView({ ...view, importOpen: false, demoOpen: false, privacyOpen: !view.privacyOpen })}>
           <DeviceIndicator saved={store.saved} />
         </button>
-        <button className="queue-btn" aria-pressed={view.queueOpen} onClick={() => setView({ ...view, queueOpen: !view.queueOpen })}>
+        <button className="queue-btn" aria-pressed={view.queueOpen} onClick={() => setQueueOpen(!view.queueOpen)}>
           Action queue {pendingCount > 0 && <span className="badge">{pendingCount}</span>}
         </button>
       </header>
@@ -255,7 +274,7 @@ export default function App() {
                 model={model}
                 suggestions={suggestions}
                 focusedId={view.focus?.kind === 'suggestion' ? view.focus.id : null}
-                onFocus={(id) => setFocus({ kind: 'suggestion', id })}
+                onFocus={(id) => setFocus(id ? { kind: 'suggestion', id } : null)}
                 onAccept={(id, text) => {
                   decide((d) => ({ ...d, [id]: { status: 'accepted', ...(text ? { text } : {}), at: new Date().toISOString() } }))
                   setChange({ id, status: 'accepted', key: Date.now() })
@@ -269,8 +288,8 @@ export default function App() {
                 }}
                 onReset={undo}
                 onUndoLast={undoLast}
-                keysActive={view.route.name === 'canvas' && !view.importOpen && !view.privacyOpen && guide === null}
-                onClose={() => setView({ ...view, queueOpen: false })}
+                keysActive={view.route.name === 'canvas' && !view.importOpen && !view.privacyOpen && !view.demoOpen && guide === null}
+                onClose={() => setQueueOpen(false)}
               />
             )}
           </AnimatePresence>
@@ -347,6 +366,18 @@ export default function App() {
               )}
             </AnimatePresence>
           </div>
+          <AnimatePresence>
+            {view.demoOpen && base && (
+              <DemoPanel
+                base={base}
+                model={loaded}
+                custom={store.state.custom}
+                onChange={(custom) => save((s) => ({ ...s, custom }))}
+                onReset={resetAll}
+                onClose={() => setView({ ...view, demoOpen: false })}
+              />
+            )}
+          </AnimatePresence>
           <AnimatePresence>
             {view.importOpen && (
               <ImportPanel

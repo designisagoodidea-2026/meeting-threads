@@ -14,6 +14,7 @@ Meeting Threads puts two weeks of meetings on one canvas and draws the topics th
 - **Pages for every meeting, theme and person.** Transcript, agenda, the threads through a meeting and where they go next; who carried a theme and what it produced; what you and a colleague said and what's still open.
 - **Import a real transcript.** Paste an Otter export or "Name: text" lines for one meeting, preview the speakers, themes and action items found, then add it. Plain rules run in the browser, learned from the meetings already there; they catch promises like "I'll…" and "Let me…" and miss ones phrased without a cue.
 - **A short tour** on first visit, replayable from the header.
+- **Demo settings.** Rename and reorder projects, meeting types and themes, or reset everything to a first visit.
 - **Privacy controls.** Hide a meeting's transcript or leave a person out of suggestions. Notes and decisions stay in your browser; nothing is sent anywhere.
 
 ## Reading the canvas
@@ -55,7 +56,7 @@ React, Motion (Framer Motion), Vite and Vitest, plus one bundled typeface (Instr
 | `src/layout/` | Lanes, layouts, tweening, label placement |
 | `src/threads/` | Threads, action items, suggestions and their reasons, page summaries |
 | `src/ui/` | Canvas, thread layer, cards, action queue, pages, privacy panel |
-| `tests/` | One Vitest file per logic module (112 tests), including an accuracy check that runs the transcript extractor on every bundled meeting against the hand-made annotations |
+| `tests/` | One Vitest file per logic module (123 tests), including an accuracy check that runs the transcript extractor on every bundled meeting against the hand-made annotations |
 
 I designed it and built it by directing Claude. I wrote the spec, made the design calls (what counts as a strong reason to put a topic on someone's agenda, how themes differ from projects, what each line should mean) and reviewed each step in the browser. Claude wrote the code. Comments in the code cite the design specs (005 and 006), which are kept separately.
 

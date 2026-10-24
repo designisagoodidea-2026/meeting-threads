@@ -11,7 +11,7 @@ type Props = {
   model: Model
   suggestions: Suggestion[]
   focusedId: string | null
-  onFocus: (id: string) => void
+  onFocus: (id: string | null) => void // null = nothing selected
   onAccept: (id: string, text?: string) => void
   onDismiss: (id: string) => void
   onReset: (id: string) => void
@@ -34,9 +34,10 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
   // Clicks inside the queue also set focus; only arrivals from elsewhere should scroll and flash.
   const fromHere = useRef(false)
   const fromKeys = useRef(false)
+  // Clicking the selected item again lets go of it, as with meeting blocks.
   const focusHere = (id: string) => {
     fromHere.current = true
-    onFocus(id)
+    onFocus(id === focusedId ? null : id)
   }
 
   // Arriving from anywhere with a suggestion in focus: open its section, scroll to it, and flash it.

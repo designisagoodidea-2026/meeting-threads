@@ -1,6 +1,6 @@
 import { forwardRef, memo } from 'react'
 import type { Meeting, Model } from '../data/types'
-import { TYPE_LABELS, type Item } from '../layout/layouts'
+import type { Item } from '../layout/layouts'
 import { hm } from './format'
 import { themeColor } from './theme-colors'
 
@@ -23,7 +23,7 @@ export const MeetingBlock = memo(
     const tz = model.timeZone
     const time = `${hm(meeting.start, tz)}–${hm(meeting.end, tz)}`
     const others = meeting.attendeeIds.length - 1
-    const label = `${meeting.title}, ${TYPE_LABELS[meeting.type]}, ${time}, ${others} ${others === 1 ? 'other person' : 'other people'}`
+    const label = `${meeting.title}, ${model.typeLabels[meeting.type]}, ${time}, ${others} ${others === 1 ? 'other person' : 'other people'}`
     const themes = meeting.themeIds.map((id) => model.themes.find((t) => t.id === id)!)
     const segments = split ? item?.segments : undefined
     return (

@@ -1,3 +1,4 @@
+import type { Custom } from './data/custom'
 import type { Import } from './data/extract'
 import type { RelationshipNote } from './data/types'
 
@@ -9,6 +10,7 @@ export type Persisted = {
   privacy: { hiddenMeetingIds: string[]; excludedPersonIds: string[] }
   guideDone?: boolean // the first-run tour was finished or skipped
   imports?: Record<string, Import> // pasted transcripts by meeting id (spec 006 FR-032)
+  custom?: Custom // names and order for projects, themes and meeting types (FR-035)
 }
 
 export const KEY = 'meeting-threads:v1'
@@ -22,6 +24,11 @@ export function createStore(storage: StorageLike | null) {
     state: empty(),
     saved: storage !== null, // false = in-memory only, the header says "Not saved"
     banner: null as string | null,
+    // Back to a first visit: no decisions, notes, privacy choices, imports, names or order (FR-034).
+    reset() {
+      store.banner = null
+      store.update(() => empty())
+    },
     update(fn: (s: Persisted) => Persisted) {
       store.state = fn(store.state)
       if (!storage) return

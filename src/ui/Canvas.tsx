@@ -324,6 +324,22 @@ export function Canvas({ model, pivot, focus, onFocus, suggestions, doneItems, o
 
   return (
     <div className={`canvas${lit ? ' has-focus' : ''}`} data-pivot={pivot}>
+      {focus && (
+        // What's selected, and the way out of it, always in view (FR-033).
+        <div className="selection-chip" role="status">
+          <span className="sel-kind">{focus.kind === 'suggestion' ? 'Suggestion' : focus.kind === 'theme' ? 'Theme' : 'Meeting'}</span>
+          <span className="sel-name">
+            {focus.kind === 'meeting'
+              ? model.meetingById.get(focus.id)?.title
+              : focus.kind === 'theme'
+                ? model.themes.find((t) => t.id === focus.id)?.name
+                : suggestions.find((x) => x.id === focus.id)?.text}
+          </span>
+          <button onClick={() => { setBead(null); onFocus(null) }} aria-label="Clear selection (Escape)">
+            Clear <kbd>Esc</kbd>
+          </button>
+        </div>
+      )}
       <div className="gutter" style={{ paddingTop: HEAD_H }}>
         <AnimatePresence initial={false}>
           <motion.div

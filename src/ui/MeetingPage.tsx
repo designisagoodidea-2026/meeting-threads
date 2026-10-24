@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import type { Model, Suggestion } from '../data/types'
-import { TYPE_LABELS } from '../layout/layouts'
 import { meetingSummary } from '../threads/meeting'
 import { itemCommitments } from '../threads/threads'
 import { Cue } from './Cue'
@@ -64,7 +63,7 @@ export function MeetingPage(props: Props) {
               <div className="page-sub">
                 <span className="tag" data-type={m.type}>
                   <i className="type-swatch" />
-                  {TYPE_LABELS[m.type]}
+                  {model.typeLabels[m.type]}
                 </span>
                 <span className="num">
                   {when(m, tz)}–{hm(m.end, tz)} · {minutes} min

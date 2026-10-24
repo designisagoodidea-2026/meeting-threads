@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import type { Model, RelationshipNote, Suggestion } from '../data/types'
-import { TYPE_LABELS } from '../layout/layouts'
 import { personSummary } from '../threads/person'
 import { Cue } from './Cue'
 import { offset, speakerName, when } from './format'
@@ -68,7 +67,7 @@ export function PersonPage({ model, personId, doneItems, notes, onSaveNote, onDe
                     <span className="tl-when">{when(meeting, tz)}</span>
                     <span className="tl-title">{meeting.title}</span>
                     <span className="tl-meta">
-                      {TYPE_LABELS[meeting.type]}
+                      {model.typeLabels[meeting.type]}
                       {meeting.transcriptHidden
                         ? ' · transcript hidden'
                         : !meeting.transcript

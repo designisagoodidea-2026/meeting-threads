@@ -703,3 +703,31 @@ kbd { display: inline-block; min-width: 1.5em; padding: 0 4px; margin-right: 2px
 .import-done li .btn { margin-left: auto; }
 .muted { color: var(--muted); }
 .qi:focus { outline: none; } /* the .focused ring shows where keyboard focus is */
+
+/* Selection chip (FR-033): what's selected and how to let go of it */
+.selection-chip { position: absolute; top: 6px; right: 12px; z-index: 60; display: flex; align-items: center; gap: 8px; max-width: min(460px, 60%); height: 28px; padding: 0 4px 0 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--accent); box-shadow: 0 6px 18px -10px var(--shadow); font-size: var(--fs-meta); }
+.selection-chip .sel-kind { flex: none; color: var(--muted); }
+.selection-chip .sel-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: var(--w-medium); color: var(--ink); }
+.selection-chip button { flex: none; display: flex; align-items: center; gap: 6px; height: 22px; padding: 0 4px 0 8px; border: 0; border-radius: 999px; background: var(--band); color: var(--ink-2); font: inherit; cursor: pointer; }
+.selection-chip button:hover { background: var(--line); }
+.selection-chip kbd { margin: 0; }
+.canvas { position: relative; }
+
+/* Demo settings (FR-034, FR-035) */
+.demo { width: min(860px, calc(100% - 32px)); }
+.demo-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.demo-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.demo-row { display: flex; align-items: center; gap: 4px; padding: 3px 4px; border-radius: var(--r-md); background: var(--raised); border: 1px solid var(--line); }
+.demo-handle { flex: none; width: 16px; text-align: center; color: var(--muted); cursor: grab; touch-action: none; user-select: none; letter-spacing: -2px; }
+.demo-row input { flex: 1; min-width: 0; font: inherit; font-size: var(--fs-body); padding: 4px 6px; border: 1px solid transparent; border-radius: var(--r-md); background: transparent; color: var(--ink); }
+.demo-row input:hover { border-color: var(--line-strong); }
+.demo-row input:focus { border-color: var(--accent); outline: none; background: var(--bg); }
+.demo-row input::placeholder { color: var(--ink-2); }
+.demo-move { flex: none; width: 22px; height: 22px; border: 0; border-radius: var(--r-md); background: transparent; color: var(--muted); cursor: pointer; font: inherit; }
+.demo-move:hover:not(:disabled) { background: var(--line); color: var(--ink); }
+.demo-move:disabled { opacity: 0.3; cursor: default; }
+.demo-reset { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
+.demo-confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; flex-basis: 100%; padding: 10px 12px; border-radius: var(--r-md); background: var(--band); }
+.demo-confirm p { margin: 0; flex-basis: 100%; font-size: var(--fs-meta); line-height: 1.45; color: var(--ink); }
+.btn.danger { color: var(--warn); border-color: color-mix(in oklab, var(--warn) 45%, var(--line-strong)); }
+@media (max-width: 760px) { .demo-cols { grid-template-columns: 1fr; } }

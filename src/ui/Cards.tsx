@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import type { Model, Suggestion } from '../data/types'
-import { TYPE_LABELS, type Item } from '../layout/layouts'
+import type { Item } from '../layout/layouts'
 import { Cue } from './Cue'
 import { Icon } from './Icon'
 import { QueueLink } from './QueueLink'
@@ -102,7 +102,7 @@ export function MeetingCard(props: {
       <div className="pop-meta pop-tags">
         <span className="tag" data-type={m.type}>
           <i className="type-swatch" />
-          {TYPE_LABELS[m.type]}
+          {model.typeLabels[m.type]}
         </span>
         <span className="num">{when(m, model.timeZone)}</span>
       </div>

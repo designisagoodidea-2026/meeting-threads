@@ -16,7 +16,7 @@ export function rawData() {
 }
 
 import { buildModel } from '../src/data/load'
-import type { Meeting, Model, Person } from '../src/data/types'
+import { MEETING_TYPES, TYPE_LABELS, type Meeting, type Model, type Person } from '../src/data/types'
 
 export function model(): Model {
   const { calendar, annotations, transcripts } = rawData()
@@ -45,5 +45,7 @@ export function tinyModel(meetings: { id: string; attendees: string[]; day?: num
     themes: themeIds.map((id) => ({ id, name: id, color: 'teal', meetingIds: ms.filter((m) => m.themeIds.includes(id)).map((m) => m.id), turnIds: [], projectIds: [] })),
     projects: [],
     actionItems: [],
+    typeLabels: { ...TYPE_LABELS },
+    typeOrder: [...MEETING_TYPES],
   }
 }

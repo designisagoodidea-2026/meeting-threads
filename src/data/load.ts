@@ -1,6 +1,7 @@
 import {
   DISCIPLINES,
   MEETING_TYPES,
+  TYPE_LABELS,
   type ActionItem,
   type AnnotationsFile,
   type CalendarFile,
@@ -159,7 +160,7 @@ export function buildModel(
     return { ...a, status: a.status }
   })
 
-  return { timeZone: tz, days, people, leadId, meetings, meetingById, themes, projects, actionItems }
+  return { timeZone: tz, days, people, leadId, meetings, meetingById, themes, projects, actionItems, typeLabels: { ...TYPE_LABELS }, typeOrder: [...MEETING_TYPES] }
 }
 
 // Browser entry: the bundled synthetic set. Swapping in real exports means replacing these files.

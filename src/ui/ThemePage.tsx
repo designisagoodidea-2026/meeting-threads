@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import type { Model, Suggestion } from '../data/types'
-import { TYPE_LABELS } from '../layout/layouts'
 import { themeSummary } from '../threads/theme'
 import { itemCommitments } from '../threads/threads'
 import { Cue } from './Cue'
@@ -81,7 +80,7 @@ export function ThemePage({ model, themeId, suggestions, doneItems, fromPage, on
                       <div>
                         {meetingLink(m.id)}
                         <div className="mention-sub">
-                          <span className="num">{when(m, tz)}</span> · {TYPE_LABELS[m.type]}
+                          <span className="num">{when(m, tz)}</span> · {model.typeLabels[m.type]}
                         </div>
                       </div>
                     </div>
