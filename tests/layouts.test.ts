@@ -82,3 +82,30 @@ describe('computeLayout', () => {
     }
   })
 })
+
+describe('calendar view: every meeting on one band (FR-045)', () => {
+  const m = model()
+  const f = computeLayout(m, 'calendar', { dayWidth: 600, height: 600 })
+  const items = [...f.items.values()]
+  it('has a single row and places each meeting exactly once', () => {
+    expect(f.rows).toHaveLength(1)
+    expect(items.map((i) => i.meetingId).sort()).toEqual(m.meetings.map((x) => x.id).sort())
+  })
+  it('stacks meetings that overlap in time so their boxes never overlap', () => {
+    for (const a of items)
+      for (const b of items) {
+        if (a === b) continue
+        const ma = m.meetingById.get(a.meetingId)!
+        const mb = m.meetingById.get(b.meetingId)!
+        if (+ma.start < +mb.end && +mb.start < +ma.end) expect(a.y + a.h <= b.y + 0.5 || b.y + b.h <= a.y + 0.5).toBe(true)
+      }
+  })
+  it('lets a meeting with nothing beside it fill the band', () => {
+    const row = f.rows[0]
+    const alone = items.find((a) => {
+      const ma = m.meetingById.get(a.meetingId)!
+      return !m.meetings.some((x) => x.id !== ma.id && +x.start < +ma.end && +ma.start < +x.end)
+    })!
+    expect(alone.h).toBeGreaterThan(row.h * 0.7)
+  })
+})

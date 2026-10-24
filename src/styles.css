@@ -733,7 +733,7 @@ kbd { display: inline-block; min-width: 1.5em; padding: 0 4px; margin-right: 2px
 .row-edit { position: absolute; right: 8px; top: 50%; z-index: 2; display: grid; place-items: center; width: 22px; height: 22px; margin-top: -11px; border: 0; border-radius: var(--r-md); background: var(--bg); color: var(--ink-2); cursor: pointer; opacity: 0; transition: opacity 0.12s; }
 .row-edit:hover { background: var(--line); color: var(--ink); }
 .row-item.editable:hover .row-handle, .row-item.editable:hover .row-edit, .row-item.editable:focus-within .row-edit, .row-edit:focus-visible { opacity: 1; }
-.row-item.editable:hover .row-label .count, .row-item.editable:focus-within .row-label .count { opacity: 0; }
+.row-item.editable:has(.row-edit):hover .row-label .count, .row-item.editable:has(.row-edit):focus-within .row-label .count { opacity: 0; } /* the pencil takes the count's place */
 .row-rename { width: 100%; font: inherit; padding: 2px 5px; margin-left: -6px; border: 1px solid var(--accent); border-radius: var(--r-md); background: var(--bg); color: var(--ink); outline: none; }
 .row-item .row-open { top: 50%; margin-top: -12px; right: 34px; }
 @media (prefers-reduced-motion: reduce) { .row-handle, .row-edit { transition: none; } }
@@ -783,3 +783,9 @@ kbd { display: inline-block; min-width: 1.5em; padding: 0 4px; margin-right: 2px
 .qi.focused .qi-preview { border-color: color-mix(in oklab, var(--accent) 55%, var(--line-strong)); }
 .qi-actions button.add { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .qi-actions { min-width: 0; }
+
+/* Five views in the switcher (FR-045): controls keep to one line; the date summary gives way first. */
+.pivots button, .queue-btn, .device, .tour-btn { white-space: nowrap; }
+.pivots, .queue-btn, .device-btn, .tour-btn { flex: none; }
+.brand { flex: 0 1 auto; overflow: hidden; }
+.context { min-width: 0; overflow: hidden; text-overflow: ellipsis; }

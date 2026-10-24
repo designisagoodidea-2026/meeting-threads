@@ -42,6 +42,7 @@ export type ViewState = {
 export type Route = { name: 'canvas' } | { name: 'person' | 'meeting' | 'theme' | 'project'; id: string; fromPage: boolean }
 
 const PIVOTS: { id: Pivot; label: string }[] = [
+  { id: 'calendar', label: 'Calendar' }, // every meeting by time, the familiar starting point (FR-045)
   { id: 'project', label: 'Project' },
   { id: 'people', label: 'People' },
   { id: 'type', label: 'Meeting type' },
@@ -62,7 +63,7 @@ const toggle = (list: string[], id: string) => (list.includes(id) ? list.filter(
 export default function App() {
   const [files, setFiles] = useState<Awaited<ReturnType<typeof loadFiles>> | null>(null)
   const [error, setError] = useState<Error | null>(null)
-  const [view, setView] = useState<ViewState>({ pivot: 'project', focus: null, queueOpen: false, privacyOpen: false, route: { name: 'canvas' } })
+  const [view, setView] = useState<ViewState>({ pivot: 'calendar', focus: null, queueOpen: false, privacyOpen: false, route: { name: 'canvas' } })
   const store = useMemo(() => createStore(browserStorage()), [])
   const [version, bump] = useReducer((n: number) => n + 1, 0)
 
@@ -207,7 +208,10 @@ export default function App() {
   // Rename and reorder rows in place on the canvas (FR-035); the people view's rows aren't editable.
   const editCustom = (fn: (c: Custom) => Custom) => save((s) => ({ ...s, custom: fn(s.custom ?? emptyCustom()) }))
   const rowEditing = (pivot: Pivot): RowEditing | null => {
-    if (!base || pivot === 'people') return null
+    if (!base || pivot === 'calendar') return null
+    // People can be reordered but not renamed (FR-044): their names come from the calendar.
+    if (pivot === 'people')
+      return { original: (id) => base.people.get(id)?.name ?? id, onReorder: (ids) => editCustom((c) => ({ ...c, order: { ...c.order, person: ids } })) }
     const kind = pivot
     return {
       original: (id) =>
@@ -231,7 +235,7 @@ export default function App() {
     history.current = []
     setChange(null)
     setMoved(null)
-    setView({ pivot: 'project', focus: null, queueOpen: false, privacyOpen: false, route: { name: 'canvas' } })
+    setView({ pivot: 'calendar', focus: null, queueOpen: false, privacyOpen: false, route: { name: 'canvas' } })
     setGuide(0)
   }
   const removeImport = (id: string) => save((s) => { const imports = { ...s.imports }; delete imports[id]; return { ...s, imports } })
@@ -253,7 +257,7 @@ export default function App() {
     setView((v) => ({ ...v, queueOpen: open, focus: !open && v.focus?.kind === 'suggestion' ? null : v.focus }))
   // On a detail page the switcher shows the page's kind and can't be changed (FR-040): switching the
   // calendar underneath a page would leave the two out of step.
-  const pagePivot: Pivot | null = view.route.name === 'canvas' ? null : ({ person: 'people', theme: 'theme', project: 'project', meeting: 'type' } as const)[view.route.name]
+  const pagePivot: Pivot | null = view.route.name === 'canvas' ? null : ({ person: 'people', theme: 'theme', project: 'project', meeting: 'calendar' } as const)[view.route.name]
   const toCanvas = useCallback(() => setView((v) => ({ ...v, route: { name: 'canvas' } })), [])
   // From any card or page: back to the calendar with the suggestion in focus, and the queue open on it.
   const showInQueue = useCallback(

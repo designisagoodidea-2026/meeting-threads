@@ -111,6 +111,7 @@ export type Model = {
   actionItems: ActionItem[]
   typeLabels: Record<MeetingType, string>
   typeOrder: MeetingType[]
+  personOrder?: string[] // the lead's order for the people view's lanes, first; the rest follow the automatic order
   now?: Date // the real time the window is built around; absent in fixed test data
   excludedPersonIds?: Set<string> // left out of suggestions (FR-037), set by applyPrivacy
 }

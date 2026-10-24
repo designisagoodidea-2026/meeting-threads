@@ -6,7 +6,7 @@ import { Icon } from './Icon'
 // Rows the lead can rename and reorder in place (spec 006 FR-035): projects, meeting types, themes.
 export type RowEditing = {
   original: (id: string) => string // the name before any rename, shown as the placeholder
-  onRename: (id: string, name: string) => void // '' restores the original
+  onRename?: (id: string, name: string) => void // '' restores the original; absent = reorder only (people)
   onReorder: (ids: string[]) => void
 }
 
@@ -57,7 +57,7 @@ function EditableRow({ row, editing, render, onDrop, onMove }: { row: Row; editi
   const original = editing.original(row.key)
   const done = (value: string | null) => {
     setRenaming(false)
-    if (value === null) return
+    if (value === null || !editing.onRename) return
     const v = value.trim()
     editing.onRename(row.key, v === original ? '' : v)
   }
@@ -81,7 +81,7 @@ function EditableRow({ row, editing, render, onDrop, onMove }: { row: Row; editi
       onBlur={(e) => renaming && done(e.currentTarget.value)}
     />
   ) : (
-    <span onDoubleClick={() => setRenaming(true)}>{row.label}</span>
+    <span onDoubleClick={editing.onRename ? () => setRenaming(true) : undefined}>{row.label}</span>
   )
   return (
     <Reorder.Item
@@ -103,7 +103,7 @@ function EditableRow({ row, editing, render, onDrop, onMove }: { row: Row; editi
         <svg viewBox="0 0 8 14" width="8" height="14"><g fill="currentColor">{[2, 7, 12].flatMap((y) => [<circle key={`a${y}`} cx="2" cy={y} r="1.1" />, <circle key={`b${y}`} cx="6" cy={y} r="1.1" />])}</g></svg>
       </span>
       {render(row, name)}
-      {!renaming && (
+      {!renaming && editing.onRename && (
         <button className="row-edit" onClick={() => setRenaming(true)} aria-label={`Rename ${row.label}`} aria-keyshortcuts="Alt+ArrowUp Alt+ArrowDown" title="Rename · Alt+↑/↓ to move">
           <Icon name="edit" size={12} />
         </button>

@@ -58,3 +58,22 @@ describe('reset', () => {
     expect(JSON.parse(mem.get('meeting-threads:v1')!)).toEqual(s.state)
   })
 })
+
+describe('people order (FR-044)', () => {
+  const m = model()
+  const lanes = (c: Parameters<typeof applyCustom>[1]) => computeLayout(applyCustom(m, c), 'people', vp).rows.map((r) => r.key)
+  const auto = lanes(undefined)
+  it('puts saved people first, then everyone else in the automatic order', () => {
+    const pick = [auto.at(-1)!, auto[2]]
+    const c = { labels: { project: {}, theme: {}, type: {} }, order: { project: [], theme: [], type: [], person: pick } }
+    expect(lanes(c)).toEqual([...pick, ...auto.filter((k) => !pick.includes(k))])
+  })
+  it('keeps names as they are: people are reordered, never renamed', () => {
+    const c = { labels: { project: {}, theme: {}, type: {} }, order: { project: [], theme: [], type: [], person: [auto[1]] } }
+    expect(applyCustom(m, c).people.get(auto[1])!.name).toBe(m.people.get(auto[1])!.name)
+  })
+  it('reads older saved settings that have no people order', () => {
+    const c = { labels: { project: {}, theme: {}, type: {} }, order: { project: [], theme: [], type: [] } } as Parameters<typeof applyCustom>[1]
+    expect(lanes(c)).toEqual(auto)
+  })
+})

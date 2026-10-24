@@ -1,8 +1,9 @@
 import { localDate, localMinutes } from '../data/load'
 import type { Model } from '../data/types'
+import { ordered } from '../data/custom'
 import { orderLanes } from './lanes'
 
-export type Pivot = 'project' | 'people' | 'type' | 'theme'
+export type Pivot = 'calendar' | 'project' | 'people' | 'type' | 'theme'
 
 export type Box = { x: number; y: number; w: number; h: number; z?: number }
 // `segments` (people pivot only): the lanes inside a block's span, relative to its top; `on` = attendee.
@@ -44,7 +45,36 @@ export function computeLayout(model: Model, pivot: Pivot, vp: { dayWidth: number
     return { y: r.y + pad, h: r.h - 2 * pad }
   }
 
-  if (pivot === 'project') {
+  if (pivot === 'calendar') {
+    // Every meeting once, on one band, by time (FR-045). Meetings that overlap share the band's height in
+    // lanes, per cluster of overlapping meetings, so one with nothing beside it gets the full height.
+    rows = banded([{ key: 'all', label: 'All meetings', sublabel: `${model.meetings.length} meetings, by time` }])
+    const band = inRow(rows[0])
+    const GAP = 3
+    let cluster: typeof model.meetings = []
+    let clusterEnd = 0
+    const flush = () => {
+      const laneEnds: number[] = []
+      const lane = new Map<string, number>()
+      for (const m of cluster) {
+        let i = laneEnds.findIndex((end) => end <= +m.start)
+        if (i < 0) i = laneEnds.push(0) - 1
+        laneEnds[i] = +m.end
+        lane.set(m.id, i)
+      }
+      const h = (band.h - GAP * (laneEnds.length - 1)) / laneEnds.length
+      for (const m of cluster)
+        items.set(m.id, { meetingId: m.id, ...xw(m.id), y: band.y + lane.get(m.id)! * (h + GAP), h, label: { row: 'all', y: 0, h } })
+      cluster = []
+      clusterEnd = 0
+    }
+    for (const m of [...model.meetings].sort((a, b) => +a.start - +b.start || +b.end - +a.end)) {
+      if (cluster.length && +m.start >= clusterEnd) flush()
+      cluster.push(m)
+      clusterEnd = Math.max(clusterEnd, +m.end)
+    }
+    if (cluster.length) flush()
+  } else if (pivot === 'project') {
     // One row per project; a meeting appears in every project whose themes it touches.
     const unassigned = model.meetings.some((m) => !model.projects.some((p) => p.themeIds.some((t) => m.themeIds.includes(t))))
     rows = banded([
@@ -69,7 +99,8 @@ export function computeLayout(model: Model, pivot: Pivot, vp: { dayWidth: number
       items.set(m.id, { meetingId: m.id, ...xw(m.id), ...box, label: { row: m.type, y: 0, h: box.h } })
     }
   } else if (pivot === 'people') {
-    const lanes = orderLanes(model.meetings, [...model.people.values()])
+    const auto = orderLanes(model.meetings, [...model.people.values()])
+    const lanes = model.personOrder ? ordered(auto, (id) => id, model.personOrder) : auto
     rows = banded(lanes.map((id) => ({ key: id, label: model.people.get(id)!.name, sublabel: model.people.get(id)!.role })))
     const laneH = rows[0]?.h ?? height
     const pad = Math.min(3, laneH * 0.1)
