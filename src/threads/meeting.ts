@@ -6,7 +6,7 @@ export type MeetingSummary = {
   attendees: string[] // lead first, then others by name
   agenda: { seeded: AgendaItem[]; accepted: Suggestion[]; pending: Suggestion[] }
   transcript: { turn: Turn; themeIds: string[] }[] | null
-  gap: 'hidden' | 'not-recorded' | null
+  gap: 'hidden' | 'not-recorded' | 'upcoming' | null
   themes: { themeId: string; prevMeetingId: string | null; nextMeetingId: string | null }[]
   actionItems: { item: ActionItem; status: 'open' | 'on-agenda' }[]
 }

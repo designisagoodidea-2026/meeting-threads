@@ -1,13 +1,17 @@
 import { animate, AnimatePresence, motion, useMotionValue, useMotionValueEvent } from 'motion/react'
-import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { localDate, localMinutes } from '../data/load'
 import type { Model, Suggestion } from '../data/types'
 import { placeLabels, type Placed } from '../layout/labels'
-import { computeLayout, type Item, type Layout, type Pivot } from '../layout/layouts'
+import { computeLayout, DAY_SPAN_MIN, DAY_START_MIN, type Item, type Layout, type Pivot } from '../layout/layouts'
 import { DURATION, interpolate, lift, MAX_DELAY } from '../layout/tween'
 import { explainConnector, type Connector } from '../threads/explain'
 import { itemLines, keyFor } from '../threads/threads'
 import { BeadCard, MeetingCard } from './Cards'
+import { retime, type RetimeMode } from '../layout/retime'
+import type { TimeOverride } from '../data/load'
 import { MeetingBlock } from './MeetingBlock'
+import { RowLabels, type RowEditing } from './RowLabels'
 import { useReducedMotion } from './reduced-motion'
 import { themeColor } from './theme-colors'
 import { ConnectorCard } from './ConnectorCard'
@@ -46,9 +50,13 @@ type Props = {
   onOpenTheme: (id: string) => void
   onToggleHidden: (meetingId: string) => void
   onShowInQueue: (suggestionId: string) => void
+  rowEditing: (pivot: Pivot) => RowEditing | null // rename and reorder rows in place (FR-035)
+  onRetime: (meetingId: string, t: TimeOverride) => void // an upcoming meeting dragged to a new time (FR-038)
+  onOpenProject: (id: string) => void
 }
 
-export function Canvas({ model, pivot, focus, onFocus, suggestions, doneItems, onOpenPerson, onOpenMeeting, onOpenTheme, onToggleHidden, onShowInQueue }: Props) {
+export function Canvas({ model, pivot, focus, onFocus, suggestions, doneItems, onOpenPerson, onOpenMeeting, onOpenTheme, onToggleHidden, onShowInQueue, rowEditing: editingFor, onRetime, onOpenProject }: Props) {
+  const rowEditing = editingFor(pivot)
   const scroller = useRef<HTMLDivElement>(null)
   const [bodyH, setBodyH] = useState(0)
   const reduced = useReducedMotion()
@@ -317,6 +325,90 @@ export function Canvas({ model, pivot, focus, onFocus, suggestions, doneItems, o
             ? model.meetings.filter((m) => !m.themeIds.length).length
             : (model.themes.find((t) => t.id === key)?.meetingIds.length ?? 0)
           : model.meetings.length
+  // Where now falls (FR-036): a line at the current time on a working day; on a weekend, at the start of
+  // the next working day, labelled with today's date.
+  const today = model.now ? localDate(model.now, model.timeZone) : null
+  const nowMark = (() => {
+    if (!today || !model.now) return null
+    const i = model.days.indexOf(today)
+    const clock = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: model.timeZone })
+    if (i >= 0) {
+      const mins = Math.min(DAY_START_MIN + DAY_SPAN_MIN, Math.max(DAY_START_MIN, localMinutes(model.now, model.timeZone)))
+      return { x: i * DAY_W + ((mins - DAY_START_MIN) / DAY_SPAN_MIN) * DAY_W, label: `Now · ${clock.format(model.now)}`, weekend: false }
+    }
+    const next = model.days.findIndex((d) => d > today)
+    if (next < 0) return null
+    const date = new Date(`${today}T12:00:00Z`)
+    return { x: next * DAY_W, label: `Today · ${weekday.format(date)}, ${month.format(date)} ${date.getUTCDate()}`, weekend: true }
+  })()
+  // Dragging an upcoming meeting (FR-038): every copy of it slides (or stretches) with the pointer,
+  // a time chip shows where it will land, and the new time is saved on release. A press that
+  // doesn't move is still a click.
+  const justDragged = useRef(false)
+  const clock = (mins: number) => `${Math.floor(mins / 60) % 12 || 12}:${String(mins % 60).padStart(2, '0')}${mins >= 720 ? 'pm' : 'am'}`
+  const grab = useCallback(
+    (id: string, e: React.PointerEvent, mode: RetimeMode) => {
+      if (e.button !== 0) return
+      const x0 = e.clientX
+      const keys = [...els.current.keys()].filter((k) => k === id || k.startsWith(`${id}#`))
+      const m = model.meetingById.get(id)!
+      const s0 = localMinutes(m.start, model.timeZone)
+      const e0 = s0 + (+m.end - +m.start) / 60e3
+      const d0 = model.days.indexOf(localDate(m.start, model.timeZone))
+      const pxPerMin = DAY_W / DAY_SPAN_MIN
+      let moved = false
+      let next: TimeOverride | null = null
+      const paint = (t: TimeOverride | null, dx: number) => {
+        for (const k of keys) {
+          const el = els.current.get(k)
+          if (!el) continue
+          const lab = labelEls.current.get(k)
+          const shift = t ? ((t.day - d0) * DAY_SPAN_MIN + (t.start - s0)) * pxPerMin : 0
+          el.style.translate = t ? `${shift}px 0` : mode === 'move' ? `${dx}px 0` : ''
+          if (lab) lab.style.translate = el.style.translate
+          if (mode !== 'move') el.style.width = `${((t ? t.end - t.start : e0 - s0) * pxPerMin) - 2}px`
+          el.classList.toggle('dragging', true)
+          el.classList.toggle('refused', !t)
+          el.dataset.time = t ? `${clock(t.start)}–${clock(t.end)}` : 'Can’t move there'
+        }
+      }
+      const onMove = (ev: PointerEvent) => {
+        const dx = ev.clientX - x0
+        if (!moved && Math.abs(dx) < 4) return
+        moved = true
+        next = retime(model, id, mode, dx / pxPerMin)
+        paint(next, dx)
+      }
+      const onUp = () => {
+        window.removeEventListener('pointermove', onMove)
+        window.removeEventListener('pointerup', onUp)
+        for (const k of keys) {
+          const el = els.current.get(k)
+          if (!el) continue
+          el.style.translate = ''
+          el.classList.remove('dragging', 'refused')
+          delete el.dataset.time
+          const lab = labelEls.current.get(k)
+          if (lab) lab.style.translate = ''
+          if (mode !== 'move' && current.current?.get(k)) el.style.width = `${current.current.get(k)!.w}px`
+        }
+        if (!moved) return
+        justDragged.current = true // the click that follows a drag isn't a selection
+        setTimeout(() => (justDragged.current = false))
+        if (next) onRetime(id, next)
+      }
+      window.addEventListener('pointermove', onMove)
+      window.addEventListener('pointerup', onUp)
+    },
+    [model, onRetime],
+  )
+  const nudge = useCallback(
+    (id: string, minutes: number, mode: RetimeMode) => {
+      const t = retime(model, id, mode, minutes)
+      if (t) onRetime(id, t)
+    },
+    [model, onRetime],
+  )
   const settled = tr && !animating
   const anchor = (meetingId: string): Item | undefined => (tr ? tr.to.get(keyFor(tr.to, meetingId, '') ?? '') : undefined)
   const beadAt = bead && tr ? itemLines(model, tr.to, suggestions).find((l) => l.actionItemId === bead)?.bead : undefined
@@ -349,46 +441,59 @@ export function Canvas({ model, pivot, focus, onFocus, suggestions, doneItems, o
             animate={{ opacity: 1, x: 0, transition: { duration: 0.35, delay: reduced ? 0 : 0.25 } }}
             exit={{ opacity: 0, transition: { duration: 0.15 } }}
           >
-            {rows.map((r) => {
-              const isTheme = pivot === 'theme' && r.key !== 'none'
-              const isPerson = pivot === 'people'
-              const Tag = isTheme || isPerson ? 'button' : 'div'
-              return (
-                <Fragment key={r.key}>
-                <Tag
-                  className={`row-label${isTheme && focus?.kind === 'theme' && focus.id === r.key ? ' active' : ''}`}
-                  style={{ top: r.y, height: r.h }}
-                  {...(isTheme ? { onClick: () => onFocus(focus?.kind === 'theme' && focus.id === r.key ? null : { kind: 'theme', id: r.key }) } : {})}
-                  {...(isPerson ? { onClick: () => onOpenPerson(r.key), title: `Open ${r.label}` } : {})}
-                >
-                  {r.color && <i style={{ background: themeColor(r.color) }} />}
-                  {pivot === 'type' && <i className="type-swatch" data-type={r.key} />}
-                  <span className="name">{r.label}</span>
-                  {r.sublabel && r.h >= 34 && <span className="sub">{r.sublabel}</span>}
-                  <span className="count num" aria-label={`${rowCount(r.key)} meetings`}>{rowCount(r.key)}</span>
-                </Tag>
-                {isTheme && focus?.kind === 'theme' && focus.id === r.key && (
-                  <button className="row-open" style={{ top: r.y + r.h / 2 - 12 }} onClick={() => onOpenTheme(r.key)} aria-label={`Open the ${r.label} page`}>
-                    Open
-                  </button>
-                )}
-                </Fragment>
-              )
-            })}
+            <RowLabels
+              rows={rows}
+              editing={rowEditing}
+              render={(r, name) => {
+                const isTheme = pivot === 'theme' && r.key !== 'none'
+                const isPerson = pivot === 'people'
+                const Tag = isTheme || isPerson ? 'button' : 'div'
+                return (
+                  <>
+                    <Tag
+                      className={`row-label${isTheme && focus?.kind === 'theme' && focus.id === r.key ? ' active' : ''}`}
+                      {...(isTheme ? { onClick: () => onFocus(focus?.kind === 'theme' && focus.id === r.key ? null : { kind: 'theme', id: r.key }) } : {})}
+                      {...(isPerson ? { onClick: () => onOpenPerson(r.key), title: `Open ${r.label}` } : {})}
+                    >
+                      {r.color && <i style={{ background: themeColor(r.color) }} />}
+                      {pivot === 'type' && <i className="type-swatch" data-type={r.key} />}
+                      <span className="name">{name}</span>
+                      {r.sublabel && r.h >= 34 && <span className="sub">{r.sublabel}</span>}
+                      <span className="count num" aria-label={`${rowCount(r.key)} meetings`}>{rowCount(r.key)}</span>
+                    </Tag>
+                    {pivot === 'project' && r.key !== 'none' && (
+                      <button className="row-open project-open" onClick={() => onOpenProject(r.key)} aria-label={`Open the ${r.label} page`}>
+                        Open
+                      </button>
+                    )}
+                    {isTheme && focus?.kind === 'theme' && focus.id === r.key && (
+                      <button className="row-open" onClick={() => onOpenTheme(r.key)} aria-label={`Open the ${r.label} page`}>
+                        Open
+                      </button>
+                    )}
+                  </>
+                )
+              }}
+            />
           </motion.div>
         </AnimatePresence>
       </div>
       <div className="scroller" ref={scroller}>
         <div className="stage" style={{ width: model.days.length * DAY_W, height: HEAD_H + bodyH }}>
+          {nowMark && (
+            <div className={`now-line${nowMark.weekend ? ' weekend' : ''}`} style={{ left: nowMark.x, height: HEAD_H + bodyH }} role="note" aria-label={nowMark.label}>
+              <span>{nowMark.label}</span>
+            </div>
+          )}
           <div className="day-heads" style={{ height: HEAD_H }}>
             {model.days.map((d, i) => {
               const date = new Date(`${d}T12:00:00Z`)
               return (
-              <div key={d} className={`day-head${i % 5 === 0 ? ' week-start' : ''}`} style={{ left: i * DAY_W, width: DAY_W }}>
+              <div key={d} className={`day-head${i === 0 || date.getUTCDay() === 1 ? ' week-start' : ''}${today && d < today ? ' past' : ''}${d === today ? ' today' : ''}`} style={{ left: i * DAY_W, width: DAY_W }}>
                 <span className="day-date">
                   <b className="num">{date.getUTCDate()}</b>
                   <span className="day-name">{weekday.format(date)}</span>
-                  {i % 5 === 0 && (
+                  {(i === 0 || date.getUTCDay() === 1) && (
                     <span className="day-week">
                       {month.format(date)} · Week {isoWeek(date)}
                     </span>
@@ -417,6 +522,7 @@ export function Canvas({ model, pivot, focus, onFocus, suggestions, doneItems, o
               }
             }}
           >
+            {nowMark && <div className="past-shade" style={{ width: nowMark.x }} aria-hidden="true" />}
             <AnimatePresence initial={false}>
               <motion.div key={pivot} className="bands" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
                 {rows.map((r, i) => (
@@ -442,7 +548,10 @@ export function Canvas({ model, pivot, focus, onFocus, suggestions, doneItems, o
                   selected={(focus?.kind === 'meeting' && focus.id === meetingId) || hoverEnds.has(meetingId)}
                   onHover={setHover}
                   onOpen={onOpenMeeting}
+                  onGrab={grab}
+                  onNudge={nudge}
                   onSelect={(id) => {
+                    if (justDragged.current) return
                     setBead(null)
                     onFocus(focus?.kind === 'meeting' && focus.id === id ? null : { kind: 'meeting', id })
                   }}

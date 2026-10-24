@@ -9,7 +9,7 @@ export const GUIDE_STEPS = [
     target: '.canvas',
     place: 'inside' as const,
     title: 'Two weeks of meetings, on one canvas',
-    body: "This is a design ops lead's calendar, arranged by project. Lines join meetings that discussed the same theme; dots mark action items. The key at the bottom names every kind of line, and the buttons at the top rearrange the meetings by people, meeting type or theme.",
+    body: "This is a design ops lead's calendar, arranged by project. Lines join meetings that discussed the same theme; dots mark action items. The key at the bottom names every kind of line, and the buttons at the top rearrange the meetings by people, meeting type or theme. Drag a row label to reorder it, or use its pencil to rename it.",
   },
   {
     target: '.queue',

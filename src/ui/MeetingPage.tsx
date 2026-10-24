@@ -102,7 +102,7 @@ export function MeetingPage(props: Props) {
                 <button className="link" onClick={() => onToggleHidden(m.id)}>Show transcript</button>
               </div>
             ) : (
-              <p className="gap-note muted">Not recorded.</p>
+              <p className="gap-note muted">{s.gap === 'upcoming' ? 'Hasn’t happened yet. The transcript appears once it’s recorded.' : 'Not recorded.'}</p>
             )}
           </section>
 

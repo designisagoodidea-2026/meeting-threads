@@ -10,7 +10,7 @@ export type Connector =
   | { kind: 'copy'; meetingId: string }
   | { kind: 'bead'; actionItemId: string }
 
-export type Gap = 'hidden' | 'not-recorded' | 'no-mention'
+export type Gap = 'hidden' | 'not-recorded' | 'upcoming' | 'no-mention'
 export type End = { meetingId: string; quote: Turn | null; gap: Gap | null }
 
 export type ConnectorExplanation = {
@@ -38,6 +38,7 @@ const meetingOf = (model: Model, id: string): Meeting => {
 // Gap reasons for a missing quote, in the order a reader would want them (research R5).
 export function gapFor(m: Meeting): Gap | null {
   if (m.transcriptHidden) return 'hidden'
+  if (m.upcoming) return 'upcoming'
   if (!m.transcript) return 'not-recorded'
   return null
 }

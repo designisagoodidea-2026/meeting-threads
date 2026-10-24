@@ -6,15 +6,18 @@ Meeting Threads puts two weeks of meetings on one canvas and draws the topics th
 
 ## What it does
 
+- **Two weeks around today.** The dates follow the real calendar: two working days already happened, the rest is coming up. Only meetings that have ended have transcripts, and suggestions only land on upcoming agendas. A line marks now.
 - **Four views of the same two weeks.** Project (the default), people, meeting type and theme. Switching animates every meeting to its new place.
 - **Themes as threads.** A theme is a concern that runs through several projects, such as Activation or Component consistency. Each theme is drawn as a line between the meetings that discussed it.
 - **Action items that say only what is known.** A dot marks the meeting where an item was raised. Once it's accepted onto a later agenda, an arrowed line runs to that meeting. Until then, a short stub ends in a "?".
 - **A queue you can work through.** Suggestions are grouped by the meeting they'd go to. Keys: J and K move, A accepts, D dismisses, U undoes. An accepted item stays in place showing what changed on which agenda, with Undo.
 - **Suggested agenda items, with reasons.** A suggestion only targets a later meeting for a strong reason: the topic is already on that meeting's table, the same group meets again, or it's a 1:1 with the person who owns it. Each one shows the quote that prompted it and states the reason. Anything without a strong reason is marked as needing its own meeting.
-- **Pages for every meeting, theme and person.** Transcript, agenda, the threads through a meeting and where they go next; who carried a theme and what it produced; what you and a colleague said and what's still open.
+- **Move upcoming meetings.** Drag a meeting to a new time, or drag an edge to change its start or end, in 15-minute steps. Alt+arrows do the same from the keyboard.
+- **Pages for every meeting, theme, project and person.** Transcript, agenda, the threads through a meeting and where they go next; who carried a theme and what it produced; what you and a colleague said and what's still open.
 - **Import a real transcript.** Paste an Otter export or "Name: text" lines for one meeting, preview the speakers, themes and action items found, then add it. Plain rules run in the browser, learned from the meetings already there; they catch promises like "I'll…" and "Let me…" and miss ones phrased without a cue.
 - **A short tour** on first visit, replayable from the header.
-- **Demo settings.** Rename and reorder projects, meeting types and themes, or reset everything to a first visit.
+- **Rename and reorder rows in place.** In the project, meeting type and theme views, drag a row label's grip or use Alt+↑/↓ to reorder, and click its pencil (or double-click the name) to rename.
+- **Demo settings.** Restore the original names and order, or reset everything to a first visit.
 - **Privacy controls.** Hide a meeting's transcript or leave a person out of suggestions. Notes and decisions stay in your browser; nothing is sent anywhere.
 
 ## Reading the canvas
@@ -56,7 +59,7 @@ React, Motion (Framer Motion), Vite and Vitest, plus one bundled typeface (Instr
 | `src/layout/` | Lanes, layouts, tweening, label placement |
 | `src/threads/` | Threads, action items, suggestions and their reasons, page summaries |
 | `src/ui/` | Canvas, thread layer, cards, action queue, pages, privacy panel |
-| `tests/` | One Vitest file per logic module (123 tests), including an accuracy check that runs the transcript extractor on every bundled meeting against the hand-made annotations |
+| `tests/` | One Vitest file per logic module (138 tests), including an accuracy check that runs the transcript extractor on every bundled meeting against the hand-made annotations |
 
 I designed it and built it by directing Claude. I wrote the spec, made the design calls (what counts as a strong reason to put a topic on someone's agenda, how themes differ from projects, what each line should mean) and reviewed each step in the browser. Claude wrote the code. Comments in the code cite the design specs (005 and 006), which are kept separately.
 

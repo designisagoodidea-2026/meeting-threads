@@ -16,7 +16,9 @@ type Props = {
 // Paste one transcript, see what the rules find, then add it (spec 006 FR-032). Runs in this browser only.
 export function ImportPanel({ model, imports, onApply, onRemove, onClose }: Props) {
   const tz = model.timeZone
-  const firstEmpty = model.meetings.find((m) => !m.transcript)?.id ?? model.meetings[0].id
+  // Only meetings that have happened can have a transcript.
+  const past = model.meetings.filter((m) => !m.upcoming)
+  const firstEmpty = past.find((m) => !m.transcript)?.id ?? past[0]?.id ?? ''
   const [meetingId, setMeetingId] = useState(firstEmpty)
   const [text, setText] = useState('')
   const [preview, setPreview] = useState<Import | null>(null)
@@ -65,7 +67,7 @@ export function ImportPanel({ model, imports, onApply, onRemove, onClose }: Prop
         <label>
           Meeting
           <select value={meetingId} onChange={(e) => { setMeetingId(e.target.value); setPreview(null) }}>
-            {model.meetings.map((m) => (
+            {past.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.title}, {when(m, tz)}{imports[m.id] ? ' (imported)' : m.transcript ? ' (has a transcript)' : ''}
               </option>

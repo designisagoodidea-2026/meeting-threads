@@ -9,7 +9,7 @@ import { Icon } from './Icon'
 import { QueueLink } from './QueueLink'
 import { themeColor } from './theme-colors'
 
-const GAP_TEXT = { hidden: 'Transcript hidden', 'not-recorded': 'Not recorded', 'no-mention': 'On the theme, but nothing said about it on record' }
+const GAP_TEXT = { hidden: 'Transcript hidden', 'not-recorded': 'Not recorded', upcoming: 'Hasn’t happened yet', 'no-mention': 'On the theme, but nothing said about it on record' }
 
 type Props = {
   model: Model
@@ -20,12 +20,13 @@ type Props = {
   onClose: () => void
   onOpenPerson: (id: string) => void
   onOpenMeeting: (id: string) => void
+  onOpenProject: (id: string) => void
   onShowInQueue: (suggestionId: string) => void
 }
 
 // A theme's full record (spec 006 US3): where it came up, who carried it, what was said, and what it
 // has produced so far.
-export function ThemePage({ model, themeId, suggestions, doneItems, fromPage, onClose, onOpenPerson, onOpenMeeting, onShowInQueue }: Props) {
+export function ThemePage({ model, themeId, suggestions, doneItems, fromPage, onClose, onOpenPerson, onOpenMeeting, onOpenProject, onShowInQueue }: Props) {
   const s = useMemo(() => themeSummary(model, themeId, suggestions, doneItems), [model, themeId, suggestions, doneItems])
   const commits = useMemo(() => itemCommitments(model, suggestions), [model, suggestions])
   const tz = model.timeZone
@@ -107,6 +108,17 @@ export function ThemePage({ model, themeId, suggestions, doneItems, fromPage, on
           </section>
 
           <aside className="page-side">
+            <section className="panel">
+              <h3>Runs through</h3>
+              {s.theme.projectIds.length === 0 && <p className="muted">No project.</p>}
+              <ul className="item-list">
+                {s.theme.projectIds.map((id) => (
+                  <li key={id}>
+                    <button className="link" onClick={() => onOpenProject(id)}>{model.projects.find((p) => p.id === id)?.name ?? id}</button>
+                  </li>
+                ))}
+              </ul>
+            </section>
             <section className="panel">
               <h3>Who carried it</h3>
               {s.contributors.length === 0 && <p className="muted">Nobody on record.</p>}

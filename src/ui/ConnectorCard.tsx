@@ -7,7 +7,7 @@ import { names, offset, speakerName, when } from './format'
 import { themeColor } from './theme-colors'
 
 const W = 320
-const GAP_TEXT = { hidden: 'Transcript hidden', 'not-recorded': 'Not recorded', 'no-mention': 'No quotes on record about this theme' }
+const GAP_TEXT = { hidden: 'Transcript hidden', 'not-recorded': 'Not recorded', upcoming: 'Hasn’t happened yet', 'no-mention': 'No quotes on record about this theme' }
 
 type Props = {
   model: Model

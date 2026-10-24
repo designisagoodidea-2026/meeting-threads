@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
-import { applyCustom } from './data/custom'
+import { applyCustom, emptyCustom, type Custom } from './data/custom'
 import { applyImport, buildWithImports, type Import } from './data/extract'
-import { DataError, buildModel, loadFiles } from './data/load'
+import { DataError, buildModel, loadFiles, rebaseFiles } from './data/load'
 import { applyPrivacy } from './data/privacy'
-import type { Model, RelationshipNote } from './data/types'
+import type { MeetingType, Model, RelationshipNote } from './data/types'
 import type { Pivot } from './layout/layouts'
 import { browserStorage, createStore, type Persisted } from './store'
 import { groupQueue } from './threads/queue'
@@ -19,7 +19,9 @@ import { Icon } from './ui/Icon'
 import { MeetingPage } from './ui/MeetingPage'
 import { PersonPage } from './ui/PersonPage'
 import { ThemePage } from './ui/ThemePage'
+import { ProjectPage } from './ui/ProjectPage'
 import { DemoPanel } from './ui/DemoPanel'
+import type { RowEditing } from './ui/RowLabels'
 import { ImportPanel } from './ui/ImportPanel'
 import { PrivacyPanel } from './ui/PrivacyPanel'
 import { themeColor } from './ui/theme-colors'
@@ -37,7 +39,7 @@ export type ViewState = {
 }
 
 // spec 006 contracts/ui.md. `fromPage` = opened from another detail page, so it crossfades instead of flying.
-export type Route = { name: 'canvas' } | { name: 'person' | 'meeting' | 'theme'; id: string; fromPage: boolean }
+export type Route = { name: 'canvas' } | { name: 'person' | 'meeting' | 'theme' | 'project'; id: string; fromPage: boolean }
 
 const PIVOTS: { id: Pivot; label: string }[] = [
   { id: 'project', label: 'Project' },
@@ -67,6 +69,8 @@ export default function App() {
   useEffect(() => {
     loadFiles().then(setFiles, setError)
   }, [])
+  // shortcut: now is taken once per load, so a meeting that ends while the tab is open stays upcoming until a reload.
+  const now = useMemo(() => new Date(), [])
 
   const save = useCallback(
     (fn: (s: Persisted) => Persisted) => {
@@ -78,16 +82,19 @@ export default function App() {
   // The bundled files plus any pasted transcripts, rebuilt whenever an import changes in any way.
   // Keyed on the imports alone: rebuilding on every note or decision would redo every layout.
   const importsKey = JSON.stringify(store.state.imports ?? {})
+  // The window around today, with dragged meeting times applied (FR-036, FR-038).
+  const timesKey = JSON.stringify(store.state.times ?? {})
+  const rebased = useMemo(() => (files ? rebaseFiles(files, now, store.state.times) : null), [files, timesKey]) // eslint-disable-line react-hooks/exhaustive-deps
   const [base, importError] = useMemo((): [Model | null, string | null] => {
-    if (!files) return [null, null]
+    if (!rebased) return [null, null]
     try {
-      const { model, skipped } = buildWithImports(files, store.state.imports ?? {})
+      const { model, skipped } = buildWithImports(rebased, store.state.imports ?? {}, now)
       return [model, skipped.length ? `An imported transcript could not be applied (${skipped.join(', ')}). Remove it from Import.` : null]
     } catch (e) {
       setTimeout(() => setError(e as Error))
       return [null, null]
     }
-  }, [files, importsKey]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [rebased, importsKey]) // eslint-disable-line react-hooks/exhaustive-deps
   // The lead's names and order on top (FR-035).
   const customKey = JSON.stringify(store.state.custom ?? null)
   const loaded = useMemo(() => (base ? applyCustom(base, store.state.custom) : null), [base, customKey]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -139,17 +146,37 @@ export default function App() {
   }
   // Validates before saving, so a bad import never lands. Returns why it was refused.
   const applyOne = (imp: Import): string | null => {
-    if (!files) return 'Still loading'
+    if (!rebased) return 'Still loading'
     try {
-      let f = files
+      let f = rebased
       for (const other of Object.values(store.state.imports ?? {})) if (other.transcript.eventId !== imp.transcript.eventId) f = applyImport(f, other)
       f = applyImport(f, imp)
-      buildModel(f.calendar, f.transcripts, f.annotations)
+      buildModel(f.calendar, f.transcripts, f.annotations, now)
     } catch (e) {
       return (e as Error).message
     }
     save((s) => ({ ...s, imports: { ...s.imports, [imp.transcript.eventId]: imp } }))
     return null
+  }
+  // Rename and reorder rows in place on the canvas (FR-035); the people view's rows aren't editable.
+  const editCustom = (fn: (c: Custom) => Custom) => save((s) => ({ ...s, custom: fn(s.custom ?? emptyCustom()) }))
+  const rowEditing = (pivot: Pivot): RowEditing | null => {
+    if (!base || pivot === 'people') return null
+    const kind = pivot
+    return {
+      original: (id) =>
+        kind === 'project' ? (base.projects.find((p) => p.id === id)?.name ?? id)
+        : kind === 'theme' ? (base.themes.find((t) => t.id === id)?.name ?? id)
+        : base.typeLabels[id as MeetingType],
+      onRename: (id, name) =>
+        editCustom((c) => {
+          const labels = { ...c.labels[kind] }
+          if (name) labels[id] = name
+          else delete labels[id]
+          return { ...c, labels: { ...c.labels, [kind]: labels } }
+        }),
+      onReorder: (ids) => editCustom((c) => ({ ...c, order: { ...c.order, [kind]: ids } })),
+    }
   }
   const resetAll = () => {
     store.reset()
@@ -165,16 +192,20 @@ export default function App() {
   // Focusing a suggestion from anywhere opens the queue, so its accept and dismiss controls are at hand.
   const setFocus = useCallback((focus: Focus) => setView((v) => ({ ...v, focus, queueOpen: v.queueOpen || focus?.kind === 'suggestion' })), [])
   const open = useCallback(
-    (name: 'person' | 'meeting' | 'theme', id: string) =>
+    (name: 'person' | 'meeting' | 'theme' | 'project', id: string) =>
       setView((v) => ({ ...v, privacyOpen: false, route: { name, id, fromPage: v.route.name !== 'canvas' } })),
     [],
   )
   const openPerson = useCallback((id: string) => open('person', id), [open])
   const openMeeting = useCallback((id: string) => open('meeting', id), [open])
   const openTheme = useCallback((id: string) => open('theme', id), [open])
+  const openProject = useCallback((id: string) => open('project', id), [open])
   // Closing the queue lets go of its item too, so the canvas isn't left dimmed for no visible reason.
   const setQueueOpen = (open: boolean) =>
     setView((v) => ({ ...v, queueOpen: open, focus: !open && v.focus?.kind === 'suggestion' ? null : v.focus }))
+  // On a detail page the switcher shows the page's kind and can't be changed (FR-040): switching the
+  // calendar underneath a page would leave the two out of step.
+  const pagePivot: Pivot | null = view.route.name === 'canvas' ? null : ({ person: 'people', theme: 'theme', project: 'project', meeting: 'type' } as const)[view.route.name]
   const toCanvas = useCallback(() => setView((v) => ({ ...v, route: { name: 'canvas' } })), [])
   // From any card or page: back to the calendar with the suggestion in focus, and the queue open on it.
   const showInQueue = useCallback(
@@ -200,7 +231,13 @@ export default function App() {
         </div>
         <nav className="pivots" aria-label="Arrange meetings by">
           {PIVOTS.map((p) => (
-            <button key={p.id} aria-pressed={view.pivot === p.id} onClick={() => setView({ ...view, pivot: p.id })}>
+            <button
+              key={p.id}
+              aria-pressed={(pagePivot ?? view.pivot) === p.id}
+              disabled={!!pagePivot}
+              title={pagePivot ? 'Back to the calendar to switch views' : undefined}
+              onClick={() => setView({ ...view, pivot: p.id })}
+            >
               {p.label}
             </button>
           ))}
@@ -244,6 +281,9 @@ export default function App() {
               onOpenTheme={openTheme}
               onToggleHidden={toggleHidden}
               onShowInQueue={showInQueue}
+              rowEditing={rowEditing}
+              onOpenProject={openProject}
+              onRetime={(id, t) => save((s) => ({ ...s, times: { ...s.times, [id]: t } }))}
             />
             <nav className="legend" aria-label="Key">
               <ConnectorKey />
@@ -337,6 +377,22 @@ export default function App() {
               onClose={toCanvas}
               onOpenPerson={openPerson}
               onOpenMeeting={openMeeting}
+              onOpenProject={openProject}
+              onShowInQueue={showInQueue}
+            />
+          )}
+          {view.route.name === 'project' && (
+            <ProjectPage
+              key={`project:${view.route.id}`}
+              model={model}
+              projectId={view.route.id}
+              suggestions={suggestions}
+              doneItems={doneItems}
+              fromPage={view.route.fromPage}
+              onClose={toCanvas}
+              onOpenPerson={openPerson}
+              onOpenMeeting={openMeeting}
+              onOpenTheme={openTheme}
               onShowInQueue={showInQueue}
             />
           )}
@@ -369,10 +425,8 @@ export default function App() {
           <AnimatePresence>
             {view.demoOpen && base && (
               <DemoPanel
-                base={base}
-                model={loaded}
-                custom={store.state.custom}
-                onChange={(custom) => save((s) => ({ ...s, custom }))}
+                customized={!!store.state.custom}
+                onRestore={() => save((s) => ({ ...s, custom: undefined }))}
                 onReset={resetAll}
                 onClose={() => setView({ ...view, demoOpen: false })}
               />

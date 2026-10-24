@@ -61,6 +61,7 @@ export type Meeting = {
   agenda: AgendaItem[]
   transcript: Turn[] | null
   transcriptHidden?: boolean // the lead hid it (FR-036); `transcript` is then null
+  upcoming?: boolean // starts after now: no transcript yet, and the only kind a suggestion can target or the lead can move
 }
 
 export type Theme = {
@@ -110,6 +111,7 @@ export type Model = {
   actionItems: ActionItem[]
   typeLabels: Record<MeetingType, string>
   typeOrder: MeetingType[]
+  now?: Date // the real time the window is built around; absent in fixed test data
   excludedPersonIds?: Set<string> // left out of suggestions (FR-037), set by applyPrivacy
 }
 

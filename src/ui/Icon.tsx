@@ -3,6 +3,7 @@ const PATHS = {
   close: 'M4.5 4.5l7 7m0-7l-7 7',
   back: 'M10 3.5L5.5 8l4.5 4.5',
   check: 'M3.5 8.5l3 3 6-7',
+  edit: 'M10.5 3.5l2 2L6 12H4v-2l6.5-6.5z',
   elbow: 'M4 2.5v5.5h8m-2.5-2.5L12 8l-2.5 2.5',
 } as const
 

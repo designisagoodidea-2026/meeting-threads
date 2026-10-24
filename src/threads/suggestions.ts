@@ -22,7 +22,8 @@ export function isTopicOf(model: Model, m: Meeting, themeId: string): boolean {
 // Anything else gets no target: it needs its own meeting. Shared by the suggestions and their reasons.
 export function pickTarget(model: Model, fromMeetingId: string, people: string[], themeId: string | null) {
   const from = model.meetingById.get(fromMeetingId)!
-  const later = model.meetings.filter((m) => +m.start > +from.start)
+  // Only meetings still ahead: an agenda that already happened can't take anything (FR-036).
+  const later = model.meetings.filter((m) => +m.start > +from.start && (!model.now || +m.start > +model.now))
   const with_ = (m: Meeting) => people.find((p) => m.attendeeIds.includes(p)) ?? null
   const pick = (basis: Basis, m: Meeting | undefined, person = m ? with_(m) : null) => (m ? { target: m, basis, person } : null)
   return (

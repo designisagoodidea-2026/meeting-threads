@@ -1,5 +1,6 @@
 import type { Custom } from './data/custom'
 import type { Import } from './data/extract'
+import type { TimeOverride } from './data/load'
 import type { RelationshipNote } from './data/types'
 
 // Persisted state, per specs/005-meeting-threads/contracts/ui-state.md.
@@ -11,6 +12,7 @@ export type Persisted = {
   guideDone?: boolean // the first-run tour was finished or skipped
   imports?: Record<string, Import> // pasted transcripts by meeting id (spec 006 FR-032)
   custom?: Custom // names and order for projects, themes and meeting types (FR-035)
+  times?: Record<string, TimeOverride> // meetings the lead dragged to new times (FR-038)
 }
 
 export const KEY = 'meeting-threads:v1'

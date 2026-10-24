@@ -60,6 +60,7 @@ export function buildModel(
   calendar: CalendarFile,
   transcripts: Record<string, TranscriptFile>,
   annotations: AnnotationsFile,
+  now?: Date, // when given, meetings that start after it are upcoming
 ): Model {
   const tz = calendar.timeZone
   const days = workingDays(annotations.window.start, annotations.window.end)
@@ -124,6 +125,7 @@ export function buildModel(
       themeIds: [...ann.themeIds],
       agenda,
       transcript,
+      upcoming: now ? +start > +now : false,
     })
   }
   if (leads.size !== 1)
@@ -160,7 +162,64 @@ export function buildModel(
     return { ...a, status: a.status }
   })
 
-  return { timeZone: tz, days, people, leadId, meetings, meetingById, themes, projects, actionItems, typeLabels: { ...TYPE_LABELS }, typeOrder: [...MEETING_TYPES] }
+  return { timeZone: tz, days, people, leadId, meetings, meetingById, themes, projects, actionItems, typeLabels: { ...TYPE_LABELS }, typeOrder: [...MEETING_TYPES], now }
+}
+
+// The UTC instant of a local wall-clock time in a zone, daylight saving included.
+export function zoned(day: string, minutes: number, timeZone: string): Date {
+  const [y, mo, d] = day.split('-').map(Number)
+  const wall = Date.UTC(y, mo - 1, d, Math.floor(minutes / 60), minutes % 60)
+  const offset = (t: number) => {
+    const p = fmt(`z:${timeZone}`, () => new Intl.DateTimeFormat('en-US', { timeZone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' })).formatToParts(new Date(t))
+    const g = (k: string) => Number(p.find((x) => x.type === k)!.value)
+    return Date.UTC(g('year'), g('month') - 1, g('day'), g('hour'), g('minute')) - t
+  }
+  const first = wall - offset(wall)
+  return new Date(wall - offset(first))
+}
+
+const addDays = (day: string, n: number) => {
+  const d = new Date(`${day}T12:00:00Z`)
+  d.setUTCDate(d.getUTCDate() + n)
+  return d.toISOString().slice(0, 10)
+}
+const weekend = (day: string) => [0, 6].includes(new Date(`${day}T12:00:00Z`).getUTCDay())
+
+// A dragged meeting: which day of the window and its local start and end, in minutes (FR-038).
+export type TimeOverride = { day: number; start: number; end: number }
+type Files = { calendar: CalendarFile; transcripts: Record<string, TranscriptFile>; annotations: AnnotationsFile }
+
+// Puts the two weeks around the real date (FR-036): two working days already past, then today. Each
+// meeting keeps its working-day position and local time. Only meetings that have ended keep a
+// transcript, and only those keep their action items: nothing is recorded before it happens.
+export function rebaseFiles(files: Files, now: Date, times: Record<string, TimeOverride> = {}): Files {
+  const tz = files.calendar.timeZone
+  const from = workingDays(files.annotations.window.start, files.annotations.window.end)
+  let start = localDate(now, tz)
+  for (let past = 0; past < 2; ) {
+    start = addDays(start, -1)
+    if (!weekend(start)) past++
+  }
+  const days: string[] = []
+  for (let d = start; days.length < from.length; d = addDays(d, 1)) if (!weekend(d)) days.push(d)
+
+  const items = files.calendar.items.map((ev) => {
+    if (!ev.start.dateTime || !ev.end.dateTime) return ev
+    const s = new Date(ev.start.dateTime)
+    const e = new Date(ev.end.dateTime)
+    const t = times[ev.id] ?? { day: from.indexOf(localDate(s, tz)), start: localMinutes(s, tz), end: localMinutes(s, tz) + (+e - +s) / 60e3 }
+    return { ...ev, start: { dateTime: zoned(days[t.day], t.start, tz).toISOString() }, end: { dateTime: zoned(days[t.day], t.end, tz).toISOString() } }
+  })
+  const ended = new Set(items.filter((ev) => ev.end.dateTime && +new Date(ev.end.dateTime) <= +now).map((ev) => ev.id))
+  return {
+    calendar: { ...files.calendar, items },
+    transcripts: Object.fromEntries(Object.entries(files.transcripts).filter(([id]) => ended.has(id))),
+    annotations: {
+      ...files.annotations,
+      window: { start: days[0], end: days[days.length - 1] },
+      actionItems: files.annotations.actionItems.filter((a) => ended.has(a.meetingId)),
+    },
+  }
 }
 
 // Browser entry: the bundled synthetic set. Swapping in real exports means replacing these files.

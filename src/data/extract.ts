@@ -186,17 +186,18 @@ export function applyImport(files: Files, imp: Import): Files {
 
 // The model from the bundled files plus saved imports. An import that no longer applies (its meeting is
 // gone, or the result fails validation) is skipped and named, so one bad import can't blank the calendar.
-export function buildWithImports(files: Files, imports: Record<string, Import>): { model: Model; skipped: string[] } {
+export function buildWithImports(files: Files, imports: Record<string, Import>, now?: Date): { model: Model; skipped: string[] } {
   let f = files
   const skipped: string[] = []
   for (const imp of Object.values(imports)) {
     try {
       const next = applyImport(f, imp)
-      buildModel(next.calendar, next.transcripts, next.annotations)
+      const built = buildModel(next.calendar, next.transcripts, next.annotations, now)
+      if (built.meetingById.get(imp.transcript.eventId)?.upcoming) throw new Error('not happened yet') // nothing is recorded before it happens
       f = next
     } catch {
       skipped.push(imp.transcript.eventId)
     }
   }
-  return { model: buildModel(f.calendar, f.transcripts, f.annotations), skipped }
+  return { model: buildModel(f.calendar, f.transcripts, f.annotations, now), skipped }
 }
