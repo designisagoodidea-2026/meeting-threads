@@ -1,3 +1,4 @@
+import type { Import } from './data/extract'
 import type { RelationshipNote } from './data/types'
 
 // Persisted state, per specs/005-meeting-threads/contracts/ui-state.md.
@@ -6,6 +7,8 @@ export type Persisted = {
   notes: RelationshipNote[]
   decisions: Record<string, { status: 'accepted' | 'dismissed'; text?: string; at: string }>
   privacy: { hiddenMeetingIds: string[]; excludedPersonIds: string[] }
+  guideDone?: boolean // the first-run tour was finished or skipped
+  imports?: Record<string, Import> // pasted transcripts by meeting id (spec 006 FR-032)
 }
 
 export const KEY = 'meeting-threads:v1'

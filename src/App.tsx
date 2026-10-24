@@ -1,18 +1,24 @@
-import { AnimatePresence } from 'motion/react'
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
-import { DataError, loadModel } from './data/load'
+import { AnimatePresence, motion } from 'motion/react'
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { applyImport, buildWithImports, type Import } from './data/extract'
+import { DataError, buildModel, loadFiles } from './data/load'
 import { applyPrivacy } from './data/privacy'
 import type { Model, RelationshipNote } from './data/types'
 import type { Pivot } from './layout/layouts'
 import { browserStorage, createStore, type Persisted } from './store'
+import { groupQueue } from './threads/queue'
 import { deriveSuggestions } from './threads/suggestions'
 import { ActionQueue } from './ui/ActionQueue'
 import { Canvas, type Focus } from './ui/Canvas'
 import { ConnectorKey } from './ui/ConnectorKey'
+import { Guide } from './ui/Guide'
 import { DeviceIndicator } from './ui/Cue'
+import { when } from './ui/format'
+import { Icon } from './ui/Icon'
 import { MeetingPage } from './ui/MeetingPage'
 import { PersonPage } from './ui/PersonPage'
 import { ThemePage } from './ui/ThemePage'
+import { ImportPanel } from './ui/ImportPanel'
 import { PrivacyPanel } from './ui/PrivacyPanel'
 import { themeColor } from './ui/theme-colors'
 
@@ -23,6 +29,7 @@ export type ViewState = {
   focus: Focus
   queueOpen: boolean
   privacyOpen: boolean
+  importOpen?: boolean
   route: Route
 }
 
@@ -48,14 +55,14 @@ const span = (days: string[]) => {
 const toggle = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id])
 
 export default function App() {
-  const [loaded, setLoaded] = useState<Model | null>(null)
+  const [files, setFiles] = useState<Awaited<ReturnType<typeof loadFiles>> | null>(null)
   const [error, setError] = useState<Error | null>(null)
   const [view, setView] = useState<ViewState>({ pivot: 'project', focus: null, queueOpen: false, privacyOpen: false, route: { name: 'canvas' } })
   const store = useMemo(() => createStore(browserStorage()), [])
   const [version, bump] = useReducer((n: number) => n + 1, 0)
 
   useEffect(() => {
-    loadModel().then(setLoaded, setError)
+    loadFiles().then(setFiles, setError)
   }, [])
 
   const save = useCallback(
@@ -65,6 +72,19 @@ export default function App() {
     },
     [store],
   )
+  // The bundled files plus any pasted transcripts, rebuilt whenever an import changes in any way.
+  // Keyed on the imports alone: rebuilding on every note or decision would redo every layout.
+  const importsKey = JSON.stringify(store.state.imports ?? {})
+  const [loaded, importError] = useMemo((): [Model | null, string | null] => {
+    if (!files) return [null, null]
+    try {
+      const { model, skipped } = buildWithImports(files, store.state.imports ?? {})
+      return [model, skipped.length ? `An imported transcript could not be applied (${skipped.join(', ')}). Remove it from Import.` : null]
+    } catch (e) {
+      setTimeout(() => setError(e as Error))
+      return [null, null]
+    }
+  }, [files, importsKey]) // eslint-disable-line react-hooks/exhaustive-deps
   const decide = (fn: (d: Persisted['decisions']) => Persisted['decisions']) => save((s) => ({ ...s, decisions: fn({ ...s.decisions }) }))
 
   // Every view reads the model with privacy applied (contracts/ui-state.md).
@@ -76,6 +96,55 @@ export default function App() {
     const turns = new Set(suggestions.filter((s) => s.status === 'accepted').flatMap((s) => s.sources.map((x) => x.turnId)))
     return new Set((model?.actionItems ?? []).filter((a) => turns.has(a.sourceTurnId)).map((a) => a.id))
   }, [suggestions, model])
+  // The last accept or dismiss, for the confirmation toast and its undo (FR-029).
+  const [change, setChange] = useState<{ id: string; status: 'accepted' | 'dismissed'; key: number } | null>(null)
+  useEffect(() => {
+    if (!change) return
+    const t = setTimeout(() => setChange(null), 8000)
+    return () => clearTimeout(t)
+  }, [change])
+  const changed = change && suggestions.find((s) => s.id === change.id && s.status === change.status)
+  const undo = (id: string) => {
+    decide((d) => { delete d[id]; return d })
+    setChange(null)
+  }
+  // U in the queue undoes the most recent decision still standing, this session.
+  const decided = useRef<string[]>([])
+  const undoLast = () => {
+    const d = store.state.decisions
+    while (decided.current.length) {
+      const id = decided.current.pop()!
+      if (d[id]) return undo(id)
+    }
+  }
+  // First-run tour: shown until finished or skipped once; step 2 onward needs the queue open on an item.
+  const [guide, setGuide] = useState<number | null>(() => (store.state.guideDone ? null : 0))
+  const guideStep = (n: number) => {
+    setGuide(n)
+    if (n >= 1) {
+      const first = model && groupQueue(model, suggestions).flatMap((g) => g.items).find((s) => s.status === 'pending' && s.targetMeetingId)
+      setView((v) => ({ ...v, route: { name: 'canvas' }, privacyOpen: false, queueOpen: true, focus: first && n === 2 ? { kind: 'suggestion', id: first.id } : v.focus }))
+    }
+  }
+  const endGuide = () => {
+    setGuide(null)
+    if (!store.state.guideDone) save((s) => ({ ...s, guideDone: true }))
+  }
+  // Validates before saving, so a bad import never lands. Returns why it was refused.
+  const applyOne = (imp: Import): string | null => {
+    if (!files) return 'Still loading'
+    try {
+      let f = files
+      for (const other of Object.values(store.state.imports ?? {})) if (other.transcript.eventId !== imp.transcript.eventId) f = applyImport(f, other)
+      f = applyImport(f, imp)
+      buildModel(f.calendar, f.transcripts, f.annotations)
+    } catch (e) {
+      return (e as Error).message
+    }
+    save((s) => ({ ...s, imports: { ...s.imports, [imp.transcript.eventId]: imp } }))
+    return null
+  }
+  const removeImport = (id: string) => save((s) => { const imports = { ...s.imports }; delete imports[id]; return { ...s, imports } })
   const pendingCount = suggestions.filter((s) => s.status === 'pending' && s.targetMeetingId).length
 
   // Focusing a suggestion from anywhere opens the queue, so its accept and dismiss controls are at hand.
@@ -94,6 +163,7 @@ export default function App() {
     (id: string) => setView((v) => ({ ...v, route: { name: 'canvas' }, privacyOpen: false, queueOpen: true, focus: { kind: 'suggestion', id } })),
     [],
   )
+  if (import.meta.env.DEV) (window as unknown as { __showInQueue: typeof showInQueue }).__showInQueue = showInQueue // browser checks only
   const toggleHidden = useCallback((id: string) => save((s) => ({ ...s, privacy: { ...s.privacy, hiddenMeetingIds: toggle(s.privacy.hiddenMeetingIds, id) } })), [save])
   const toggleExcluded = (id: string) => save((s) => ({ ...s, privacy: { ...s.privacy, excludedPersonIds: toggle(s.privacy.excludedPersonIds, id) } }))
   const saveNote = (n: RelationshipNote) => save((s) => ({ ...s, notes: [...s.notes.filter((x) => x.id !== n.id), n] }))
@@ -117,7 +187,9 @@ export default function App() {
             </button>
           ))}
         </nav>
-        <button className="device-btn" aria-pressed={view.privacyOpen} onClick={() => setView({ ...view, privacyOpen: !view.privacyOpen })}>
+        <button className="tour-btn" onClick={() => guideStep(0)} aria-pressed={guide !== null}>Tour</button>
+        <button className="tour-btn import-btn" onClick={() => setView({ ...view, privacyOpen: false, importOpen: !view.importOpen })} aria-pressed={!!view.importOpen}>Import</button>
+        <button className="device-btn" aria-pressed={view.privacyOpen} onClick={() => setView({ ...view, importOpen: false, privacyOpen: !view.privacyOpen })}>
           <DeviceIndicator saved={store.saved} />
         </button>
         <button className="queue-btn" aria-pressed={view.queueOpen} onClick={() => setView({ ...view, queueOpen: !view.queueOpen })}>
@@ -125,6 +197,7 @@ export default function App() {
         </button>
       </header>
       {store.banner && <div className="banner">{store.banner}</div>}
+      {importError && <div className="banner">{importError}</div>}
       {error ? (
         <div className="error" role="alert">
           <h2>The data could not be loaded</h2>
@@ -183,9 +256,20 @@ export default function App() {
                 suggestions={suggestions}
                 focusedId={view.focus?.kind === 'suggestion' ? view.focus.id : null}
                 onFocus={(id) => setFocus({ kind: 'suggestion', id })}
-                onAccept={(id, text) => decide((d) => ({ ...d, [id]: { status: 'accepted', ...(text ? { text } : {}), at: new Date().toISOString() } }))}
-                onDismiss={(id) => decide((d) => ({ ...d, [id]: { status: 'dismissed', at: new Date().toISOString() } }))}
-                onReset={(id) => decide((d) => { delete d[id]; return d })}
+                onAccept={(id, text) => {
+                  decide((d) => ({ ...d, [id]: { status: 'accepted', ...(text ? { text } : {}), at: new Date().toISOString() } }))
+                  setChange({ id, status: 'accepted', key: Date.now() })
+                  decided.current.push(id)
+                  setFocus({ kind: 'suggestion', id }) // the canvas brings the now-solid line into view
+                }}
+                onDismiss={(id) => {
+                  decide((d) => ({ ...d, [id]: { status: 'dismissed', at: new Date().toISOString() } }))
+                  setChange({ id, status: 'dismissed', key: Date.now() })
+                  decided.current.push(id)
+                }}
+                onReset={undo}
+                onUndoLast={undoLast}
+                keysActive={view.route.name === 'canvas' && !view.importOpen && !view.privacyOpen && guide === null}
                 onClose={() => setView({ ...view, queueOpen: false })}
               />
             )}
@@ -237,6 +321,43 @@ export default function App() {
               onShowInQueue={showInQueue}
             />
           )}
+          {guide !== null && <Guide step={guide} onStep={guideStep} onClose={endGuide} />}
+          <div className="toast-slot" role="status" aria-live="polite">
+            <AnimatePresence>
+              {changed && (
+                <motion.div
+                  key={change!.key}
+                  className="toast"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8, transition: { duration: 0.15 } }}
+                >
+                  <span>
+                    {changed.status === 'accepted' ? (
+                      <>
+                        Added to the agenda for <b>{model.meetingById.get(changed.targetMeetingId!)!.title}</b>, {when(model.meetingById.get(changed.targetMeetingId!)!, model.timeZone)}
+                      </>
+                    ) : (
+                      <>Dismissed “{changed.text}”</>
+                    )}
+                  </span>
+                  <button onClick={() => undo(changed.id)}>Undo</button>
+                  <button className="pop-close" onClick={() => setChange(null)} aria-label="Close"><Icon name="close" /></button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          <AnimatePresence>
+            {view.importOpen && (
+              <ImportPanel
+                model={loaded}
+                imports={store.state.imports ?? {}}
+                onApply={applyOne}
+                onRemove={removeImport}
+                onClose={() => setView({ ...view, importOpen: false })}
+              />
+            )}
+          </AnimatePresence>
           <AnimatePresence>
             {view.privacyOpen && (
               <PrivacyPanel

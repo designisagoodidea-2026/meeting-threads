@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import type { Model, Suggestion } from '../data/types'
+import { groupQueue, step } from '../threads/queue'
 import { whySuggested } from '../threads/why'
 import { Cue } from './Cue'
 import { Icon } from './Icon'
@@ -14,12 +15,17 @@ type Props = {
   onAccept: (id: string, text?: string) => void
   onDismiss: (id: string) => void
   onReset: (id: string) => void
+  onUndoLast: () => void
+  keysActive: boolean // false while a page, panel or the tour is up, so keys never act on a queue you can't see
   onClose: () => void
 }
 
-export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, onDismiss, onReset, onClose }: Props) {
+export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, onDismiss, onReset, onUndoLast, keysActive, onClose }: Props) {
+  // Grouped by the meeting each item lands on (FR-030). Accepted items stay in place, showing the
+  // change, so the result and its undo are in view (FR-029).
   const pending = suggestions.filter((s) => s.status === 'pending' && s.targetMeetingId)
-  const orphans = suggestions.filter((s) => s.status === 'pending' && !s.targetMeetingId)
+  const groups = groupQueue(model, suggestions)
+  const order = groups.flatMap((g) => g.items.map((s) => s.id))
   const accepted = suggestions.filter((s) => s.status === 'accepted')
   const dismissed = suggestions.filter((s) => s.status === 'dismissed')
   const [showDone, setShowDone] = useState(false)
@@ -27,6 +33,7 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
   const listRef = useRef<HTMLDivElement>(null)
   // Clicks inside the queue also set focus; only arrivals from elsewhere should scroll and flash.
   const fromHere = useRef(false)
+  const fromKeys = useRef(false)
   const focusHere = (id: string) => {
     fromHere.current = true
     onFocus(id)
@@ -35,12 +42,20 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
   // Arriving from anywhere with a suggestion in focus: open its section, scroll to it, and flash it.
   useEffect(() => {
     if (!focusedId) return
+    if (fromKeys.current) {
+      fromKeys.current = false
+      // Move real focus too, so a screen reader announces the item (it carries aria-current).
+      const el = listRef.current?.querySelector<HTMLElement>(`[data-sid="${CSS.escape(focusedId)}"]`)
+      el?.focus({ preventScroll: true })
+      el?.scrollIntoView({ block: 'nearest' })
+      return
+    }
     if (fromHere.current) {
       fromHere.current = false
       return
     }
     const s = suggestions.find((x) => x.id === focusedId)
-    if (s && s.status !== 'pending') setShowDone(true)
+    if (s && s.status === 'dismissed') setShowDone(true)
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
     const t = setTimeout(() => {
       const box = listRef.current
@@ -58,6 +73,36 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
       clearTimeout(off)
     }
   }, [focusedId]) // eslint-disable-line react-hooks/exhaustive-deps
+  // Keyboard triage (FR-030): J/K move, A accepts, D dismisses (both move on), U undoes the last decision.
+  const keys = useRef({ order, focusedId, suggestions, onAccept, onDismiss, onUndoLast, onFocus, keysActive })
+  keys.current = { order, focusedId, suggestions, onAccept, onDismiss, onUndoLast, onFocus, keysActive }
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const k = keys.current
+      const elsewhere = e.target instanceof Element && e.target.closest('input, textarea, select, [contenteditable="true"], [role="dialog"]')
+      if (!k.keysActive || e.metaKey || e.ctrlKey || e.altKey || elsewhere) return
+      const cur = k.suggestions.find((s) => s.id === k.focusedId)
+      const go = (id: string | null) => {
+        if (!id || id === k.focusedId) return // nothing moves, so no focus effect runs to clear the flag
+        fromKeys.current = true
+        k.onFocus(id)
+      }
+      const key = e.key.toLowerCase()
+      if (key === 'j' || key === 'k') go(step(k.order, cur ? cur.id : null, key === 'j' ? 1 : -1))
+      else if (key === 'a' && cur?.status === 'pending' && cur.targetMeetingId) {
+        k.onAccept(cur.id)
+        go(step(k.order, cur.id, 1))
+      } else if (key === 'd' && cur?.status === 'pending') {
+        const next = step(k.order, cur.id, 1)
+        k.onDismiss(cur.id)
+        go(next !== cur.id ? next : step(k.order, cur.id, -1))
+      } else if (key === 'u') k.onUndoLast()
+      else return
+      e.preventDefault()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
   return (
     <motion.aside
       className="queue"
@@ -68,32 +113,49 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
     >
       <header>
         <h2>Action queue</h2>
-        <span className="count">{pending.length} to review</span>
+        <span className="count">{pending.length} to review{accepted.length > 0 && ` · ${accepted.length} on agendas`}</span>
         <button className="pop-close" onClick={onClose} aria-label="Close action queue"><Icon name="close" /></button>
       </header>
-      <p className="queue-note">Suggested agenda items, drawn from what was said in earlier meetings. Nothing changes on a meeting until you accept.</p>
+      <p className="queue-note">
+        Suggested agenda items, drawn from what was said in earlier meetings, grouped by the meeting they'd go to. Nothing changes on a meeting until you accept.
+        <span className="queue-keys"><kbd>J</kbd><kbd>K</kbd> move · <kbd>A</kbd> accept · <kbd>D</kbd> dismiss · <kbd>U</kbd> undo</span>
+      </p>
       <div className="queue-scroll" ref={listRef}>
-      <ul className="queue-list">
-        {pending.map((s) => (
-          <QueueItem key={s.id} model={model} s={s} focused={focusedId === s.id} flash={flash === s.id} onFocus={focusHere} onAccept={onAccept} onDismiss={onDismiss} />
-        ))}
-        {orphans.length > 0 && <li className="queue-sub">Needs its own meeting</li>}
-        {orphans.map((s) => (
-          <QueueItem key={s.id} model={model} s={s} focused={focusedId === s.id} flash={flash === s.id} onFocus={focusHere} onAccept={onAccept} onDismiss={onDismiss} />
-        ))}
-      </ul>
-      <button className="queue-toggle" onClick={() => setShowDone(!showDone)} aria-expanded={showDone}>
-        {showDone ? 'Hide' : 'Show'} accepted ({accepted.length}) and dismissed ({dismissed.length})
-      </button>
-      {showDone && (
+      {groups.map((g) => {
+        const m = g.meetingId ? model.meetingById.get(g.meetingId)! : null
+        return (
+          <section key={g.meetingId ?? 'none'} className="queue-group" aria-label={m ? `For ${m.title}` : 'Needs its own meeting'}>
+            <h3 className="queue-sub">
+              <span>{m ? m.title : 'Needs its own meeting'}</span>
+              {m && <span className="when">{when(m, model.timeZone)}</span>}
+              <span className="n">{g.toReview > 0 ? `${g.toReview} to review` : 'done'}</span>
+            </h3>
+            <ul className="queue-list">
+              {g.items.map((s) =>
+                s.status === 'accepted' ? (
+                  <AcceptedItem key={s.id} model={model} s={s} focused={focusedId === s.id} flash={flash === s.id} onFocus={focusHere} onUndo={onReset} />
+                ) : (
+                  <QueueItem key={s.id} model={model} s={s} focused={focusedId === s.id} flash={flash === s.id} onFocus={focusHere} onAccept={onAccept} onDismiss={onDismiss} />
+                ),
+              )}
+            </ul>
+          </section>
+        )
+      })}
+      {dismissed.length > 0 && (
+        <button className="queue-toggle" onClick={() => setShowDone(!showDone)} aria-expanded={showDone}>
+          {showDone ? 'Hide' : 'Show'} dismissed ({dismissed.length})
+        </button>
+      )}
+      {showDone && dismissed.length > 0 && (
         <ul className="queue-list done">
-          {[...accepted, ...dismissed].map((s) => (
+          {dismissed.map((s) => (
             <li key={s.id} data-sid={s.id} className={`qi ${s.status}${focusedId === s.id ? ' focused' : ''}${flash === s.id ? ' flash' : ''}`} onClick={() => focusHere(s.id)}>
               <div className="qi-text">{s.text}</div>
               <Route model={model} s={s} />
-              <div className="qi-status">{s.status === 'accepted' ? 'On the agenda' : 'Dismissed'}</div>
+              <div className="qi-status">Dismissed</div>
               <div className="qi-actions">
-                <button onClick={(e) => { e.stopPropagation(); onReset(s.id) }}>{s.status === 'accepted' ? 'Undo' : 'Restore'}</button>
+                <button onClick={(e) => { e.stopPropagation(); onReset(s.id) }}>Restore</button>
               </div>
             </li>
           ))}
@@ -104,7 +166,7 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
   )
 }
 
-function Route({ model, s }: { model: Model; s: Suggestion }) {
+function Route({ model, s, from = false }: { model: Model; s: Suggestion; from?: boolean }) {
   const tz = model.timeZone
   const target = s.targetMeetingId ? model.meetingById.get(s.targetMeetingId)! : null
   return (
@@ -112,7 +174,7 @@ function Route({ model, s }: { model: Model; s: Suggestion }) {
       <span>
         From {s.sources.map((x) => { const m = model.meetingById.get(x.meetingId)!; return `${m.title} (${when(m, tz)})` }).join(' and ')}
       </span>
-      <span>{target ? `To ${target.title} (${when(target, tz)})` : 'Needs its own meeting'}</span>
+      {!from && <span>{target ? `To ${target.title} (${when(target, tz)})` : 'Needs its own meeting'}</span>}
     </div>
   )
 }
@@ -130,7 +192,7 @@ function QueueItem(props: {
   const [draft, setDraft] = useState<string | null>(null)
   const who = names(model, s.visibleTo, 3)
   return (
-    <li data-sid={s.id} className={`qi${focused ? ' focused' : ''}${flash ? ' flash' : ''}${s.targetMeetingId ? '' : ' orphan'}`} onClick={() => onFocus(s.id)}>
+    <li data-sid={s.id} className={`qi${focused ? ' focused' : ''}${flash ? ' flash' : ''}${s.targetMeetingId ? '' : ' orphan'}`} tabIndex={-1} aria-current={focused || undefined} onClick={() => onFocus(s.id)}>
       {draft === null ? (
         <div className="qi-text">{s.text}</div>
       ) : (
@@ -144,8 +206,8 @@ function QueueItem(props: {
           onChange={(e) => setDraft(e.target.value)}
         />
       )}
-      <Why model={model} s={s} />
-      <Route model={model} s={s} />
+      <Why model={model} s={s} brief={!focused} />
+      <Route model={model} s={s} from />
       <div className="qi-foot">
         {s.sources.length > 1 && <span className="qi-merged">{s.sources.length} sources</span>}
         {s.targetMeetingId && who.length ? <Cue kind="shared-on-accept" names={who} /> : <Cue kind="private" />}
@@ -175,9 +237,46 @@ function QueueItem(props: {
   )
 }
 
+// An accepted item, in place: what changed on which agenda, who can now see it, and the quote behind it.
+function AcceptedItem(props: { model: Model; s: Suggestion; focused: boolean; flash: boolean; onFocus: (id: string) => void; onUndo: (id: string) => void }) {
+  const { model, s, focused, flash, onFocus, onUndo } = props
+  const target = model.meetingById.get(s.targetMeetingId!)!
+  const turns = new Set(s.sources.map((x) => x.turnId))
+  const item = model.actionItems.find((a) => turns.has(a.sourceTurnId))
+  return (
+    <li data-sid={s.id} className={`qi accepted${focused ? ' focused' : ''}${flash ? ' flash' : ''}`} tabIndex={-1} aria-current={focused || undefined} onClick={() => onFocus(s.id)}>
+      <div className="qi-done-head">
+        <Icon name="check" size={13} />
+        Added to {target.title}, {when(target, model.timeZone)}
+      </div>
+      <div className="qi-change" aria-label="Agenda change">
+        <span className="qi-plus" aria-hidden="true">+</span>
+        {s.text}
+      </div>
+      <Why model={model} s={s} brief={!focused} />
+      <ul className="qi-effects">
+        {item && <li>Action item for {item.ownerId === model.leadId ? 'you' : speakerName(model, item.ownerId)} now committed to this meeting</li>}
+        <li><Cue kind="shared" names={names(model, s.visibleTo, 3)} /></li>
+      </ul>
+      <div className="qi-actions" onClick={(e) => e.stopPropagation()}>
+        <button onClick={() => onUndo(s.id)}>Undo</button>
+      </div>
+    </li>
+  )
+}
+
 // What prompted the suggestion and why it points where it does (spec 006 FR-027).
-function Why({ model, s }: { model: Model; s: Suggestion }) {
+// Brief (unfocused): one line naming who said it, so a long queue scans quickly.
+function Why({ model, s, brief = false }: { model: Model; s: Suggestion; brief?: boolean }) {
   const w = whySuggested(model, s)
+  if (brief) {
+    const q = w.quotes[0]
+    return q ? (
+      <p className="qi-brief">
+        <b>{speakerName(model, q.turn.speakerId)}:</b> “{q.turn.text}”
+      </p>
+    ) : null
+  }
   return (
     <div className="qi-why">
       {w.quotes.map(({ meetingId, turn }) => (

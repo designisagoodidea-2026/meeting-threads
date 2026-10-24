@@ -163,11 +163,11 @@ export function buildModel(
 }
 
 // Browser entry: the bundled synthetic set. Swapping in real exports means replacing these files.
-export async function loadModel(): Promise<Model> {
+export async function loadFiles() {
   const calendar = (await import('../../data/calendar.json')).default as CalendarFile
   const annotations = (await import('../../data/annotations.json')).default as AnnotationsFile
   const files = import.meta.glob<{ default: TranscriptFile }>('../../data/transcripts/*.json', { eager: true })
   const transcripts: Record<string, TranscriptFile> = {}
   for (const f of Object.values(files)) transcripts[f.default.eventId] = f.default
-  return buildModel(calendar, transcripts, annotations)
+  return { calendar, transcripts, annotations }
 }
