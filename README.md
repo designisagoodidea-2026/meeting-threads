@@ -6,13 +6,13 @@ Meeting Threads puts two weeks of meetings on one canvas and draws the topics th
 
 ## What it does
 
-- **Two weeks around today.** The dates follow the real calendar: two working days already happened, the rest is coming up. Only meetings that have ended have transcripts, and suggestions only land on upcoming agendas. A line marks now.
+- **Two weeks around today.** The dates follow the real calendar: two working days already happened, the rest is coming up. It opens on today, with the day before just in view. Only meetings that have ended have transcripts, and suggestions only land on upcoming agendas. A line marks now.
 - **Four views of the same two weeks.** Project (the default), people, meeting type and theme. Switching animates every meeting to its new place.
 - **Themes as threads.** A theme is a concern that runs through several projects, such as Activation or Component consistency. Each theme is drawn as a line between the meetings that discussed it.
-- **Action items that say only what is known.** A dot marks the meeting where an item was raised. Once it's accepted onto a later agenda, an arrowed line runs to that meeting. Until then, a short stub ends in a "?".
-- **A queue you can work through.** Suggestions are grouped by the meeting they'd go to. Keys: J and K move, A accepts, D dismisses, U undoes. An accepted item stays in place showing what changed on which agenda, with Undo.
+- **Action items that say only what is known.** A dot marks the meeting where an item was raised. Once it's added to a later agenda, an arrowed line runs to that meeting. Until then, a short stub ends in a "?".
+- **A queue you can work through.** Suggestions are grouped by the meeting they'd go to. Each shows the exact line it would add and who would see it, and its button names the meeting ("Add to Research ops sync"). Theme follow-ups quote whoever raised the theme. Keys: J and K move, A adds, D dismisses, U undoes. An added item stays in place showing what changed, with Undo.
 - **Suggested agenda items, with reasons.** A suggestion only targets a later meeting for a strong reason: the topic is already on that meeting's table, the same group meets again, or it's a 1:1 with the person who owns it. Each one shows the quote that prompted it and states the reason. Anything without a strong reason is marked as needing its own meeting.
-- **Move upcoming meetings.** Drag a meeting to a new time, or drag an edge to change its start or end, in 15-minute steps. Alt+arrows do the same from the keyboard.
+- **Move upcoming meetings.** Drag a meeting to a new time, or drag an edge to change its start or end, in 15-minute steps. Alt+arrows do the same from the keyboard. A toast offers Undo, and ⌘Z (Ctrl+Z) undoes the latest move or queue decision.
 - **Pages for every meeting, theme, project and person.** Transcript, agenda, the threads through a meeting and where they go next; who carried a theme and what it produced; what you and a colleague said and what's still open.
 - **Import a real transcript.** Paste an Otter export or "Name: text" lines for one meeting, preview the speakers, themes and action items found, then add it. Plain rules run in the browser, learned from the meetings already there; they catch promises like "I'll…" and "Let me…" and miss ones phrased without a cue.
 - **A short tour** on first visit, replayable from the header.
@@ -74,5 +74,5 @@ The three input files are shaped so real exports can replace the synthetic ones:
 ## Not built yet
 
 - A zoomable time range (fixed at two weeks for now).
-- Writing accepted agenda items back to a real calendar.
+- Writing added agenda items back to a real calendar.
 - Extraction with a language model. The rule-based version needs no key and sends nothing anywhere; a model would catch more, at the cost of sending transcript text off the device.

@@ -74,7 +74,7 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
       clearTimeout(off)
     }
   }, [focusedId]) // eslint-disable-line react-hooks/exhaustive-deps
-  // Keyboard triage (FR-030): J/K move, A accepts, D dismisses (both move on), U undoes the last decision.
+  // Keyboard triage (FR-030): J/K move, A adds to the agenda, D dismisses (both move on), U undoes the last decision.
   const keys = useRef({ order, focusedId, suggestions, onAccept, onDismiss, onUndoLast, onFocus, keysActive })
   keys.current = { order, focusedId, suggestions, onAccept, onDismiss, onUndoLast, onFocus, keysActive }
   useEffect(() => {
@@ -118,8 +118,8 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
         <button className="pop-close" onClick={onClose} aria-label="Close action queue"><Icon name="close" /></button>
       </header>
       <p className="queue-note">
-        Suggested agenda items, drawn from what was said in earlier meetings, grouped by the meeting they'd go to. Nothing changes on a meeting until you accept.
-        <span className="queue-keys"><kbd>J</kbd><kbd>K</kbd> move · <kbd>A</kbd> accept · <kbd>D</kbd> dismiss · <kbd>U</kbd> undo</span>
+        Suggested agenda items, drawn from what was said in earlier meetings, grouped by the meeting they'd go to. Nothing changes on a meeting until you add it.
+        <span className="queue-keys"><kbd>J</kbd><kbd>K</kbd> move · <kbd>A</kbd> add · <kbd>D</kbd> dismiss · <kbd>U</kbd> undo</span>
       </p>
       <div className="queue-scroll" ref={listRef}>
       {groups.map((g) => {
@@ -192,38 +192,60 @@ function QueueItem(props: {
   const { model, s, focused, flash, onFocus, onAccept, onDismiss } = props
   const [draft, setDraft] = useState<string | null>(null)
   const who = names(model, s.visibleTo, 3)
-  return (
-    <li data-sid={s.id} className={`qi${focused ? ' focused' : ''}${flash ? ' flash' : ''}${s.targetMeetingId ? '' : ' orphan'}`} tabIndex={-1} aria-current={focused || undefined} onClick={() => onFocus(s.id)}>
-      {draft === null ? (
-        <div className="qi-text">{s.text}</div>
-      ) : (
+  const target = s.targetMeetingId ? model.meetingById.get(s.targetMeetingId)! : null
+  const edit = (
         <textarea
           className="qi-edit"
-          value={draft}
+          value={draft ?? ''}
           autoFocus
           onFocus={(e) => e.target.select()}
           aria-label="Agenda item text"
           onClick={(e) => e.stopPropagation()}
           onChange={(e) => setDraft(e.target.value)}
         />
+  )
+  return (
+    <li data-sid={s.id} className={`qi${focused ? ' focused' : ''}${flash ? ' flash' : ''}${s.targetMeetingId ? '' : ' orphan'}`} tabIndex={-1} aria-current={focused || undefined} onClick={() => onFocus(s.id)}>
+      {target ? (
+        // What adding it does, before you do it (FR-042): the exact line, on which agenda, and who sees it.
+        <div className="qi-preview" aria-label={`Preview: adds this line to the ${target.title} agenda`}>
+          <div className="qi-preview-head">Adds this line to the agenda</div>
+          {draft === null ? (
+            <div className="qi-line">
+              <span className="qi-bullet" aria-hidden="true">•</span>
+              <span>{s.text}</span>
+            </div>
+          ) : (
+            edit
+          )}
+          {who.length ? <Cue kind="shared-on-accept" names={who} /> : <Cue kind="private" />}
+        </div>
+      ) : draft === null ? (
+        <div className="qi-text">{s.text}</div>
+      ) : (
+        edit
       )}
       <Why model={model} s={s} brief={!focused} />
       <Route model={model} s={s} from />
-      <div className="qi-foot">
-        {s.sources.length > 1 && <span className="qi-merged">{s.sources.length} sources</span>}
-        {s.targetMeetingId && who.length ? <Cue kind="shared-on-accept" names={who} /> : <Cue kind="private" />}
-      </div>
+      {(s.sources.length > 1 || !target) && (
+        <div className="qi-foot">
+          {s.sources.length > 1 && <span className="qi-merged">{s.sources.length} sources</span>}
+          {!target && <Cue kind="private" />}
+        </div>
+      )}
       {s.targetMeetingId && (
         <div className="qi-actions" onClick={(e) => e.stopPropagation()}>
           {draft === null ? (
             <>
-              <button className="primary" onClick={() => onAccept(s.id)}>Accept</button>
+              <button className="primary add" onClick={() => onAccept(s.id)} title={`Add to the ${target!.title} agenda, ${when(target!, model.timeZone)}`}>
+                Add to {target!.title}
+              </button>
               <button onClick={() => setDraft(s.text)}>Edit</button>
               <button onClick={() => onDismiss(s.id)}>Dismiss</button>
             </>
           ) : (
             <>
-              <button className="primary" disabled={!draft.trim()} onClick={() => onAccept(s.id, draft.trim())}>Accept edited</button>
+              <button className="primary" disabled={!draft.trim()} onClick={() => onAccept(s.id, draft.trim())}>Add edited line</button>
               <button onClick={() => setDraft(null)}>Cancel</button>
             </>
           )}
@@ -269,9 +291,13 @@ function AcceptedItem(props: { model: Model; s: Suggestion; focused: boolean; fl
 // What prompted the suggestion and why it points where it does (spec 006 FR-027).
 // Brief (unfocused): one line naming who said it, so a long queue scans quickly.
 function Why({ model, s, brief = false }: { model: Model; s: Suggestion; brief?: boolean }) {
-  const w = whySuggested(model, s)
+  const w0 = whySuggested(model, s)
+  // A theme follow-up's line already quotes its speaker (FR-042); don't show the same words twice.
+  const inLine = (t: string) => s.text.includes(t.slice(0, 40))
+  const w = { ...w0, quotes: w0.quotes.filter((q) => !inLine(q.turn.text)) }
   if (brief) {
     const q = w.quotes[0]
+    if (!q && w0.quotes.length) return null // the line above already shows who said what
     return q ? (
       <p className="qi-brief">
         <b>{speakerName(model, q.turn.speakerId)}:</b> “{q.turn.text}”

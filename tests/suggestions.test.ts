@@ -118,3 +118,22 @@ describe('deriveSuggestions', () => {
     expect(out.some((s) => s.sources.some((src) => src.turnId === a.sourceTurnId) && s.id.endsWith(':stepper-audit'))).toBe(false)
   })
 })
+
+describe('theme follow-up lines (FR-042)', () => {
+  const m = model()
+  const all = deriveSuggestions(m, {})
+  const themeOnes = all.filter((s) => m.themes.some((t) => s.id.endsWith(`:${t.id}`)))
+  it('read as the theme, who said it, and their words, so the agenda line says what to pick up', () => {
+    expect(themeOnes.length).toBeGreaterThan(0)
+    for (const s of themeOnes) {
+      const theme = m.themes.find((t) => s.id.endsWith(`:${t.id}`))!
+      const turn = m.meetingById.get(s.sources[0].meetingId)!.transcript!.find((t) => t.id === s.sources[0].turnId)!
+      const first = m.people.get(turn.speakerId!)!.name.split(' ')[0]
+      expect(s.text.startsWith(`${theme.name}, from ${first}: “`)).toBe(true)
+      expect(s.text.endsWith('”')).toBe(true)
+      const quoted = s.text.slice(s.text.indexOf('“') + 1, -1)
+      expect(turn.text.startsWith(quoted.replace(/…$/, ''))).toBe(true)
+      expect(quoted.length).toBeLessThanOrEqual(141)
+    }
+  })
+})

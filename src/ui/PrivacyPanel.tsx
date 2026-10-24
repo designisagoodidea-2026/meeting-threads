@@ -33,7 +33,7 @@ export function PrivacyPanel({ model, privacy, saved, onToggleHidden, onToggleEx
           : 'This browser is not letting the app save, so changes last until you close the tab. Nothing is sent anywhere.'}
       </p>
       <p className="privacy-where">
-        Your notes are only ever visible to you. An agenda item becomes visible to a meeting's attendees once you accept it.
+        Your notes are only ever visible to you. An agenda item becomes visible to a meeting's attendees once you add it to that agenda.
       </p>
       <div className="privacy-cols">
         <section>

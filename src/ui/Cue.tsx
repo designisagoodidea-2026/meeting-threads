@@ -23,7 +23,7 @@ export function Cue(props: CueProps) {
       : props.kind === 'private'
         ? 'Only you'
         : props.kind === 'shared-on-accept'
-          ? `Visible to ${props.names.join(', ')} if accepted`
+          ? `Visible to ${props.names.join(', ')} once added`
           : props.kind === 'shared'
             ? `Visible to ${props.names.join(', ')}`
             : 'Transcript hidden'

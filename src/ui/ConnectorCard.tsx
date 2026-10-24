@@ -100,7 +100,7 @@ export function ConnectorCard({ model, explanation: e, at, view }: Props) {
             <div className="conn-commit open">
               <span className="conn-lead">Not yet committed.</span>{' '}
               {e.item.suggestedMeetingId
-                ? `Suggested for ${model.meetingById.get(e.item.suggestedMeetingId)!.title}, ${when(model.meetingById.get(e.item.suggestedMeetingId)!, tz)}. Only a suggestion until you accept it.`
+                ? `Suggested for ${model.meetingById.get(e.item.suggestedMeetingId)!.title}, ${when(model.meetingById.get(e.item.suggestedMeetingId)!, tz)}. Only a suggestion until you add it.`
                 : 'No meeting gives it a strong reason yet, so it needs its own.'}
             </div>
           )}

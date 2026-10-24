@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { applyCustom, emptyCustom, type Custom } from './data/custom'
 import { applyImport, buildWithImports, type Import } from './data/extract'
-import { DataError, buildModel, loadFiles, rebaseFiles } from './data/load'
+import { DataError, buildModel, loadFiles, rebaseFiles, type TimeOverride } from './data/load'
 import { applyPrivacy } from './data/privacy'
 import type { MeetingType, Model, RelationshipNote } from './data/types'
 import type { Pivot } from './layout/layouts'
@@ -14,7 +14,7 @@ import { Canvas, type Focus } from './ui/Canvas'
 import { ConnectorKey } from './ui/ConnectorKey'
 import { Guide } from './ui/Guide'
 import { DeviceIndicator } from './ui/Cue'
-import { when } from './ui/format'
+import { hm, when } from './ui/format'
 import { Icon } from './ui/Icon'
 import { MeetingPage } from './ui/MeetingPage'
 import { PersonPage } from './ui/PersonPage'
@@ -123,6 +123,52 @@ export default function App() {
   }
   // U in the queue undoes the most recent decision still standing, this session.
   const decided = useRef<string[]>([])
+  // Everything ⌘Z can take back, newest last (FR-041): meeting moves and queue decisions.
+  type Undoable = { kind: 'time'; id: string; prev: TimeOverride | undefined } | { kind: 'decision'; id: string }
+  const history = useRef<Undoable[]>([])
+  const [moved, setMoved] = useState<{ entry: Undoable & { kind: 'time' }; key: number } | null>(null)
+  useEffect(() => {
+    if (!moved) return
+    const t = setTimeout(() => setMoved(null), 8000)
+    return () => clearTimeout(t)
+  }, [moved])
+  const retimed = (id: string, t: TimeOverride) => {
+    const entry = { kind: 'time' as const, id, prev: store.state.times?.[id] }
+    save((s) => ({ ...s, times: { ...s.times, [id]: t } }))
+    history.current.push(entry)
+    setChange(null)
+    setMoved({ entry, key: Date.now() })
+  }
+  const undoMove = (entry: Undoable & { kind: 'time' }) => {
+    save((s) => {
+      const times = { ...s.times }
+      if (entry.prev) times[entry.id] = entry.prev
+      else delete times[entry.id]
+      return { ...s, times }
+    })
+    history.current = history.current.filter((e) => e !== entry)
+    setMoved(null)
+  }
+  const undoAny = () => {
+    while (history.current.length) {
+      const e = history.current.pop()!
+      if (e.kind === 'time') return undoMove(e)
+      if (store.state.decisions[e.id]) return undo(e.id)
+    }
+  }
+  const undoAnyRef = useRef(undoAny)
+  undoAnyRef.current = undoAny
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.metaKey || e.ctrlKey) || e.shiftKey || e.altKey || e.key.toLowerCase() !== 'z') return
+      if (e.target instanceof Element && e.target.closest('input, textarea, select, [contenteditable="true"]')) return // text fields keep their own undo
+      e.preventDefault()
+      undoAnyRef.current()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+  const mac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)
   const undoLast = () => {
     const d = store.state.decisions
     while (decided.current.length) {
@@ -182,7 +228,9 @@ export default function App() {
     store.reset()
     bump()
     decided.current = []
+    history.current = []
     setChange(null)
+    setMoved(null)
     setView({ pivot: 'project', focus: null, queueOpen: false, privacyOpen: false, route: { name: 'canvas' } })
     setGuide(0)
   }
@@ -283,7 +331,7 @@ export default function App() {
               onShowInQueue={showInQueue}
               rowEditing={rowEditing}
               onOpenProject={openProject}
-              onRetime={(id, t) => save((s) => ({ ...s, times: { ...s.times, [id]: t } }))}
+              onRetime={retimed}
             />
             <nav className="legend" aria-label="Key">
               <ConnectorKey />
@@ -318,13 +366,17 @@ export default function App() {
                 onAccept={(id, text) => {
                   decide((d) => ({ ...d, [id]: { status: 'accepted', ...(text ? { text } : {}), at: new Date().toISOString() } }))
                   setChange({ id, status: 'accepted', key: Date.now() })
+                  setMoved(null)
                   decided.current.push(id)
+                  history.current.push({ kind: 'decision', id })
                   setFocus({ kind: 'suggestion', id }) // the canvas brings the now-solid line into view
                 }}
                 onDismiss={(id) => {
                   decide((d) => ({ ...d, [id]: { status: 'dismissed', at: new Date().toISOString() } }))
                   setChange({ id, status: 'dismissed', key: Date.now() })
+                  setMoved(null)
                   decided.current.push(id)
+                  history.current.push({ kind: 'decision', id })
                 }}
                 onReset={undo}
                 onUndoLast={undoLast}
@@ -418,6 +470,23 @@ export default function App() {
                   </span>
                   <button onClick={() => undo(changed.id)}>Undo</button>
                   <button className="pop-close" onClick={() => setChange(null)} aria-label="Close"><Icon name="close" /></button>
+                </motion.div>
+              )}
+              {moved && model.meetingById.get(moved.entry.id) && (
+                <motion.div
+                  key={moved.key}
+                  className="toast"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8, transition: { duration: 0.15 } }}
+                >
+                  <span>
+                    Moved <b>{model.meetingById.get(moved.entry.id)!.title}</b> to {when(model.meetingById.get(moved.entry.id)!, model.timeZone)}–{hm(model.meetingById.get(moved.entry.id)!.end, model.timeZone)}
+                  </span>
+                  <button onClick={() => undoMove(moved.entry)}>
+                    Undo <kbd className="toast-kbd">{mac ? '⌘Z' : 'Ctrl+Z'}</kbd>
+                  </button>
+                  <button className="pop-close" onClick={() => setMoved(null)} aria-label="Close"><Icon name="close" /></button>
                 </motion.div>
               )}
             </AnimatePresence>

@@ -773,3 +773,13 @@ kbd { display: inline-block; min-width: 1.5em; padding: 0 4px; margin-right: 2px
 .pivots button:disabled:not([aria-pressed='true']) { opacity: 0.4; }
 .project-page .theme-chip { width: fit-content; align-self: flex-start; justify-self: start; }
 .project-page .mention-turns.chip-row { display: flex; flex-flow: row wrap; gap: 6px; }
+.toast .toast-kbd { margin-left: 6px; background: transparent; border-color: color-mix(in oklab, var(--bg) 40%, transparent); color: inherit; }
+
+/* What adding a suggestion does, shown before you do it (FR-042) */
+.qi-preview { display: grid; gap: 5px; padding: 8px 10px 9px; border-radius: var(--r-md); border: 1px dashed var(--line-strong); background: var(--bg); }
+.qi-preview-head { font-size: var(--fs-micro); font-weight: var(--w-medium); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.qi-line { display: flex; gap: 7px; font-size: var(--fs-body); font-weight: var(--w-bold); line-height: 1.4; text-wrap: pretty; }
+.qi-bullet { color: var(--muted); }
+.qi.focused .qi-preview { border-color: color-mix(in oklab, var(--accent) 55%, var(--line-strong)); }
+.qi-actions button.add { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.qi-actions { min-width: 0; }

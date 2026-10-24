@@ -1,4 +1,4 @@
-import type { Meeting, Model, Suggestion } from '../data/types'
+import type { Meeting, Model, Suggestion, Turn } from '../data/types'
 import type { Persisted } from '../store'
 
 export type Basis = 'theme' | 'series' | 'one-on-one'
@@ -35,6 +35,14 @@ export function pickTarget(model: Model, fromMeetingId: string, people: string[]
       person: null,
     }
   )
+}
+
+// A theme follow-up's agenda line (FR-042): the theme, who raised it and their words, so the line says
+// what to pick up rather than only naming the theme. Long quotes are cut at a word, about 140 characters.
+function followUpLine(model: Model, themeName: string, turn: Turn): string {
+  const first = (model.people.get(turn.speakerId!)?.name ?? 'someone').split(' ')[0]
+  const words = turn.text.length <= 140 ? turn.text : `${turn.text.slice(0, 140).replace(/\s+\S*$/, '')}…`
+  return `${themeName}, from ${first}: “${words}”`
 }
 
 // Suggested agenda items. Derived every time from the model plus the lead's stored decisions, never
@@ -80,7 +88,8 @@ export function deriveSuggestions(model: Model, decisions: Persisted['decisions'
       const { target, basis } = pickTarget(model, meetingId, raisers, theme.id)
       // Quote the person who links this meeting to the target, so the evidence matches the reason.
       const bridge = turns.find((t) => speakers.has(t.speakerId!) && (!target || target.attendeeIds.includes(t.speakerId!)))
-      add(theme.id, `Follow up on ${theme.name}`, meetingId, (bridge ?? turns.find((t) => speakers.has(t.speakerId!))!).id, target, basis)
+      const said = bridge ?? turns.find((t) => speakers.has(t.speakerId!))!
+      add(theme.id, followUpLine(model, theme.name, said), meetingId, said.id, target, basis)
     }
   }
 

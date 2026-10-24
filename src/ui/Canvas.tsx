@@ -19,6 +19,7 @@ import { ThreadLayer, type Arc, type ThreadLayerHandle } from './ThreadLayer'
 
 const DAY_W = 600
 const HEAD_H = 44
+const PEEK = 160 // how much of the day before shows on load: enough for the today label
 const REDUCED_S = 0.15
 
 export type Focus = { kind: 'theme' | 'meeting' | 'suggestion'; id: string } | null
@@ -409,6 +410,16 @@ export function Canvas({ model, pivot, focus, onFocus, suggestions, doneItems, o
     },
     [model, onRetime],
   )
+  // Open on today (FR-043): today's column at the left edge, with a peek at the day before so the past
+  // reads as being just off to the left. Once per load; after that the lead's scroll is left alone.
+  const opened = useRef(false)
+  useLayoutEffect(() => {
+    if (opened.current || !frame || !nowMark) return
+    opened.current = true
+    const i = today ? model.days.indexOf(today) : -1
+    const start = i >= 0 ? i * DAY_W : nowMark.x
+    scroller.current!.scrollLeft = Math.max(0, start - PEEK)
+  }, [frame]) // eslint-disable-line react-hooks/exhaustive-deps
   const settled = tr && !animating
   const anchor = (meetingId: string): Item | undefined => (tr ? tr.to.get(keyFor(tr.to, meetingId, '') ?? '') : undefined)
   const beadAt = bead && tr ? itemLines(model, tr.to, suggestions).find((l) => l.actionItemId === bead)?.bead : undefined

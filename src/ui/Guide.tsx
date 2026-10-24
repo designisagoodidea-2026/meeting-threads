@@ -20,8 +20,8 @@ export const GUIDE_STEPS = [
   {
     target: '.queue .qi.focused',
     place: 'left' as const,
-    title: 'Accept one and watch it land',
-    body: 'Accepting adds the item to that meeting’s agenda, commits its action item and draws a solid line on the calendar. Undo is always there, in the queue or with U. Keys: J and K move, A accepts, D dismisses.',
+    title: 'Add one and watch it land',
+    body: 'Each item shows the exact line it would add, to which meeting, and who will see it. “Add to …” puts it on that agenda, commits its action item and draws a solid line on the calendar. Undo is always there, in the queue, with U or ⌘Z. Keys: J and K move, A adds, D dismisses.',
   },
 ]
 
