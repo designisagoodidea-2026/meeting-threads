@@ -14,11 +14,11 @@ Meeting Threads puts two weeks of meetings on one canvas and draws the topics th
 - **Suggested agenda items, with reasons.** A suggestion only targets a later meeting for a strong reason: the topic is already on that meeting's table, the same group meets again, or it's a 1:1 with the person who owns it. Each one shows the quote that prompted it and states the reason. Anything without a strong reason is marked as needing its own meeting.
 - **Move upcoming meetings.** Drag a meeting to a new time, or drag an edge to change its start or end, in 15-minute steps. Alt+arrows do the same from the keyboard. A toast offers Undo, and ⌘Z (Ctrl+Z) undoes the latest move or queue decision.
 - **Pages for every meeting, theme, project and person.** Transcript, agenda, the threads through a meeting and where they go next; who carried a theme and what it produced; what you and a colleague said and what's still open.
-- **Import a real transcript.** Paste an Otter export or "Name: text" lines for one meeting, preview the speakers, themes and action items found, then add it. Plain rules run in the browser, learned from the meetings already there; they catch promises like "I'll…" and "Let me…" and miss ones phrased without a cue.
+- **Import a real transcript.** Paste an Otter export, "Name: text" lines or an Atlas meeting bundle for one meeting, preview the speakers, themes and action items found, then add it. Plain rules run in the browser, learned from the meetings already there; they catch promises like "I'll…" and "Let me…". When run locally with a key, Jev can check each possible promise (see below). Every line says whether Jev or the rules decided it.
 - **A short tour** on first visit, replayable from the header.
 - **Rename and reorder rows in place.** In the project, meeting type and theme views, drag a row label's grip or use Alt+↑/↓ to reorder, and click its pencil (or double-click the name) to rename. In the people view rows can be reordered but not renamed.
 - **Demo settings.** Restore the original names and order, or reset everything to a first visit.
-- **Privacy controls.** Hide a meeting's transcript or leave a person out of suggestions. Notes and decisions stay in your browser; nothing is sent anywhere.
+- **Privacy controls.** Hide a meeting's transcript or leave a person out of suggestions. Notes and decisions stay in your browser. Nothing is sent anywhere unless you turn Jev on during an import on the local dev server.
 
 ## Reading the canvas
 
@@ -45,7 +45,7 @@ npm run gen      # regenerate the synthetic data from data/seed.json
 
 ## How it's built
 
-React, Motion (Framer Motion), Vite and Vitest, plus one bundled typeface (Instrument Sans). No backend.
+React, Motion (Framer Motion), Vite and Vitest, plus one bundled typeface (Instrument Sans). No backend; the only server-side piece is an optional proxy in the local dev server that holds the Jev key.
 
 - **Layouts are calculations; motion is one number.** Each view is a plain function from the data to box positions. A single progress value drives every block, label and thread each frame, so threads stay attached mid-flight and an interrupted switch starts from where things are.
 - **Suggestions are derived, never stored.** Only your decisions are saved. One function picks where a topic can land and reports why, and the explanation you read comes from that same function.
@@ -59,9 +59,21 @@ React, Motion (Framer Motion), Vite and Vitest, plus one bundled typeface (Instr
 | `src/layout/` | Lanes, layouts, tweening, label placement |
 | `src/threads/` | Threads, action items, suggestions and their reasons, page summaries |
 | `src/ui/` | Canvas, thread layer, cards, action queue, pages, privacy panel |
-| `tests/` | One Vitest file per logic module (145 tests), including an accuracy check that runs the transcript extractor on every bundled meeting against the hand-made annotations |
+| `src/jev/` | Jev: candidate promises, redaction, the decision rules, the dev-server proxy and its browser client |
+| `eval/jev/` | Labelled sets and the rules-versus-Jev comparison (`npm run eval:jev`) |
+| `tests/` | One Vitest file per logic module (191 tests), including an accuracy check that runs the transcript extractor on every bundled meeting against the hand-made annotations |
 
-I designed it and built it by directing Claude. I wrote the spec, made the design calls (what counts as a strong reason to put a topic on someone's agenda, how themes differ from projects, what each line should mean) and reviewed each step in the browser. Claude wrote the code. Comments in the code cite the design specs (005 and 006), which are kept separately.
+I designed it and built it by directing Claude. I wrote the spec, made the design calls (what counts as a strong reason to put a topic on someone's agenda, how themes differ from projects, what each line should mean) and reviewed each step in the browser. Claude wrote the code. Comments in the code cite the design specs (005 to 007), which are kept separately.
+
+## Jev (optional)
+
+[Jev](https://typesafe.ai) (TypeSafe's System One model) answers yes-or-no questions about text with a calibrated rating. Here it checks the promises the rules find. The rules first list every turn that might be a promise ("I'll…", "let me…", "I'm sending…"). Jev then rates each one: 0.7 or above is added, 0.3 or below is set aside, and anything between is listed under "Needs a look" for you to tick. It also names who owns the task, and is trusted only when it gives the same answer with the attendees listed in two different orders.
+
+- **Off by default.** Turning it on sends the possible promises, with the two turns before each, to TypeSafe, a third party. Social Security digits, dates of birth, and card and account numbers are replaced first, including when another speaker repeats them. The browser checks every request before sending and the proxy checks again; either one stops the send.
+- **Local only.** Calls go through a proxy in the dev server that holds the key. The published page has no proxy, no key and no Jev option; it uses the rules, or answers already in an Atlas bundle.
+- **Atlas bundles.** A bundle whose turns already carry Jev answers to the same question set (`mt-turn-1`) and model is used as is, without asking again.
+
+To use it, set `TYPESAFE_API_KEY` in your shell environment (for example in `~/.zshenv`, never in a file in this folder) and start the dev server from that shell with `npm run dev`. `JEV_ENABLED=0 npm run dev` turns it off. `npm run eval:jev` compares rules with rules plus Jev on the labelled sets in `eval/jev/sets` (it calls Jev). On a real recorded call, Jev found all five commitments with none wrong, where the rules scored F1 0.67. On the scripted sets Jev is just as precise but more cautious, so more lines land in "Needs a look".
 
 ## Data shape
 
@@ -75,4 +87,4 @@ The three input files are shaped so real exports can replace the synthetic ones:
 
 - A zoomable time range (fixed at two weeks for now).
 - Writing added agenda items back to a real calendar.
-- Extraction with a language model. The rule-based version needs no key and sends nothing anywhere; a model would catch more, at the cost of sending transcript text off the device.
+- Theme tagging with Jev. Jev only checks promises for now.

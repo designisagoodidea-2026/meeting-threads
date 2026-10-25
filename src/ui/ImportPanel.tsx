@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import { extractAnnotations, extractWithJev, jevReason, keptItems, parseTranscript, type Import } from '../data/extract'
+import { bundleAnswers, extractAnnotations, extractWithJev, jevGaps, jevReason, keptItems, parseTranscript, type Import } from '../data/extract'
 import { confirmCandidates, jevStatus, type JevStatus } from '../jev/client'
 import type { ImportDecision, JevAnswer, UnavailableReason } from '../jev/types'
 import type { Model } from '../data/types'
@@ -38,10 +38,15 @@ export function ImportPanel({ model, imports, onApply, onRemove, onClose }: Prop
     setProblem(null)
     try {
       const transcript = parseTranscript(text, meetingId)
-      if (!(useJev && jev?.available)) return setPreview({ transcript, ...extractAnnotations(model, meetingId, transcript) })
+      const bundle = bundleAnswers(text, meetingId) // an Atlas bundle's own Jev answers, used even with Jev off (FR-012)
+      const asking = useJev && jev?.available
+      if (!asking && !bundle) return setPreview({ transcript, ...extractAnnotations(model, meetingId, transcript) })
       setBusy(true)
       const saved = [...lastAnswers, ...(imports[meetingId]?.jev?.answers ?? [])] // reused when the redacted text matches (R8)
-      const out = await extractWithJev(model, meetingId, transcript, confirmCandidates, saved)
+      const notAsked = (reason: UnavailableReason) => async (items: { turn_id: string }[]): Promise<JevAnswer[]> =>
+        items.map((it) => ({ turnId: it.turn_id, questionSet: 'mt-turn-1', model: 'jev-1.13.0', sentHash: '', commitment: null, ownerA: null, ownerB: null, status: 'unavailable', reason }))
+      const confirm = asking ? confirmCandidates : notAsked(jev && !jev.available ? jev.reason : 'off')
+      const out = await extractWithJev(model, meetingId, transcript, confirm, saved, bundle)
       setLastAnswers(out.jev.answers)
       setPreview({ transcript, ...out })
     } catch (e) {
@@ -96,13 +101,14 @@ export function ImportPanel({ model, imports, onApply, onRemove, onClose }: Prop
           Transcript
           <textarea value={text} rows={8} onChange={(e) => { setText(e.target.value); setPreview(null) }} placeholder={'Sam Rivera  0:05\nThanks for making time.\n\nDev Patel  0:12\nI\'ll pull the study notes into one folder by Friday.'} />
         </label>
-        {jev?.available && (
+        {jev && (jev.available || jev.reason !== 'not-on-this-build') && (
           <div className="import-jev-box">
             <label className="import-jev">
-              <input type="checkbox" checked={useJev} onChange={(e) => { setUseJev(e.target.checked); setPreview(null) }} />
+              <input type="checkbox" checked={useJev && jev.available} disabled={!jev.available} onChange={(e) => { setUseJev(e.target.checked); setPreview(null) }} />
               Check promises with Jev
             </label>
-            {useJev && (
+            {!jev.available && <p className="muted">{OFF_HERE[jev.reason] ?? OFF_HERE.default}</p>}
+            {useJev && jev.available && (
               <p className="muted">
                 Turning this on sends this transcript's text to TypeSafe, a third party. Social Security digits, dates of birth, and card and account numbers are replaced before anything is sent.{' '}
                 <a href="https://typesafe.ai/legal/privacy-policy" target="_blank" rel="noreferrer">TypeSafe's privacy policy</a>
@@ -127,6 +133,11 @@ export function ImportPanel({ model, imports, onApply, onRemove, onClose }: Prop
           <h3>Themes</h3>
           <p>{preview.themeIds.length ? preview.themeIds.map(themeName).join(', ') : <span className="muted">None found</span>} · {preview.transcript.segments.length} turns</p>
           {preview.jev && jevReason(preview.jev) && <p className="import-problem" role="status">{WHY_RULES[jevReason(preview.jev)!] ?? WHY_RULES.error}</p>}
+          {preview.jev && jevGaps(preview.jev) && (
+            <p className="import-problem" role="status">
+              Jev unavailable for {jevGaps(preview.jev)!.count} {jevGaps(preview.jev)!.count === 1 ? 'line' : 'lines'} ({GAP[jevGaps(preview.jev)!.reason] ?? jevGaps(preview.jev)!.reason}); the plain rules decided {jevGaps(preview.jev)!.count === 1 ? 'it' : 'them'}.
+            </p>
+          )}
           {preview.jev ? (
             <JevGroups imp={preview} name={name} onTick={tick} />
           ) : (<>
@@ -134,7 +145,7 @@ export function ImportPanel({ model, imports, onApply, onRemove, onClose }: Prop
           {preview.actionItems.length ? (
             <ul>
               {preview.actionItems.map((a) => (
-                <li key={a.id}><b>{a.text}</b> <span className="muted">· {name(a.ownerId)} · {themeName(a.themeId)}</span></li>
+                <li key={a.id}><b>{a.text}</b> <span className="muted">· {name(a.ownerId)} · {themeName(a.themeId)} · rules only</span></li>
               ))}
             </ul>
           ) : (
@@ -164,11 +175,19 @@ export function ImportPanel({ model, imports, onApply, onRemove, onClose }: Prop
   )
 }
 
+// Why the Jev option is greyed out (FR-014). A published page has no Jev and shows no option at all.
+const OFF_HERE: Partial<Record<UnavailableReason, string>> & { default: string } = {
+  'no-key': "Jev isn't set up on this machine (no TYPESAFE_API_KEY for the dev server). The plain rules find promises.",
+  off: 'Jev is off here (JEV_ENABLED=0). The plain rules find promises.',
+  default: "Jev can't be reached right now. The plain rules find promises.",
+}
+const GAP: Partial<Record<UnavailableReason, string>> = { 'key-refused': 'Jev refused the key', 'error 0': 'no answer', 'error 529': 'Jev was busy', 'error 429': 'Jev was busy' }
+
 // Shown when Jev was on but the plain rules decided (FR-008).
 const WHY_RULES: Partial<Record<UnavailableReason, string>> & { error: string } = {
   'redaction-blocked': 'Nothing was sent: a sensitive detail was still in the text after redaction. These are the plain rules’ results.',
   'no-key': 'Jev has no key on this server, so the plain rules decided.',
-  'key-refused': 'TypeSafe refused the key, so the plain rules decided.',
+  'key-refused': 'Jev refused the key, so the plain rules decided.',
   off: 'Jev is turned off on this server, so the plain rules decided.',
   'not-on-this-build': 'Jev only runs from the local dev server, so the plain rules decided.',
   error: 'Jev didn’t answer, so the plain rules decided.',
@@ -179,13 +198,19 @@ function JevGroups({ imp, name, onTick }: { imp: Import; name: (id: string) => s
   const decisions = imp.jev!.decisions
   const item = (d: ImportDecision) => imp.actionItems.find((a) => a.sourceTurnId === d.turnId)
   const turn = (d: ImportDecision) => imp.transcript.segments.find((g) => `${imp.transcript.eventId}#${g.id}` === d.turnId)?.text ?? ''
-  const by = (d: ImportDecision) => (d.decidedBy === 'rules' ? 'rules only' : `Jev ${d.rating!.toFixed(2)}`)
+  const by = (d: ImportDecision) => (d.decidedBy === 'rules' ? 'rules only' : `Jev ${d.rating!.toFixed(2)}${d.decidedBy === 'bundle' ? ' (from Atlas)' : ''}`)
+  const mismatched = imp.jev!.mismatched?.length ?? 0
   const who = (d: ImportDecision) => (d.ownerId ? name(d.ownerId) : 'speaker not on the invite') + (d.ownerUnsure ? ', owner unsure' : '')
   const yes = decisions.filter((d) => d.outcome === 'commitment')
   const look = decisions.filter((d) => d.outcome === 'needs-a-look')
   const aside = decisions.filter((d) => d.outcome === 'set-aside').length
   return (
     <>
+      {mismatched > 0 && (
+        <p className="muted">
+          {mismatched} of Atlas's answers were made with a different version of the questions or of Jev, so {mismatched === 1 ? 'that line was' : 'those lines were'} treated as unanswered.
+        </p>
+      )}
       <h3>Commitments</h3>
       {yes.length ? (
         <ul>

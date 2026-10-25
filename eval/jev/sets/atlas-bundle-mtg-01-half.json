@@ -1,0 +1,203 @@
+{
+ "meeting": {
+  "meeting_id": "mtg-01-diego-1on1",
+  "calendar_event_id": "cal_evt_101",
+  "title": "1:1 — Riley / Diego (Direct Report)",
+  "meeting_type": "1:1 Direct Report",
+  "start": "2026-10-14T09:00:00-07:00",
+  "end": "2026-10-14T09:30:00-07:00",
+  "source_channel": "Google Meet"
+ },
+ "people": [
+  {
+   "person_id": "spk_riley",
+   "name": "Riley",
+   "is_lead": true
+  },
+  {
+   "person_id": "spk_diego",
+   "name": "Diego",
+   "is_lead": false
+  }
+ ],
+ "turns": [
+  {
+   "turn_id": "u-101-01",
+   "person_id": "spk_riley",
+   "start_ms": 0,
+   "text": "Morning Diego. I pulled up our running 1:1 Google Doc. Let's start with the Atlas auth token dual-write cutover before we look at the Redis spike.",
+   "jev": {
+    "question_set": "mt-turn-1",
+    "model": "jev-1.13.0",
+    "sent_hash": "b38c3aa6caa08e0d71597937f3b28b3db85e0e6ffac1e11b7286b7a8fec7ff38",
+    "commitment": 0.04,
+    "owner_a": {
+     "choice": "Diego",
+     "confidence": 0.02
+    },
+    "owner_b": {
+     "choice": "Riley",
+     "confidence": 0.06
+    }
+   }
+  },
+  {
+   "turn_id": "u-101-02",
+   "person_id": "spk_diego",
+   "start_ms": 12000,
+   "text": "Sounds good. Initially I thought we could kill legacy v1 tokens tomorrow, maybe Thursday afternoon, once the mobile clients finish updating."
+  },
+  {
+   "turn_id": "u-101-03",
+   "person_id": "spk_diego",
+   "start_ms": 27000,
+   "text": "Actually, scratch Thursday. Two enterprise webhooks are still sending v1 headers. Let's decide to keep dual-write token validation active through Friday at 5pm so we don't drop partner traffic.",
+   "jev": {
+    "question_set": "mt-turn-1",
+    "model": "jev-1.13.0",
+    "sent_hash": "476fbf94372812e432fd13da6b75324eba18b0d8ad39eaa5b0a19cc504ad3e44",
+    "commitment": 0.07,
+    "owner_a": {
+     "choice": "Diego",
+     "confidence": 0.92
+    },
+    "owner_b": {
+     "choice": "Diego",
+     "confidence": 0.92
+    }
+   }
+  },
+  {
+   "turn_id": "u-101-04",
+   "person_id": "spk_riley",
+   "start_ms": 42500,
+   "text": "Agreed. Decision made: we keep dual-write token validation active through Friday 5pm. I'll update Reza's roadmap doc with the Friday cutover date right after this."
+  },
+  {
+   "turn_id": "u-101-05",
+   "person_id": "spk_diego",
+   "start_ms": 57000,
+   "text": "On the Redis queue side, key fact from last night's load test: the staging Redis cluster CPU peaks at 78% during batch sync because connection pooling resets every 60 seconds.",
+   "jev": {
+    "question_set": "mt-turn-1",
+    "model": "jev-1.13.0",
+    "sent_hash": "a011928a867da7823ac4e97b968b077427ef563ad8e46275601ccf39bb4374d0",
+    "commitment": 0.02,
+    "owner_a": {
+     "choice": "Riley",
+     "confidence": 0.04
+    },
+    "owner_b": {
+     "choice": "Diego",
+     "confidence": 0.08
+    }
+   }
+  },
+  {
+   "turn_id": "u-101-06",
+   "person_id": "spk_diego",
+   "start_ms": 74000,
+   "text": "I'll put together the zero-downtime token cutover script and the Redis pool patch before Thursday noon so Sam can review it."
+  },
+  {
+   "turn_id": "u-101-07",
+   "person_id": "spk_riley",
+   "start_ms": 90000,
+   "text": "One unscheduled topic before we wrap: for our open engineering headcount, let me send you the revised system design rubric by end of day today so we're calibrated for Monday's loop.",
+   "jev": {
+    "question_set": "mt-turn-1",
+    "status": "unavailable",
+    "reason": "error 529"
+   }
+  }
+ ],
+ "action_items": [
+  {
+   "item_id": "ACT-101-04",
+   "turn_id": "u-101-04",
+   "owner_person_id": "spk_riley",
+   "text": "Riley to update Reza's roadmap doc with the Friday cutover date right after this",
+   "verbatim_quote": "Agreed. Decision made: we keep dual-write token validation active through Friday 5pm. I'll update Reza's roadmap doc with the Friday cutover date right after this.",
+   "status": "CONFIRMED",
+   "theme_id": "thm_auth_cutover"
+  },
+  {
+   "item_id": "ACT-101-06",
+   "turn_id": "u-101-06",
+   "owner_person_id": "spk_diego",
+   "text": "Diego to put together the zero-downtime token cutover script and the Redis pool patch before Thursday noon so Sam can review it",
+   "verbatim_quote": "I'll put together the zero-downtime token cutover script and the Redis pool patch before Thursday noon so Sam can review it.",
+   "status": "CONFIRMED",
+   "theme_id": "thm_auth_cutover"
+  },
+  {
+   "item_id": "ACT-101-07",
+   "turn_id": "u-101-07",
+   "owner_person_id": "spk_riley",
+   "text": "Riley to send you the revised system design rubric by end of day today so we're calibrated for Monday's loop",
+   "verbatim_quote": "One unscheduled topic before we wrap: for our open engineering headcount, let me send you the revised system design rubric by end of day today so we're calibrated for Monday's loop.",
+   "status": "CONFIRMED",
+   "theme_id": "thm_hiring_roadmap"
+  }
+ ],
+ "decisions": [
+  {
+   "item_id": "DEC-101-01",
+   "turn_id": "u-101-04",
+   "text": "Keep legacy v1 auth token dual-write validation active through Friday at 5pm so enterprise webhooks do not drop traffic.",
+   "status": "CONFIRMED",
+   "theme_id": "thm_auth_cutover"
+  }
+ ],
+ "threads": [
+  {
+   "thread_id": "thr-101-token-cutover",
+   "title": "Legacy v1 Auth Token Deprecation Window",
+   "theme_id": "thm_auth_cutover",
+   "stage": "CONVERGED",
+   "participant_ids": [
+    "spk_diego",
+    "spk_riley"
+   ],
+   "turn_ids": [
+    "u-101-02",
+    "u-101-03",
+    "u-101-04"
+   ]
+  },
+  {
+   "thread_id": "thr-101-hiring-rubric",
+   "title": "System Design Rubric for Open Senior Eng Headcount",
+   "theme_id": "thm_hiring_roadmap",
+   "stage": "CONVERGED",
+   "participant_ids": [
+    "spk_riley"
+   ],
+   "turn_ids": [
+    "u-101-07"
+   ]
+  }
+ ],
+ "agenda": [
+  {
+   "agenda_id": "ag-101-1",
+   "title": "Auth Token Dual-Write Cutover Schedule",
+   "status": "COVERED",
+   "coverage": 1.0
+  },
+  {
+   "agenda_id": "ag-101-2",
+   "title": "Staging Redis Queue CPU Bottleneck",
+   "status": "COVERED",
+   "coverage": 1.0
+  },
+  {
+   "agenda_id": "ag-101-emergent-3",
+   "title": "Open Engineering Headcount System Design Rubric",
+   "status": "COVERED",
+   "coverage": 1.0
+  }
+ ],
+ "final": true,
+ "_note": "Atlas bundle for mtg-01-diego-1on1 (2026-10-24), lead renamed Riley. jev answers were asked by Meeting Threads' own proxy under mt-turn-1, standing in for Atlas until it adds them (contracts/atlas-bundle.md). Copy with turns 2, 4 and 6 unanswered and turn 7 unavailable."
+}

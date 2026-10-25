@@ -128,3 +128,35 @@ describe('handleConfirm', () => {
     for (const s of ['secret plan', 'Priya', '6789', KEY]) expect(all).not.toContain(s)
   })
 })
+
+// Spec 007 US4 (FR-014): the browser side maps every way Jev can be missing to a reason, never a rating.
+describe('client fallbacks', () => {
+  const res = (status: number, body: unknown = {}) => async () => new Response(JSON.stringify(body), { status })
+  const items = [1, 2, 3].map((n) => item(n))
+
+  it('maps the status endpoint to a reason', async () => {
+    const { jevStatus } = await import('../src/jev/client')
+    expect(await jevStatus(res(404) as unknown as typeof fetch)).toEqual({ available: false, reason: 'not-on-this-build' })
+    expect(await jevStatus(res(200, { available: false, reason: 'no-key' }) as unknown as typeof fetch)).toEqual({ available: false, reason: 'no-key' })
+    expect(await jevStatus(res(200, { available: false, reason: 'disabled' }) as unknown as typeof fetch)).toEqual({ available: false, reason: 'off' })
+    expect(await jevStatus((async () => { throw new Error('offline') }) as unknown as typeof fetch)).toEqual({ available: false, reason: 'not-on-this-build' })
+  })
+
+  it('gives every turn Jev did not answer a reason and no rating, keeping the ones it did', async () => {
+    const { confirmCandidates } = await import('../src/jev/client')
+    const mixed = res(200, { answers: [
+      { turn_id: 'm#1', status: 'ok', model: 'jev-1.13.0', sent_hash: 'h', commitment: 0.8, owner_a: null, owner_b: null },
+      { turn_id: 'm#2', status: 'unavailable', reason: 'key-refused' },
+    ] }) as unknown as typeof fetch
+    const out = await confirmCandidates(items, mixed)
+    expect(out.map((a) => [a.turnId, a.status, a.reason, a.commitment])).toEqual([
+      ['m#1', 'ok', null, 0.8],
+      ['m#2', 'unavailable', 'key-refused', null],
+      ['m#3', 'unavailable', 'error 0', null], // missing from the response
+    ])
+    for (const [code, reason] of [[404, 'not-on-this-build'], [422, 'redaction-blocked'], [500, 'error 500']] as const) {
+      const all = await confirmCandidates(items, res(code) as unknown as typeof fetch)
+      expect(all.every((a) => a.reason === reason && a.commitment === null)).toBe(true)
+    }
+  })
+})

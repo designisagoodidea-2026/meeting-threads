@@ -1,6 +1,6 @@
 import qs from '../../scripts/jev/questions.json'
 import { itemText } from './proxy'
-import { finalScan } from './redact'
+import { applyRedactions, buildRegistry, finalScan } from './redact'
 import type { JevAnswer, UnavailableReason } from './types'
 
 // The browser side of /api/jev (spec 007 contracts/jev-proxy.md). Never sees the key.
@@ -29,6 +29,18 @@ const unavailable = (turnId: string, reason: UnavailableReason): JevAnswer => ({
 type Wire = { turn_id: string; status: string; reason?: string; model?: string; sent_hash?: string; commitment?: number; owner_a?: JevAnswer['ownerA']; owner_b?: JevAnswer['ownerB'] }
 
 // Batches of up to 200, answers mapped back by turn id. A blocked batch means nothing of it was sent.
+// What Jev sees for each candidate (contracts/question-set.md): redacted with a registry built over the
+// whole meeting, with two earlier turns. `forms` are the values found, for leakedTurns; they never travel.
+export function buildJevItems(meeting: string, attendees: string[], turns: { id: string; speaker: string; text: string }[], candidateIds: string[]) {
+  const { turns: red, registry } = applyRedactions(turns, buildRegistry(turns))
+  const line = (i: number) => `${turns[i].speaker}: ${red[i].text}`
+  const items: JevItem[] = candidateIds.map((id) => {
+    const i = turns.findIndex((t) => t.id === id)
+    return { turn_id: id, meeting, attendees, speaker: turns[i].speaker, earlier_turns: [i - 2, i - 1].filter((j) => j >= 0).map(line), turn: red[i].text }
+  })
+  return { items, forms: registry.flatMap((r) => r.forms) }
+}
+
 // The full scan before anything is sent (FR-008): the patterns plus every value found in this transcript,
 // in every string of every item. Turn ids that still hold one; any at all means nothing is sent.
 export function leakedTurns(items: JevItem[], forms: string[]): string[] {

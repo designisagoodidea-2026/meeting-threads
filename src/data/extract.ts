@@ -1,17 +1,16 @@
 import qs from '../../scripts/jev/questions.json'
 import { proposeCandidates } from '../jev/candidates'
-import { leakedTurns, type JevItem } from '../jev/client'
+import { buildJevItems, leakedTurns, type JevItem } from '../jev/client'
 import { decide, reusable } from '../jev/decide'
 import { stateHash } from '../jev/proxy'
-import { applyRedactions, buildRegistry } from '../jev/redact'
 import type { ImportDecision, JevAnswer, UnavailableReason } from '../jev/types'
 import { buildModel } from './load'
 import type { AnnotationsFile, CalendarFile, Model, TranscriptFile } from './types'
 
 // One pasted transcript into the same annotations the bundled data carries (spec 006 FR-032).
 // Plain rules that run in the browser, so nothing is sent anywhere. They learn each theme's words from
-// the other meetings' tagged turns. shortcut: rule-based, misses commitments phrased without a cue
-// ("I'm comfortable proposing…"); an LLM pass would catch more, once sending text off-device is decided.
+// the other meetings' tagged turns. The rules miss commitments phrased without a cue ("I'm comfortable
+// proposing…"); with Jev on, extractWithJev widens the net and lets Jev confirm (spec 007).
 
 export type Extracted = {
   speakerMap: Record<string, string> // diarization label -> person id; unknown speakers left out
@@ -19,7 +18,8 @@ export type Extracted = {
   themeIds: string[] // themes this meeting really discussed
   actionItems: AnnotationsFile['actionItems']
 }
-export type JevImport = { used: boolean; answers: JevAnswer[]; decisions: ImportDecision[] } // spec 007 data-model.md
+// spec 007 data-model.md; `mismatched`: bundle answers set aside as made with another version (FR-013)
+export type JevImport = { used: boolean; answers: JevAnswer[]; decisions: ImportDecision[]; mismatched?: string[] }
 export type Import = Extracted & { transcript: TranscriptFile; jev?: JevImport }
 type Files = { calendar: CalendarFile; transcripts: Record<string, TranscriptFile>; annotations: AnnotationsFile }
 
@@ -44,6 +44,46 @@ function checkJson(j: TranscriptFile) {
   }
 }
 
+// An Atlas meeting bundle (spec 007 contracts/atlas-bundle.md): people, then turns that may carry Jev's answers.
+type BundleJev = { question_set?: string; model?: string; sent_hash?: string; status?: string; commitment?: number; owner_a?: JevAnswer['ownerA']; owner_b?: JevAnswer['ownerB'] }
+type Bundle = { people: { person_id: string; name: string }[]; turns: { turn_id: string; person_id: string; start_ms?: number; text: string; jev?: BundleJev }[] }
+const isBundle = (j: unknown): j is Bundle => !!j && typeof j === 'object' && Array.isArray((j as Bundle).turns) && Array.isArray((j as Bundle).people)
+
+function fromBundle(b: Bundle, eventId: string): TranscriptFile {
+  const known = new Set(b.people.map((p) => p.person_id))
+  const tr: TranscriptFile = {
+    eventId,
+    speakers: b.people.map((p) => ({ label: p.person_id, name: p.name })),
+    segments: b.turns.map((t, i) => ({ id: i, speaker: t.person_id, startMs: t.start_ms ?? 0, text: t.text })),
+  }
+  for (const g of tr.segments) if (!known.has(g.speaker)) throw new Error(`Turn ${g.id} names speaker "${g.speaker}", who isn't in people.`)
+  if (!tr.segments.length) throw new Error(NO_TURNS)
+  return tr
+}
+
+// The answers an Atlas bundle brings, by this meeting's turn ids (FR-012, FR-013). Only answers made with
+// this question set and model are used; others are listed as `mismatched` and those turns count as unanswered.
+// Null when the text isn't a bundle.
+export function bundleAnswers(text: string, eventId: string): { answers: JevAnswer[]; mismatched: string[] } | null {
+  let j: unknown
+  try {
+    j = JSON.parse(text)
+  } catch {
+    return null
+  }
+  if (!isBundle(j)) return null
+  const answers: JevAnswer[] = []
+  const mismatched: string[] = []
+  j.turns.forEach((t, i) => {
+    const a = t.jev
+    const turnId = `${eventId}#${i}`
+    if (!a || a.status === 'unavailable' || typeof a.commitment !== 'number') return
+    if (a.question_set !== qs.question_set || a.model !== qs.model) return void mismatched.push(turnId)
+    answers.push({ turnId, questionSet: a.question_set, model: a.model, sentHash: a.sent_hash ?? '', commitment: a.commitment, ownerA: a.owner_a ?? null, ownerB: a.owner_b ?? null, status: 'ok', reason: null })
+  })
+  return { answers, mismatched }
+}
+
 // Reads the bundled JSON shape, Otter-style "Name  m:ss" blocks, "[hh:mm:ss] Name: text" or "Name: text"
 // lines. Inside an Otter block only a new header starts a turn; elsewhere unmatched lines wrap onto the last turn.
 export function parseTranscript(text: string, eventId: string): TranscriptFile {
@@ -53,6 +93,7 @@ export function parseTranscript(text: string, eventId: string): TranscriptFile {
   } catch {
     // not JSON; read it as text
   }
+  if (isBundle(j)) return fromBundle(j, eventId)
   if (j && typeof j === 'object') {
     const t = j as TranscriptFile
     if (!Array.isArray(t.segments) || !Array.isArray(t.speakers)) throw new Error('JSON transcripts need "speakers" and "segments" lists.')
@@ -169,12 +210,15 @@ function analyze(model: Model, meetingId: string, tr: TranscriptFile) {
   for (const seg of tr.segments) {
     const owner = speakerMap[seg.speaker]
     if (!owner) continue
-    const sentence = seg.text.split(/(?<=[.!?])\s+/).find((x) => CUE.test(x) && !x.trim().endsWith('?'))
+    const sentence = rulesSentence(seg.text)
     if (!sentence) continue
     actionItems.push(itemFor(seg.id, owner, sentence.match(CUE)![1].replace(/[.!]+$/, '').trim()))
   }
   return { meeting, attendees, speakerMap, themeMentions, themeIds, actionItems, itemFor }
 }
+
+// The plain rule (spec 006): the sentence with a first-person promise, not a hedge or a question.
+export const rulesSentence = (text: string) => text.split(/(?<=[.!?])\s+/).find((x) => CUE.test(x) && !x.trim().endsWith('?'))
 
 export function extractAnnotations(model: Model, meetingId: string, tr: TranscriptFile): Extracted {
   const { speakerMap, themeMentions, themeIds, actionItems } = analyze(model, meetingId, tr)
@@ -186,25 +230,28 @@ export type Confirm = (items: JevItem[]) => Promise<JevAnswer[]>
 // Spec 007 FR-001 to FR-005: the widened rules propose, Jev confirms through the dev-server proxy, and
 // decide() sorts each candidate. Text is redacted before any request is built; saved answers for the
 // same redacted state are reused instead of asked again (research R8).
-export async function extractWithJev(model: Model, meetingId: string, tr: TranscriptFile, confirm: Confirm, saved: JevAnswer[] = []): Promise<Extracted & { jev: JevImport }> {
+export async function extractWithJev(
+  model: Model, meetingId: string, tr: TranscriptFile, confirm: Confirm, saved: JevAnswer[] = [], bundle: { answers: JevAnswer[]; mismatched: string[] } | null = null,
+): Promise<Extracted & { jev: JevImport }> {
   const a = analyze(model, meetingId, tr)
   const rulesBy = new Map(a.actionItems.map((x) => [x.sourceTurnId, x]))
   const candidates = proposeCandidates(tr, a.speakerMap)
   const nameOf = new Map(tr.speakers.map((s) => [s.label, s.name]))
-  const raw = tr.segments.map((g) => ({ id: `${meetingId}#${g.id}`, text: g.text }))
-  const { turns, registry } = applyRedactions(raw, buildRegistry(raw))
-  const line = (i: number) => `${nameOf.get(tr.segments[i].speaker)}: ${turns[i].text}`
-  const attendeeNames = a.attendees.map((p) => p.name)
-  const items: JevItem[] = candidates.map((c) => {
-    const i = tr.segments.findIndex((g) => `${meetingId}#${g.id}` === c.turnId)
-    return {
-      turn_id: c.turnId, meeting: a.meeting.title, attendees: attendeeNames, speaker: nameOf.get(tr.segments[i].speaker) ?? 'Unknown',
-      earlier_turns: [i - 2, i - 1].filter((j) => j >= 0).map(line), turn: turns[i].text,
-    }
-  })
+  const turnsIn = tr.segments.map((g) => ({ id: `${meetingId}#${g.id}`, speaker: nameOf.get(g.speaker) ?? 'Unknown', text: g.text }))
+  // Everyone who speaks is a possible owner too: with only the invite to choose from, Jev would pin a
+  // promise by someone not on it on whoever is (found end to end with Atlas). Such an owner maps to no one.
+  const unmapped = tr.speakers.filter((sp) => !a.speakerMap[sp.label]).map((sp) => sp.name)
+  const owners = [...new Set([...a.attendees.map((p) => p.name), ...unmapped])]
+  const { items, forms } = buildJevItems(a.meeting.title, owners, turnsIn, candidates.map((c) => c.turnId))
 
   const reuse = new Map<string, JevAnswer>()
+  const fromAtlas = new Set<string>()
+  for (const a of bundle?.answers ?? []) {
+    reuse.set(a.turnId, a)
+    fromAtlas.add(a.turnId)
+  }
   for (const it of items) {
+    if (reuse.has(it.turn_id)) continue
     const { turn_id, ...state } = it
     const hash = await stateHash(state)
     const old = saved.find((s) => s.turnId === turn_id && reusable(s, { questionSet: qs.question_set, model: qs.model, sentHash: hash }) === 'reuse')
@@ -212,14 +259,14 @@ export async function extractWithJev(model: Model, meetingId: string, tr: Transc
   }
   const ask = items.filter((it) => !reuse.has(it.turn_id))
   // Any found value or sensitive pattern left in what would be sent: send nothing, rules decide (FR-008).
-  const blocked = leakedTurns(ask, registry.flatMap((r) => r.forms)).length > 0
+  const blocked = leakedTurns(ask, forms).length > 0
   const fresh = !ask.length ? [] : blocked ? ask.map((it) => blockedAnswer(it.turn_id)) : await confirm(ask)
   const answers = items.map((it) => reuse.get(it.turn_id) ?? fresh.find((x) => x.turnId === it.turn_id) ?? null)
 
   const decisions: ImportDecision[] = []
   const actionItems: Extracted['actionItems'] = []
   candidates.forEach((c, k) => {
-    const d = decide({ candidate: c, answer: answers[k], rulesSay: rulesBy.has(c.turnId), attendees: a.attendees })
+    const d = decide({ candidate: c, answer: answers[k], rulesSay: rulesBy.has(c.turnId), attendees: a.attendees, fromBundle: fromAtlas.has(c.turnId) })
     if (!d) return
     decisions.push(d)
     if (d.outcome === 'set-aside' || !d.ownerId) return
@@ -229,7 +276,7 @@ export async function extractWithJev(model: Model, meetingId: string, tr: Transc
   })
   return {
     speakerMap: a.speakerMap, themeMentions: a.themeMentions, themeIds: a.themeIds, actionItems,
-    jev: { used: answers.some((x) => x?.status === 'ok'), answers: answers.filter((x): x is JevAnswer => !!x), decisions },
+    jev: { used: answers.some((x) => x?.status === 'ok'), answers: answers.filter((x): x is JevAnswer => !!x), decisions, mismatched: bundle?.mismatched ?? [] },
   }
 }
 
@@ -290,4 +337,13 @@ export function buildWithImports(files: Files, imports: Record<string, Import>, 
 // Why Jev didn't decide this import, when it didn't (FR-008: the reason is shown).
 export function jevReason(jev: JevImport): UnavailableReason | null {
   return jev.used ? null : jev.answers.find((a) => a.reason)?.reason ?? null
+}
+
+// Lines Jev left to the rules when it answered others (FR-014), with the most common reason.
+export function jevGaps(jev: JevImport): { count: number; reason: UnavailableReason } | null {
+  const missed = jev.used ? jev.answers.filter((a) => a.status !== 'ok' && a.reason) : []
+  if (!missed.length) return null
+  const n = new Map<UnavailableReason, number>()
+  for (const a of missed) n.set(a.reason!, (n.get(a.reason!) ?? 0) + 1)
+  return { count: missed.length, reason: [...n].sort((a, b) => b[1] - a[1])[0][0] }
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { extractAnnotations, extractWithJev, jevReason, keptItems, parseTranscript, type Confirm } from '../src/data/extract'
+import { extractAnnotations, extractWithJev, jevGaps, jevReason, keptItems, parseTranscript, type Confirm } from '../src/data/extract'
 import { leakedTurns, type JevItem } from '../src/jev/client'
 import type { JevAnswer } from '../src/jev/types'
 import { model } from './fixtures'
@@ -95,5 +95,30 @@ describe('leakedTurns (the browser scan before anything is sent, FR-008)', () =>
     expect(leakedTurns([it0], ['September 3rd'])).toEqual(['m#1'])
     expect(leakedTurns([{ ...it0, earlier_turns: [], turn: 'SSN 123-45-6789' }], [])).toEqual(['m#1'])
     expect(leakedTurns([{ ...it0, earlier_turns: [] }], ['September 3rd'])).toEqual([])
+  })
+})
+
+describe('jevGaps (FR-014)', () => {
+  const ans = (turnId: string, ok: boolean, reason: JevAnswer['reason'] = null): JevAnswer => ({ turnId, questionSet: 'mt-turn-1', model: 'jev-1.13.0', sentHash: '', commitment: ok ? 0.9 : null, ownerA: null, ownerB: null, status: ok ? 'ok' : 'unavailable', reason })
+  it('counts the lines Jev left to the rules, with the most common reason, only when Jev answered some', () => {
+    expect(jevGaps({ used: true, decisions: [], answers: [ans('a', true), ans('b', false, 'error 529'), ans('c', false, 'error 529'), ans('d', false, 'error 0')] })).toEqual({ count: 3, reason: 'error 529' })
+    expect(jevGaps({ used: true, decisions: [], answers: [ans('a', true)] })).toBeNull()
+    expect(jevGaps({ used: false, decisions: [], answers: [ans('b', false, 'no-key')] })).toBeNull() // the whole-import reason covers it
+  })
+})
+
+describe('a speaker who is not on the invite (found end to end with Atlas)', () => {
+  const m = model()
+  const tr = parseTranscript("Sam Rivera: Great work.\nJordan Vale: Thanks Sam. Let me write up the decision note tonight.", M)
+  it('is offered to Jev as a possible owner, so the task is not pinned on someone who is', async () => {
+    const seen: JevItem[] = []
+    const out = await extractWithJev(m, M, tr, async (items) => (seen.push(...items), items.map((it) => ({
+      turnId: it.turn_id, questionSet: 'mt-turn-1', model: 'jev-1.13.0', sentHash: '', commitment: 0.95,
+      ownerA: { choice: 'Jordan Vale', confidence: 0.98 }, ownerB: { choice: 'Jordan Vale', confidence: 0.97 }, status: 'ok' as const, reason: null,
+    }))))
+    expect(seen[0].attendees).toContain('Jordan Vale')
+    const d = out.jev.decisions.find((x) => x.turnId === `${M}#1`)!
+    expect(d).toMatchObject({ outcome: 'commitment', ownerId: null, ownerUnsure: true })
+    expect(out.actionItems.find((a) => a.sourceTurnId === `${M}#1`)).toBeUndefined()
   })
 })

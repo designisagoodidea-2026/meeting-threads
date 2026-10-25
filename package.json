@@ -9,7 +9,7 @@
     "test": "vitest run",
     "gen": "node scripts/generate-data.mjs",
     "artifact": "npm run build && node scripts/artifact.mjs",
-    "eval:jev": "vitest run --config vitest.eval.config.ts"
+    "eval:jev": "vitest run --config vitest.eval.config.ts --silent=false"
   },
   "dependencies": {
     "@fontsource-variable/instrument-sans": "^5.3.0",
