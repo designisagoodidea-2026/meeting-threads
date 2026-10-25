@@ -1,0 +1,65 @@
+{
+ "name": "mt-holdout",
+ "source": "tests/fixtures-otter-sam-dev.txt (invented Otter-style export)",
+ "commitments": [
+  "holdout#6",
+  "holdout#7"
+ ],
+ "meetings": [
+  {
+   "title": "Sam / Dev 1:1",
+   "turns": [
+    {
+     "id": "holdout#0",
+     "speaker": "Sam Rivera",
+     "text": "Hey, how's the week going? Anything on fire?"
+    },
+    {
+     "id": "holdout#1",
+     "speaker": "Dev Patel",
+     "text": "Not on fire. I'll be honest though, finding old research is still painful. I searched the repository for the checkout interviews and got forty results, none of them tagged."
+    },
+    {
+     "id": "holdout#2",
+     "speaker": "Sam Rivera",
+     "text": "Yeah, that keeps coming up. Did the tagging work go anywhere?"
+    },
+    {
+     "id": "holdout#3",
+     "speaker": "Dev Patel",
+     "text": "Hannah started a taxonomy, but nobody's applied it to past studies yet. Half our insights live in slide decks nobody can search."
+    },
+    {
+     "id": "holdout#4",
+     "speaker": "Speaker 3",
+     "text": "Sorry, wrong room, I thought this was the crit."
+    },
+    {
+     "id": "holdout#5",
+     "speaker": "Sam Rivera",
+     "text": "No worries. Dev, I'll be out Thursday, so let's sort this now."
+    },
+    {
+     "id": "holdout#6",
+     "speaker": "Dev Patel",
+     "text": "Okay. I'll pull the last six months of study notes into one folder by Friday so we can tag them in one go."
+    },
+    {
+     "id": "holdout#7",
+     "speaker": "Sam Rivera",
+     "text": "Great. Let me ask Hannah whether her taxonomy draft is ready to apply to those studies."
+    },
+    {
+     "id": "holdout#8",
+     "speaker": "Dev Patel",
+     "text": "Sounds good. Separately, the crit started late again on Tuesday."
+    },
+    {
+     "id": "holdout#9",
+     "speaker": "Sam Rivera",
+     "text": "Noted, that's for Marcus. Thanks, Dev."
+    }
+   ]
+  }
+ ]
+}

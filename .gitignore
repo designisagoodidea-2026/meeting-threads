@@ -3,3 +3,7 @@ dist/
 *.log
 .env*
 .DS_Store
+
+# Jev evaluation: private sets never committed (spec 007 R9)
+eval/jev/private/
+*.private.json

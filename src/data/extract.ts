@@ -1,3 +1,10 @@
+import qs from '../../scripts/jev/questions.json'
+import { proposeCandidates } from '../jev/candidates'
+import { leakedTurns, type JevItem } from '../jev/client'
+import { decide, reusable } from '../jev/decide'
+import { stateHash } from '../jev/proxy'
+import { applyRedactions, buildRegistry } from '../jev/redact'
+import type { ImportDecision, JevAnswer, UnavailableReason } from '../jev/types'
 import { buildModel } from './load'
 import type { AnnotationsFile, CalendarFile, Model, TranscriptFile } from './types'
 
@@ -12,7 +19,8 @@ export type Extracted = {
   themeIds: string[] // themes this meeting really discussed
   actionItems: AnnotationsFile['actionItems']
 }
-export type Import = Extracted & { transcript: TranscriptFile }
+export type JevImport = { used: boolean; answers: JevAnswer[]; decisions: ImportDecision[] } // spec 007 data-model.md
+export type Import = Extracted & { transcript: TranscriptFile; jev?: JevImport }
 type Files = { calendar: CalendarFile; transcripts: Record<string, TranscriptFile>; annotations: AnnotationsFile }
 
 const ms = (t: string) => t.split(':').map(Number).reduce((a, n) => a * 60 + n, 0) * 1000
@@ -83,7 +91,7 @@ const words = (t: string) =>
 // A commitment: a first-person promise, not a hedge ("I'll be honest") or a question.
 const CUE = /\b(?:I'll|I will|I can|let me|I'm going to)\s+(?:take that:\s*)?(?!be\b|admit|say\b|bet\b|need\b|have to\b|try\b|see\b|think\b)([a-z].*)$/i
 
-export function extractAnnotations(model: Model, meetingId: string, tr: TranscriptFile): Extracted {
+function analyze(model: Model, meetingId: string, tr: TranscriptFile) {
   const meeting = model.meetingById.get(meetingId)
   if (!meeting) throw new Error(`Unknown meeting ${meetingId}`)
   const attendees = meeting.attendeeIds.map((id) => model.people.get(id)!).filter(Boolean)
@@ -135,34 +143,111 @@ export function extractAnnotations(model: Model, meetingId: string, tr: Transcri
       return y[0] - x[0] || y[1] - x[1] || y[2] - x[2]
     })[0]?.[0]
 
-  const actionItems: Extracted['actionItems'] = []
   const others = model.actionItems.filter((a) => a.meetingId !== meetingId)
-  for (const seg of tr.segments) {
-    const owner = speakerMap[seg.speaker]
-    if (!owner) continue
-    const sentence = seg.text.split(/(?<=[.!?])\s+/).find((x) => CUE.test(x) && !x.trim().endsWith('?'))
-    if (!sentence) continue
-    const body = sentence.match(CUE)![1].replace(/[.!]+$/, '').trim()
+  const itemFor = (segId: number, ownerId: string, body: string): Extracted['actionItems'][number] => {
     const itemText = body[0].toUpperCase() + body.slice(1)
-    const id = `${meetingId}#${seg.id}`
+    const id = `${meetingId}#${segId}`
     const mine = new Set(words(itemText))
     const same = others.find((a) => {
       const theirs = new Set(words(a.text))
       const shared = [...mine].filter((w) => theirs.has(w)).length
       return shared / new Set([...mine, ...theirs]).size >= 0.5
     })
-    actionItems.push({
+    return {
       id: `imp_${id}`,
       text: itemText,
-      ownerId: owner,
+      ownerId,
       meetingId,
       sourceTurnId: id,
       themeId: themeOf(id) ?? meeting.themeIds[0] ?? null,
       topicKey: same?.topicKey ?? [...mine].slice(0, 4).join('-'),
       status: 'open',
-    })
+    }
   }
+
+  const actionItems: Extracted['actionItems'] = []
+  for (const seg of tr.segments) {
+    const owner = speakerMap[seg.speaker]
+    if (!owner) continue
+    const sentence = seg.text.split(/(?<=[.!?])\s+/).find((x) => CUE.test(x) && !x.trim().endsWith('?'))
+    if (!sentence) continue
+    actionItems.push(itemFor(seg.id, owner, sentence.match(CUE)![1].replace(/[.!]+$/, '').trim()))
+  }
+  return { meeting, attendees, speakerMap, themeMentions, themeIds, actionItems, itemFor }
+}
+
+export function extractAnnotations(model: Model, meetingId: string, tr: TranscriptFile): Extracted {
+  const { speakerMap, themeMentions, themeIds, actionItems } = analyze(model, meetingId, tr)
   return { speakerMap, themeMentions, themeIds, actionItems }
+}
+
+export type Confirm = (items: JevItem[]) => Promise<JevAnswer[]>
+
+// Spec 007 FR-001 to FR-005: the widened rules propose, Jev confirms through the dev-server proxy, and
+// decide() sorts each candidate. Text is redacted before any request is built; saved answers for the
+// same redacted state are reused instead of asked again (research R8).
+export async function extractWithJev(model: Model, meetingId: string, tr: TranscriptFile, confirm: Confirm, saved: JevAnswer[] = []): Promise<Extracted & { jev: JevImport }> {
+  const a = analyze(model, meetingId, tr)
+  const rulesBy = new Map(a.actionItems.map((x) => [x.sourceTurnId, x]))
+  const candidates = proposeCandidates(tr, a.speakerMap)
+  const nameOf = new Map(tr.speakers.map((s) => [s.label, s.name]))
+  const raw = tr.segments.map((g) => ({ id: `${meetingId}#${g.id}`, text: g.text }))
+  const { turns, registry } = applyRedactions(raw, buildRegistry(raw))
+  const line = (i: number) => `${nameOf.get(tr.segments[i].speaker)}: ${turns[i].text}`
+  const attendeeNames = a.attendees.map((p) => p.name)
+  const items: JevItem[] = candidates.map((c) => {
+    const i = tr.segments.findIndex((g) => `${meetingId}#${g.id}` === c.turnId)
+    return {
+      turn_id: c.turnId, meeting: a.meeting.title, attendees: attendeeNames, speaker: nameOf.get(tr.segments[i].speaker) ?? 'Unknown',
+      earlier_turns: [i - 2, i - 1].filter((j) => j >= 0).map(line), turn: turns[i].text,
+    }
+  })
+
+  const reuse = new Map<string, JevAnswer>()
+  for (const it of items) {
+    const { turn_id, ...state } = it
+    const hash = await stateHash(state)
+    const old = saved.find((s) => s.turnId === turn_id && reusable(s, { questionSet: qs.question_set, model: qs.model, sentHash: hash }) === 'reuse')
+    if (old) reuse.set(turn_id, old)
+  }
+  const ask = items.filter((it) => !reuse.has(it.turn_id))
+  // Any found value or sensitive pattern left in what would be sent: send nothing, rules decide (FR-008).
+  const blocked = leakedTurns(ask, registry.flatMap((r) => r.forms)).length > 0
+  const fresh = !ask.length ? [] : blocked ? ask.map((it) => blockedAnswer(it.turn_id)) : await confirm(ask)
+  const answers = items.map((it) => reuse.get(it.turn_id) ?? fresh.find((x) => x.turnId === it.turn_id) ?? null)
+
+  const decisions: ImportDecision[] = []
+  const actionItems: Extracted['actionItems'] = []
+  candidates.forEach((c, k) => {
+    const d = decide({ candidate: c, answer: answers[k], rulesSay: rulesBy.has(c.turnId), attendees: a.attendees })
+    if (!d) return
+    decisions.push(d)
+    if (d.outcome === 'set-aside' || !d.ownerId) return
+    const seg = tr.segments.find((g) => `${meetingId}#${g.id}` === c.turnId)!
+    const rules = rulesBy.get(c.turnId)
+    actionItems.push(rules ? { ...rules, ownerId: d.ownerId } : a.itemFor(seg.id, d.ownerId, cueSentence(seg.text)))
+  })
+  return {
+    speakerMap: a.speakerMap, themeMentions: a.themeMentions, themeIds: a.themeIds, actionItems,
+    jev: { used: answers.some((x) => x?.status === 'ok'), answers: answers.filter((x): x is JevAnswer => !!x), decisions },
+  }
+}
+
+const blockedAnswer = (turnId: string): JevAnswer => ({
+  turnId, questionSet: qs.question_set, model: qs.model, sentHash: '', commitment: null, ownerA: null, ownerB: null, status: 'unavailable', reason: 'redaction-blocked',
+})
+
+// The sentence holding the promise, for a turn the plain rules didn't word as an item.
+function cueSentence(text: string) {
+  const parts = text.split(/(?<=[.!?])\s+/)
+  return (parts.find((x) => /\b(?:I['’]ll|I will|I['’]m|let me|I can|we['’]ll|we will)\b/i.test(x)) ?? text).replace(/[.!?]+$/, '').trim()
+}
+
+// What an import adds: commitments, plus the "needs a look" lines the lead ticked (FR-004).
+export function keptItems(imp: Import): Import['actionItems'] {
+  if (!imp.jev) return imp.actionItems
+  const keep = new Set(imp.jev.decisions.filter((d) => d.outcome === 'commitment' || (d.outcome === 'needs-a-look' && d.selected)).map((d) => d.turnId))
+  return imp.actionItems.filter((x) => keep.has(x.sourceTurnId))
 }
 
 // The bundled files with one meeting's transcript and annotations replaced by an import; applying
@@ -200,4 +285,9 @@ export function buildWithImports(files: Files, imports: Record<string, Import>, 
     }
   }
   return { model: buildModel(f.calendar, f.transcripts, f.annotations, now), skipped }
+}
+
+// Why Jev didn't decide this import, when it didn't (FR-008: the reason is shown).
+export function jevReason(jev: JevImport): UnavailableReason | null {
+  return jev.used ? null : jev.answers.find((a) => a.reason)?.reason ?? null
 }

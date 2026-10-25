@@ -1,0 +1,313 @@
+{
+ "name": "atlas-scripted",
+ "source": "Atlas's twelve scripted conversations (spoken versions), copied 2026-10-24; the lead speaker renamed Riley",
+ "labeled_by": "Claude, before running rules or Jev, using the question-set definition: the speaker personally commits to a specific follow-up task. Arranging someone else's work ('I'll have Diego scope', 'I'll pair Maya and Diego') counts; 'let's' proposals and requests to others don't.",
+ "commitments": [
+  "u-01-02",
+  "u-01-04",
+  "u-01-05",
+  "u-01-06",
+  "u-02-04",
+  "u-03-04",
+  "u-04-04",
+  "u-05-03",
+  "u-06-04",
+  "u-07-04",
+  "u-08-04",
+  "u-09-03",
+  "u-10-03",
+  "u-11-03"
+ ],
+ "meetings": [
+  {
+   "title": "01. Diego 1:1 — Auth v1 Token Cutover & Redis CPU",
+   "turns": [
+    {
+     "id": "u-01-01",
+     "speaker": "Riley",
+     "text": "Morning Diego. Um, let's jump into the running 1:1 doc—first up is the v1 auth token cutover, and, uh, I also want to touch on the senior backend hiring rubric if we have a minute."
+    },
+    {
+     "id": "u-01-02",
+     "speaker": "Diego",
+     "text": "Yeah, totally. So on the—uh, on the token migration, traffic on v2 looks super clean, [0.95s pause] so I think we should just deprecate v1 tokens this Thursday at 5pm and, um, I'll post the cutover notice in #eng-announcements."
+    },
+    {
+     "id": "u-01-03",
+     "speaker": "Riley",
+     "text": "[Crosstalk] Wait—sorry to talk over you—did Acme Corp and RetailFlow actually finish moving their retry webhooks off v1 yet?"
+    },
+    {
+     "id": "u-01-04",
+     "speaker": "Diego",
+     "text": "Oh, shoot, hold on... [mumbled: let me check the ServiceNow ticket real quick...] [1.05s pause] Uh, yeah, actually scratch Thursday! Both partner webhooks are still sending v1 headers until Friday afternoon. Let's keep dual-write active through Friday at 5pm, and I'll email their integration leads today."
+    },
+    {
+     "id": "u-01-05",
+     "speaker": "Diego",
+     "text": "And, um, on the second item—staging Redis CPU spiked to 78% during the 10k batch test because workers open a fresh TLS socket per job. Uh, I'll capture a flamegraph before lunch and pair with Sam on connection pooling."
+    },
+    {
+     "id": "u-01-06",
+     "speaker": "Riley",
+     "text": "Makes sense. Friday 5pm is locked for the v1 cutover, then. Um, I'll send Priya the system-design rubric pre-read before 4pm today so we unblock the senior backend req."
+    }
+   ]
+  },
+  {
+   "title": "02. Maya 1:1 — Homepage Headline Convergence & Schedule Conflict",
+   "turns": [
+    {
+     "id": "u-02-01",
+     "speaker": "Riley",
+     "text": "Hey Maya—sorry if it's a little noisy, I'm grabbing coffee. Um, before we look at the modal audit, we really need to nail the homepage hero headline. Right now it says 'Deploy microservices 10x faster,' which feels, uh, super generic."
+    },
+    {
+     "id": "u-02-02",
+     "speaker": "Maya",
+     "text": "[Crosstalk] Totally agree—every enterprise buyer I interviewed last week rolled their eyes at '10x faster.' [0.8s pause] Um, what if we angle it around reliability instead, like 'Zero-downtime control plane for production AI'?"
+    },
+    {
+     "id": "u-02-03",
+     "speaker": "Riley",
+     "text": "Ooh, 'control plane' is strong, though—wait, [mumbled: is 'production AI' too narrow for platform teams?] Um, what if we merge both ideas: 'Ship faster with the zero-downtime control plane for cloud-native teams'?"
+    },
+    {
+     "id": "u-02-04",
+     "speaker": "Maya",
+     "text": "Hold that headline thought—I actually love that phrasing—and, uh, real quick on the API key modal: the amber badge is at 3.8:1 contrast, so I'm bumping it to slate-900 on amber-200 for 7.2:1 WCAG AA compliance."
+    },
+    {
+     "id": "u-02-05",
+     "speaker": "Riley",
+     "text": "Awesome. Oh, and to keep copy and design tokens aligned—um, let's set up our recurring 30-minute Atlas Design Critique on Tuesday mornings at 10am."
+    },
+    {
+     "id": "u-02-06",
+     "speaker": "Maya",
+     "text": "[Crosstalk] Wait, Riley—I'm off every Tuesday! Remember my four-day schedule in team.md? Let's do Wednesday at 11am instead, and yes, let's lock the homepage headline as 'Ship faster with the zero-downtime control plane for cloud-native teams.'"
+    }
+   ]
+  },
+  {
+   "title": "03. Reza Peer Sync — Urgent SOC2 Mandate Reversing Morning Plan",
+   "turns": [
+    {
+     "id": "u-03-01",
+     "speaker": "Reza",
+     "text": "Hey Riley, thanks for ducking into Room 4B—we don't have a doc for this, uh, Security Compliance just pinged me ten minutes ago about our SOC2 Type 2 audit."
+    },
+    {
+     "id": "u-03-02",
+     "speaker": "Riley",
+     "text": "Uh, okay—what did they flag? Diego and I just agreed at 9am to keep v1 auth tokens running in dual-write through Friday at 5pm for Acme and RetailFlow."
+    },
+    {
+     "id": "u-03-03",
+     "speaker": "Reza",
+     "text": "[Crosstalk] Yeah, that's the problem—we can't wait until Friday. [0.9s pause] Security issued directive SEC-SOC2-2026-09: legacy v1 tokens must be completely disabled by Wednesday at 6pm, or we fail the Q4 audit window."
+    },
+    {
+     "id": "u-03-04",
+     "speaker": "Riley",
+     "text": "Wednesday at 6pm?! [mumbled: Man, that's going to break both partner webhooks unless we shim it at the edge...] Okay, uh, I'll have Diego scope a 48-hour Nginx edge-proxy translation shim and we'll get Priya's sign-off at 3pm."
+    }
+   ]
+  },
+  {
+   "title": "04. CloudScale Vendor Sync — Unenrolled Speaker & Quality Gate (<90%)",
+   "turns": [
+    {
+     "id": "u-04-01",
+     "speaker": "Elena (SPEAKER_02)",
+     "text": "Hi Riley—um, sorry I'm dialing in from a new Zoom link—this is Elena from CloudScale SRE."
+    },
+    {
+     "id": "u-04-02",
+     "speaker": "Riley",
+     "text": "Hey Elena, great to meet you. Uh, so our successful HTTP 200 spans are driving 62% of our ingest bill, and we need to stay under our $4,200 monthly FinOps cap."
+    },
+    {
+     "id": "u-04-03",
+     "speaker": "Elena (SPEAKER_02)",
+     "text": "[Crosstalk] Yeah, we see that pattern a lot. [0.95s pause] Um, if you drop tail-based sampling on 200 OK health checks to 15% while keeping 100% of 5xx errors and slow p99 traces, your monthly spend drops to $3,950."
+    },
+    {
+     "id": "u-04-04",
+     "speaker": "Riley",
+     "text": "Let's lock that 15% tail-sampling rule, then. Um, I'll open the Terraform collector PR this afternoon."
+    }
+   ]
+  },
+  {
+   "title": "05. Priya (VP Eng) & Sam — SOC2 Shim Approval & Redis Benchmark",
+   "turns": [
+    {
+     "id": "u-05-01",
+     "speaker": "Riley",
+     "text": "Hi Priya, hi Sam. Um, leading with the decision needed: to satisfy Security's Wednesday 6pm SOC2 cutoff without breaking two partner webhooks that need until Friday, we propose shutting off v1 tokens Wednesday at 6pm behind a 48-hour Nginx edge translation shim."
+    },
+    {
+     "id": "u-05-02",
+     "speaker": "Priya",
+     "text": "Thanks for the crisp pre-read, Riley. [0.7s pause] Approved: disable v1 tokens Wednesday at 6pm with the 48-hour Nginx shim expiring hard on Friday at 5pm. Also, your senior backend hiring rubric is approved."
+    },
+    {
+     "id": "u-05-03",
+     "speaker": "Sam",
+     "text": "[Crosstalk] And, uh, quick update on the Redis bottleneck from this morning—Diego and I switched the worker pool to persistent TLS connections, which dropped staging Redis CPU from 78% down to 34%! I'll canary that in prod tomorrow morning."
+    }
+   ]
+  },
+  {
+   "title": "06. Walking 1:1 with Chloe — Enterprise Onboarding SSO Friction",
+   "turns": [
+    {
+     "id": "u-06-01",
+     "speaker": "Chloe",
+     "text": "Hey Riley—hope the wind isn't too loud while I'm walking between buildings. Um, I pulled the Q3 trial funnel numbers and 38% of enterprise evaluators abandon setup right at the SAML XML upload screen."
+    },
+    {
+     "id": "u-06-02",
+     "speaker": "Riley",
+     "text": "38%? Wow. Uh, why are we even forcing SAML before they see the dashboard? [1.1s pause] What if we let them log in with Google or GitHub OAuth first and defer SAML until they invite their fifth user?"
+    },
+    {
+     "id": "u-06-03",
+     "speaker": "Chloe",
+     "text": "[Crosstalk] Yes! Well—wait, [mumbled: security-conscious buyers still want to test SAML on day one though...] So let's make SAML an optional 'Skip for now' step in the wizard with a pre-loaded read-only demo workspace!"
+    },
+    {
+     "id": "u-06-04",
+     "speaker": "Riley",
+     "text": "Love it—'Skip SAML for now' plus the pre-loaded demo workspace is locked. Um, I'll pair Maya and Diego on the wizard spec on Thursday."
+    }
+   ]
+  },
+  {
+   "title": "07. War-Room Triage — Partner Webhook Retry Storm (High Crosstalk)",
+   "turns": [
+    {
+     "id": "u-07-01",
+     "speaker": "Sam",
+     "text": "Hey guys, thanks for jumping on the huddle—uh, ingress queue depth on us-east-1 just spiked to 42,000 messages in three minutes. I think it might be a bad deploy on the billing worker?"
+    },
+    {
+     "id": "u-07-02",
+     "speaker": "Diego",
+     "text": "[Heavy Crosstalk] Wait, hold on—[mumbled: looking at Datadog by tenant ID right now...] No, scratch the billing deploy! Billing hasn't deployed since yesterday. It's RetailFlow's staging environment—they're firing 800 retry webhooks a second with zero exponential backoff!"
+    },
+    {
+     "id": "u-07-03",
+     "speaker": "Riley",
+     "text": "[Crosstalk] Okay, let's rate-limit tenant RetailFlow-staging at the Cloudflare WAF to 20 requests per second immediately, and Sam, can you drain the dead-letter queue?"
+    },
+    {
+     "id": "u-07-04",
+     "speaker": "Sam",
+     "text": "Applying the 20 RPS Cloudflare rule right now... [0.85s pause] Done, queue depth is already dropping! I'll drain the dead-letter queue and post the incident timeline in #ops-incidents."
+    }
+   ]
+  },
+  {
+   "title": "08. Maya & Diego — Semantic vs. Primitive CSS Token Naming",
+   "turns": [
+    {
+     "id": "u-08-01",
+     "speaker": "Maya",
+     "text": "So, um, right now engineers are hardcoding primitive colors like slate-800 in dark mode, which breaks whenever we restyle a card. I want to enforce semantic tokens only—like bg-surface-elevated."
+    },
+    {
+     "id": "u-08-02",
+     "speaker": "Diego",
+     "text": "[Crosstalk] Uh, pushback on banning primitives completely—[0.95s pause] when we're building status badges or chart series, semantic names like 'surface-elevated' don't map to 5 distinct data colors."
+    },
+    {
+     "id": "u-08-03",
+     "speaker": "Riley",
+     "text": "What if we use a two-tier rule: layout, text, and cards must use semantic tokens enforced by Stylelint, while charts and status badges use a scoped 'accent-*' namespace?"
+    },
+    {
+     "id": "u-08-04",
+     "speaker": "Maya",
+     "text": "That two-tier rule is super clean—let's lock it! Um, I'll export the semantic + accent JSON token bundle from Figma by tomorrow noon."
+    }
+   ]
+  },
+  {
+   "title": "09. External Penetration Test Debrief — Unenrolled Auditor (Marcus)",
+   "turns": [
+    {
+     "id": "u-09-01",
+     "speaker": "Marcus (SPEAKER_03)",
+     "text": "Afternoon everyone—uh, this is Marcus from Veritas Security leading the external pen-test readout."
+    },
+    {
+     "id": "u-09-02",
+     "speaker": "Marcus (SPEAKER_03)",
+     "text": "Our main medium-severity finding is on your sandbox preview subdomain—[0.9s pause] um, the wildcard CORS header allows credentialed requests from untrusted preview origins."
+    },
+    {
+     "id": "u-09-03",
+     "speaker": "Riley",
+     "text": "[Crosstalk] Got it—thanks Marcus. Uh, we'll lock the CORS allowlist to explicit customer domains by Thursday and I'll have Diego ship the regression test."
+    }
+   ]
+  },
+  {
+   "title": "10. Sam & Diego — Postgres 16 Blue/Green Upgrade Window",
+   "turns": [
+    {
+     "id": "u-10-01",
+     "speaker": "Sam",
+     "text": "So for the Postgres 16 blue-green switchover, [mumbled: let me check the WAL replay lag on the read replica...] [1.15s pause] Um, lag is under 40ms, so I was thinking Saturday night at 11pm Pacific."
+    },
+    {
+     "id": "u-10-02",
+     "speaker": "Diego",
+     "text": "[Crosstalk] Wait, Saturday 11pm Pacific is Sunday morning 7am UTC—that's right when our European retail batch settlement runs!"
+    },
+    {
+     "id": "u-10-03",
+     "speaker": "Sam",
+     "text": "Oh, good catch! Scratch Saturday night—let's move the Postgres 16 switchover to Sunday at 2pm Pacific when both US and EU batch traffic are at their weekly minimum. I'll file ServiceNow change ticket CHG-8902."
+    }
+   ]
+  },
+  {
+   "title": "11. Reza & Chloe — Pro Tier Seat Cap vs. Usage-Based Overage",
+   "turns": [
+    {
+     "id": "u-11-01",
+     "speaker": "Reza",
+     "text": "Quick huddle on Q4 self-serve pricing—um, right now Pro tier hard-blocks teams at 10 seats and forces an enterprise sales call, which is slowing down mid-market expansion."
+    },
+    {
+     "id": "u-11-02",
+     "speaker": "Chloe",
+     "text": "[Crosstalk] Yeah, customers hate hitting a hard wall on seat 11! Um, let's raise the self-serve Pro cap to 25 seats at $49/seat and trigger an AE expansion alert at 15 seats."
+    },
+    {
+     "id": "u-11-03",
+     "speaker": "Riley",
+     "text": "25 seats self-serve with the 15-seat HubSpot alert is super clean—let's lock that! I'll update the Stripe billing entitlement config tomorrow."
+    }
+   ]
+  },
+  {
+   "title": "12. End-of-Day Wrap-Up — Full Workday Rollup & Tomorrow's /bootstrap",
+   "turns": [
+    {
+     "id": "u-12-01",
+     "speaker": "Riley",
+     "text": "Hey Priya, quick 5-minute EOD wrap: [0.7s pause] Ship: Redis persistent pooling cut staging CPU from 78% to 34%, and the homepage hero headline is locked with Maya. Next: Wednesday 6pm v1 token shutoff with the 48-hour Nginx shim. Blocker: none—all tracker tasks are reconciled via sync_tracker.py."
+    },
+    {
+     "id": "u-12-02",
+     "speaker": "Priya",
+     "text": "That's a great full-day rollup, Riley. Everything is compounded cleanly into team memory for tomorrow morning's /bootstrap. Have a great evening!"
+    }
+   ]
+  }
+ ]
+}

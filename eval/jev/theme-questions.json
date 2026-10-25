@@ -1,0 +1,14 @@
+{
+  "question_set": "eval-themes-1",
+  "model": "jev-1.13.0",
+  "_note": "Theme questions used only by the evaluation (spec 007 R9); not part of mt-turn-1.",
+  "themes": {
+    "onboarding": "how new users get started: the first-run experience, onboarding steps, the welcome flow and in-app tour, and activation",
+    "ds-debt": "design system components and tokens: inconsistent or duplicate components and variants, token migration, usage guidelines",
+    "research-ops": "research operations: the research repository, tagging and finding past studies, recruiting participants, sharing insights",
+    "hiring": "hiring and team capacity: open roles, interviews, candidates, recruiting designers, headcount",
+    "crit-ritual": "how the design team works together: crit format, facilitation, meeting rituals, time boxes, feedback norms",
+    "roadmap": "deciding what to work on: roadmap planning, priorities, trade-offs, requests from other teams",
+    "a11y": "accessibility of the product: color contrast, screen readers, keyboard access, accessibility audits"
+  }
+}

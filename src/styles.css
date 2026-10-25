@@ -696,6 +696,9 @@ kbd { display: inline-block; min-width: 1.5em; padding: 0 4px; margin-right: 2px
 .import-form select, .import-form textarea { font: inherit; font-size: var(--fs-body); padding: 7px 8px; border-radius: var(--r-md); border: 1px solid var(--line-strong); background: var(--bg); color: var(--ink); }
 .import-form textarea { resize: vertical; min-height: 140px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--fs-meta); }
 .import-problem { margin: 0; padding: 7px 9px; border-radius: var(--r-md); background: var(--band); font-size: var(--fs-meta); color: var(--ink); }
+.import-jev-box { display: grid; gap: 4px; }
+.import-jev-box p { margin: 0 0 0 24px; font-size: var(--fs-meta); }
+.import-form label.import-jev { display: flex; align-items: center; gap: 8px; color: var(--ink); }
 .import-preview, .import-done { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: var(--fs-body); max-width: 64ch; }
 .import-preview h3, .import-done h3 { margin: 10px 0 4px; }
 .import-preview p { margin: 0; }

@@ -1,0 +1,25 @@
+{
+  "question_set": "mt-turn-1",
+  "model": "jev-1.13.0",
+  "_note": "Shared contract (spec 007 contracts/question-set.md). Whichever system owns a turn asks these once and passes the answers along. Any change to wording or thresholds needs a new id.",
+  "thresholds": {
+    "yes": 0.7,
+    "no": 0.3,
+    "owner_min_confidence": 0.5
+  },
+  "questions": {
+    "commitment": {
+      "type": "noul",
+      "instructions": "Does the speaker of `turn` personally commit, in `turn`, to doing a specific follow-up task themselves? Hedges such as \"I'll be honest\" or \"I'll be out\", questions, and statements about what other people will do are not commitments."
+    },
+    "owner": {
+      "type": "choice",
+      "instructions": "Who is going to do the follow-up task described in `turn`?",
+      "criterion": "{name} does the task",
+      "ask_twice": [
+        "owner_a: attendees in invite order",
+        "owner_b: attendees in reverse order"
+      ]
+    }
+  }
+}
