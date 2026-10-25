@@ -100,7 +100,11 @@ it('compares rules with rules plus Jev on every labelled set', async () => {
     return { p: +p.toFixed(2), r: +rc.toFixed(2), f1: +((2 * p * rc) / (p + rc || 1)).toFixed(2), tp, fp, fn }
   }
   const labels = all.reduce((n, r) => n + r.labels, 0)
-  const total = { rules: sum('rules'), jev: sum('jev'), candidateRecall: +(all.reduce((n, r) => n + r.candidateRecall * r.labels, 0) / labels).toFixed(2) }
+  // SC-002 counts the lead's review: each "Needs a look" line that is a labelled commitment counts as ticked.
+  const j = sum('jev'), looked = all.reduce((n, r) => n + r.needsALookTrue, 0)
+  const rp = (j.tp + looked) / (j.tp + looked + j.fp || 1), rr = (j.tp + looked) / (j.tp + j.fn || 1)
+  const afterReview = { p: +rp.toFixed(2), r: +rr.toFixed(2), f1: +((2 * rp * rr) / (rp + rr || 1)).toFixed(2) }
+  const total = { rules: sum('rules'), jev: j, afterReview, candidateRecall: +(all.reduce((n, r) => n + r.candidateRecall * r.labels, 0) / labels).toFixed(2) }
   console.log(JSON.stringify({ question_set: qs.question_set, model: qs.model, thresholds: qs.thresholds, rows, total }, null, 1))
   expect(all.length).toBeGreaterThanOrEqual(3)
 })
