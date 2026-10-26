@@ -18,7 +18,7 @@ describe('explainConnector: threads', () => {
     for (const s of segs) {
       const theme = m.themes.find((t) => t.id === s.themeId)!
       const e = explainConnector(m, { kind: 'thread', themeId: s.themeId, from: s.fromMeetingId, to: s.toMeetingId }, sugs)
-      expect(e.headline).toContain(theme.name)
+      expect(e.headline.startsWith(theme.name)).toBe(true) // the theme first: it is what the eye scans for
       expect(e.ends!.map((x) => x.meetingId)).toEqual([s.fromMeetingId, s.toMeetingId])
       for (const end of e.ends!) {
         if (end.quote) {
@@ -63,6 +63,8 @@ describe('explainConnector: arcs, copies, beads', () => {
     expect(e.proposal).toMatchObject({ text: s.text, targetMeetingId: s.targetMeetingId, status: 'accepted', visibleTo: s.visibleTo })
     expect(e.proposal!.sourceQuote!.id).toBe(s.sources.find((x) => x.meetingId === CRIT)!.turnId)
     expect(e.headline).toMatch(/on the agenda/i)
+    // Lead with where it goes, not where it came from (UI copy review, 2026-10-25).
+    expect(e.headline.startsWith(`On the agenda for ${m.meetingById.get(s.targetMeetingId!)!.title}`)).toBe(true)
   })
 
   it('lists a copied meeting\'s themes', () => {

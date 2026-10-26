@@ -9,19 +9,19 @@ export const GUIDE_STEPS = [
     target: '.canvas',
     place: 'inside' as const,
     title: 'Two weeks of meetings, on one canvas',
-    body: "This is a design ops lead's calendar: every meeting, by time. Lines join meetings that discussed the same theme; dots mark action items. The buttons at the top rearrange the same meetings by project, people, meeting type or theme, which is where the threads between them show best. The key at the bottom names every kind of line.",
+    body: "A design ops lead's calendar, every meeting by time. Lines join meetings on the same theme, and dots mark action items. The buttons at the top regroup the meetings by project, people, meeting type or theme. The key at the bottom explains each line.",
   },
   {
     target: '.queue',
     place: 'left' as const,
-    title: 'Follow-ups, suggested from what was said',
-    body: 'The action queue collects agenda items drawn from earlier meetings, grouped by the meeting they would go to. Each one shows the quote behind it and the reason for that meeting.',
+    title: 'Suggested follow-ups',
+    body: 'What people said they’d follow up on, filed under the meeting where it fits. Each item quotes the speaker and says why that meeting.',
   },
   {
     target: '.queue .qi.focused',
     place: 'left' as const,
     title: 'Add one and watch it land',
-    body: 'Each item shows the exact line it would add, to which meeting, and who will see it. “Add to …” puts it on that agenda, commits its action item and draws a solid line on the calendar. Undo is always there, in the queue, with U or ⌘Z. Keys: J and K move, A adds, D dismisses.',
+    body: 'Each item shows the line it adds, the meeting, and who will see it. “Add to …” puts it on that agenda and draws a solid line on the calendar. U or ⌘Z undoes. J and K move, A adds, D dismisses.',
   },
 ]
 

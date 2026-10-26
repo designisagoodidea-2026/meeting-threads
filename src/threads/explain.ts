@@ -54,7 +54,7 @@ export function explainConnector(model: Model, c: Connector, suggestions: Sugges
       const quote = m.transcript!.find((t) => theme.turnIds.includes(t.id)) ?? null
       return { meetingId: id, quote, gap: quote ? null : 'no-mention' }
     }
-    return { kind: 'thread', headline: `Both meetings discussed ${theme.name}`, themeId: theme.id, ends: [end(c.from), end(c.to)] }
+    return { kind: 'thread', headline: `${theme.name}, in both meetings`, themeId: theme.id, ends: [end(c.from), end(c.to)] }
   }
 
   if (c.kind === 'arc') {
@@ -63,10 +63,9 @@ export function explainConnector(model: Model, c: Connector, suggestions: Sugges
     const src = meetingOf(model, c.source)
     const turnId = s.sources.find((x) => x.meetingId === c.source)?.turnId
     const target = s.targetMeetingId ? meetingOf(model, s.targetMeetingId) : null
-    const where = target ? target.title : 'no upcoming meeting'
     return {
       kind: 'arc',
-      headline: s.status === 'accepted' ? `Raised in ${src.title}, now on the agenda for ${where}` : `Raised in ${src.title}, suggested for ${where}`,
+      headline: !target ? `Needs its own meeting, from ${src.title}` : s.status === 'accepted' ? `On the agenda for ${target.title}, from ${src.title}` : `Suggested for ${target.title}, from ${src.title}`,
       proposal: {
         text: s.text,
         targetMeetingId: s.targetMeetingId,
@@ -79,7 +78,7 @@ export function explainConnector(model: Model, c: Connector, suggestions: Sugges
 
   if (c.kind === 'copy') {
     const m = meetingOf(model, c.meetingId)
-    return { kind: 'copy', headline: `${m.title} is one meeting, shown once in each row it belongs to`, themes: [...m.themeIds] }
+    return { kind: 'copy', headline: `${m.title}, shown in each of its rows`, themes: [...m.themeIds] }
   }
 
   const a = model.actionItems.find((x) => x.id === c.actionItemId)

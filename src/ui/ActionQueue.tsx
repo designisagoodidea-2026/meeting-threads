@@ -118,7 +118,7 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
         <button className="pop-close" onClick={onClose} aria-label="Close action queue"><Icon name="close" /></button>
       </header>
       <p className="queue-note">
-        Suggested agenda items, drawn from what was said in earlier meetings, grouped by the meeting they'd go to. Nothing changes on a meeting until you add it.
+        Follow-ups from earlier meetings, under the meeting each would go to. Nothing changes until you add it.
         <span className="queue-keys"><kbd>J</kbd><kbd>K</kbd> move · <kbd>A</kbd> add · <kbd>D</kbd> dismiss · <kbd>U</kbd> undo</span>
       </p>
       <div className="queue-scroll" ref={listRef}>
