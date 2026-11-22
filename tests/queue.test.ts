@@ -28,11 +28,11 @@ describe('groupQueue', () => {
 
 describe('step', () => {
   const ids = ['a', 'b', 'c']
-  it('moves down and up, stopping at the ends, and starts at the top', () => {
+  it('moves down and up, wrapping past the ends, and starts at the top', () => {
     expect(step(ids, null, 1)).toBe('a')
     expect(step(ids, 'a', 1)).toBe('b')
-    expect(step(ids, 'c', 1)).toBe('c')
-    expect(step(ids, 'a', -1)).toBe('a')
+    expect(step(ids, 'c', 1)).toBe('a')
+    expect(step(ids, 'b', -1)).toBe('a')
     expect(step(ids, 'zzz', 1)).toBe('a')
     expect(step([], null, 1)).toBeNull()
   })

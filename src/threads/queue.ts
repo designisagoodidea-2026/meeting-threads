@@ -17,10 +17,10 @@ export function groupQueue(model: Model, suggestions: Suggestion[]): QueueGroup[
     .map(([meetingId, items]) => ({ meetingId, items, toReview: items.filter((s) => s.status === 'pending').length }))
 }
 
-// Keyboard movement through the queue: one step, stopping at the ends; from nowhere, the top.
+// Keyboard movement through the queue: one step, wrapping past either end; from nowhere, the top.
 export function step(ids: string[], current: string | null, dir: 1 | -1): string | null {
   if (!ids.length) return null
   const i = current ? ids.indexOf(current) : -1
   if (i < 0) return ids[0]
-  return ids[Math.min(ids.length - 1, Math.max(0, i + dir))]
+  return ids[(i + dir) % ids.length]
 }
