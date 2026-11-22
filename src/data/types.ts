@@ -93,7 +93,7 @@ export type Suggestion = {
   sources: { meetingId: string; turnId: string }[]
   targetMeetingId: string | null
   visibleTo: string[]
-  status: 'pending' | 'accepted' | 'dismissed'
+  status: 'pending' | 'accepted' | 'dismissed' | 'snoozed'
   basis: 'theme' | 'series' | 'one-on-one' | null // why the target was chosen; null = needs its own meeting
 }
 

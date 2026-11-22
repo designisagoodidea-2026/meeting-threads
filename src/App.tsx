@@ -111,7 +111,7 @@ export default function App() {
     return new Set((model?.actionItems ?? []).filter((a) => turns.has(a.sourceTurnId)).map((a) => a.id))
   }, [suggestions, model])
   // The last accept or dismiss, for the confirmation toast and its undo (FR-029).
-  const [change, setChange] = useState<{ id: string; status: 'accepted' | 'dismissed'; key: number } | null>(null)
+  const [change, setChange] = useState<{ id: string; status: 'accepted' | 'dismissed' | 'snoozed'; key: number } | null>(null)
   useEffect(() => {
     if (!change) return
     const t = setTimeout(() => setChange(null), 8000)
@@ -378,6 +378,13 @@ export default function App() {
                 onDismiss={(id) => {
                   decide((d) => ({ ...d, [id]: { status: 'dismissed', at: new Date().toISOString() } }))
                   setChange({ id, status: 'dismissed', key: Date.now() })
+                  setMoved(null)
+                  decided.current.push(id)
+                  history.current.push({ kind: 'decision', id })
+                }}
+                onSnooze={(id) => {
+                  decide((d) => ({ ...d, [id]: { status: 'snoozed', at: new Date().toISOString() } }))
+                  setChange({ id, status: 'snoozed', key: Date.now() })
                   setMoved(null)
                   decided.current.push(id)
                   history.current.push({ kind: 'decision', id })

@@ -14,13 +14,14 @@ type Props = {
   onFocus: (id: string | null) => void // null = nothing selected
   onAccept: (id: string, text?: string) => void
   onDismiss: (id: string) => void
+  onSnooze: (id: string) => void // out of the queue until the next import; U brings it back
   onReset: (id: string) => void
   onUndoLast: () => void
   keysActive: boolean // false while a page, panel or the tour is up, so keys never act on a queue you can't see
   onClose: () => void
 }
 
-export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, onDismiss, onReset, onUndoLast, keysActive, onClose }: Props) {
+export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, onDismiss, onSnooze, onReset, onUndoLast, keysActive, onClose }: Props) {
   // Grouped by the meeting each item lands on (FR-030). Accepted items stay in place, showing the
   // change, so the result and its undo are in view (FR-029).
   const pending = suggestions.filter((s) => s.status === 'pending' && s.targetMeetingId)
@@ -74,9 +75,9 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
       clearTimeout(off)
     }
   }, [focusedId]) // eslint-disable-line react-hooks/exhaustive-deps
-  // Keyboard triage (FR-030): J/K move, A adds to the agenda, D dismisses (both move on), U undoes the last decision.
-  const keys = useRef({ order, focusedId, suggestions, onAccept, onDismiss, onUndoLast, onFocus, keysActive })
-  keys.current = { order, focusedId, suggestions, onAccept, onDismiss, onUndoLast, onFocus, keysActive }
+  // Keyboard triage (FR-030): J/K move, A adds to the agenda, D dismisses, S snoozes (all move on), U undoes the last decision.
+  const keys = useRef({ order, focusedId, suggestions, onAccept, onDismiss, onSnooze, onUndoLast, onFocus, keysActive })
+  keys.current = { order, focusedId, suggestions, onAccept, onDismiss, onSnooze, onUndoLast, onFocus, keysActive }
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const k = keys.current
@@ -96,6 +97,10 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
       } else if (key === 'd' && cur?.status === 'pending') {
         const next = step(k.order, cur.id, 1)
         k.onDismiss(cur.id)
+        go(next !== cur.id ? next : step(k.order, cur.id, -1))
+      } else if (key === 's' && cur?.status === 'pending') {
+        const next = step(k.order, cur.id, 1)
+        k.onSnooze(cur.id)
         go(next !== cur.id ? next : step(k.order, cur.id, -1))
       } else if (key === 'u') k.onUndoLast()
       else return
@@ -119,7 +124,7 @@ export function ActionQueue({ model, suggestions, focusedId, onFocus, onAccept, 
       </header>
       <p className="queue-note">
         Follow-ups from earlier meetings, under the meeting each would go to. Nothing changes until you add it.
-        <span className="queue-keys"><kbd>J</kbd><kbd>K</kbd> move · <kbd>A</kbd> add · <kbd>D</kbd> dismiss · <kbd>U</kbd> undo</span>
+        <span className="queue-keys"><kbd>J</kbd><kbd>K</kbd> move · <kbd>A</kbd> add · <kbd>D</kbd> dismiss · <kbd>S</kbd> snooze · <kbd>U</kbd> undo</span>
       </p>
       <div className="queue-scroll" ref={listRef}>
       {groups.map((g) => {

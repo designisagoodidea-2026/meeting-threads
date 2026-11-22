@@ -7,7 +7,7 @@ import type { RelationshipNote } from './data/types'
 export type Persisted = {
   version: 1
   notes: RelationshipNote[]
-  decisions: Record<string, { status: 'accepted' | 'dismissed'; text?: string; at: string }>
+  decisions: Record<string, { status: 'accepted' | 'dismissed' | 'snoozed'; text?: string; at: string }>
   privacy: { hiddenMeetingIds: string[]; excludedPersonIds: string[] }
   guideDone?: boolean // the first-run tour was finished or skipped
   imports?: Record<string, Import> // pasted transcripts by meeting id (spec 006 FR-032)
