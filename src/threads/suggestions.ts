@@ -1,4 +1,4 @@
-import type { Meeting, Model, Suggestion, Turn } from '../data/types'
+import { meetingOf, type Meeting, type Model, type Suggestion, type Turn } from '../data/types'
 import type { Persisted } from '../store'
 
 export type Basis = 'theme' | 'series' | 'one-on-one'
@@ -70,7 +70,7 @@ export function deriveSuggestions(model: Model, decisions: Persisted['decisions'
 
   const excluded = model.excludedPersonIds ?? new Set<string>()
   const speakerOf = (turnId: string) =>
-    model.meetingById.get(turnId.slice(0, turnId.lastIndexOf('#')))?.transcript?.find((t) => t.id === turnId)?.speakerId ?? null
+    model.meetingById.get(meetingOf(turnId))?.transcript?.find((t) => t.id === turnId)?.speakerId ?? null
   for (const a of model.actionItems) {
     if (a.status !== 'open') continue
     if (excluded.has(speakerOf(a.sourceTurnId) ?? '')) continue

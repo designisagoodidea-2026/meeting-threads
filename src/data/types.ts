@@ -41,7 +41,7 @@ export type Person = {
 }
 
 export type Turn = {
-  id: string // `${meetingId}#${segmentId}`
+  id: string // `${meetingId}#${segmentId}`; meetingOf() reads the meeting back
   meetingId: string
   speakerId: string | null // null = "Unknown speaker"
   offsetMs: number
@@ -154,3 +154,6 @@ export type AnnotationsFile = {
     status: string
   }[]
 }
+
+// The meeting a turn id belongs to. Segment ids never contain '#', so the last one splits them.
+export const meetingOf = (turnId: string) => turnId.slice(0, turnId.lastIndexOf('#'))
