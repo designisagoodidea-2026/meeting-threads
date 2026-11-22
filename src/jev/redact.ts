@@ -100,11 +100,12 @@ export function applyRedactions(turns: Turn[], registry: Redaction[]): { turns: 
 export type ScanHit = { kind: RedactionKind | 'registry'; index: number }
 
 // The last check before anything leaves: formats that are always sensitive, plus every value already
-// found in this transcript. Any hit means nothing is sent (FR-008).
+// found in this transcript. Any hit means nothing is sent (FR-008). Uses the same patterns as
+// buildRegistry, so the two checks can't drift apart.
 export function finalScan(texts: string[], forms: string[]): ScanHit[] {
   const hits: ScanHit[] = []
   texts.forEach((text, index) => {
-    if (new RegExp(SSN_FULL.source).test(text)) hits.push({ kind: 'ssn', index })
+    if (SSN_FULL.test(text)) hits.push({ kind: 'ssn', index })
     if ([...text.matchAll(CARD)].some((m) => luhn(digits(m[0])))) hits.push({ kind: 'card', index })
     if (forms.some((f) => f && text.toLowerCase().includes(f.toLowerCase()))) hits.push({ kind: 'registry', index })
   })
